@@ -1,7 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
 import Spinner from "styleguide/Spinner/index";
-import themeState from "styleguide/Theme";
-import { useState } from "@hookstate/core";
+import useTheme from "styleguide/Theme";
 
 interface ButtonSpinnerProps {
   loading: boolean;
@@ -42,34 +41,34 @@ const Button = ({
   size,
   ...rest
 }: ButtonProps) => {
-  const theme = useState(themeState);
+  const { theme } = useTheme();
 
   const buttonBackgroundColor =
     color === "primary"
-      ? theme.get().primaryColor
+      ? theme.primaryColor
       : color === "secondary"
-      ? theme.get().secondaryColor
+      ? theme.secondaryColor
       : color === "danger"
-      ? theme.get().dangerColor
-      : theme.get().defaultColor;
+      ? theme.dangerColor
+      : theme.defaultColor;
 
   const buttonBackgroundColorHover =
     color === "primary"
-      ? theme.get().primaryColorHover
+      ? theme.primaryColorHover
       : color === "secondary"
-      ? theme.get().secondaryColorHover
+      ? theme.secondaryColorHover
       : color === "danger"
-      ? theme.get().dangerColorHover
-      : theme.get().defaultColorHover;
+      ? theme.dangerColorHover
+      : theme.defaultColorHover;
 
   const buttonColor =
     color === "primary"
-      ? theme.get().primaryColorTextForeground
+      ? theme.primaryColorTextForeground
       : color === "secondary"
-      ? theme.get().secondaryColorTextForeground
+      ? theme.secondaryColorTextForeground
       : color === "danger"
-      ? theme.get().dangerColorTextForeground
-      : theme.get().defaultColorTextForeground;
+      ? theme.dangerColorTextForeground
+      : theme.defaultColorTextForeground;
 
   const padding =
     size === "small"

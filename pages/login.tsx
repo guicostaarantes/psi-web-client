@@ -1,18 +1,15 @@
+import LoginComponent from "components/Login";
 import Head from "next/head";
-import Button from "styleguide/Button";
-import Card from "styleguide/Card";
 import Cover from "styleguide/Cover";
-import Input from "styleguide/Input";
 import Col from "styleguide/Layout/Col";
 import Container from "styleguide/Layout/Container";
 import Row from "styleguide/Layout/Row";
 import ViewportHigh from "styleguide/Layout/ViewportHigh";
-import themeState from "styleguide/Theme";
+import useTheme from "styleguide/Theme";
 import MainTitle from "styleguide/Typography/MainTitle";
-import { useState } from "@hookstate/core";
 
-const Login = () => {
-  const theme = useState(themeState);
+const LoginPage = () => {
+  const { theme } = useTheme();
 
   return (
     <>
@@ -22,23 +19,10 @@ const Login = () => {
       </Head>
       <Container fluid>
         <Row>
-          <Col
-            style={{ backgroundColor: theme.get().primaryColor }}
-            xs={12}
-            lg={4}
-          >
+          <Col style={{ backgroundColor: theme.primaryColor }} xs={12} lg={4}>
             <ViewportHigh center>
               <MainTitle>Oi, bem-vindo ao PSI</MainTitle>
-              <Card style={{ width: "100%", maxWidth: 440 }}>
-                <Input name="email" label="Email" />
-                <Input name="password" label="Senha" type="password" />
-                <Button block color="primary">
-                  Entrar
-                </Button>
-                <Button block color="secondary">
-                  Criar minha conta
-                </Button>
-              </Card>
+              <LoginComponent />
             </ViewportHigh>
           </Col>
           <Col style={{ padding: 0 }} xs={0} lg={8}>
@@ -50,4 +34,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

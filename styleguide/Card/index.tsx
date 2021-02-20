@@ -1,17 +1,16 @@
 import { BaseHTMLAttributes } from "react";
-import themeState from "styleguide/Theme";
-import { useState } from "@hookstate/core";
+import useTheme from "styleguide/Theme";
 
 interface CardProps extends BaseHTMLAttributes<HTMLDivElement> {
   loading?: boolean;
 }
 
 const Card = ({ children, loading, ...rest }: CardProps) => {
-  const theme = useState(themeState);
+  const { theme } = useTheme();
 
-  const cardBackgroundColor = theme.get().backgroundColor;
+  const cardBackgroundColor = theme.backgroundColor;
 
-  const cardBorderColor = theme.get().defaultColor;
+  const cardBorderColor = theme.defaultColor;
 
   return (
     <>

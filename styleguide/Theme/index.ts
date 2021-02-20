@@ -1,6 +1,6 @@
 import PinkYellow from "styleguide/Theme/themes/PinkYellow";
 import PinkYellowDark from "styleguide/Theme/themes/PinkYellowDark";
-import { createState } from "@hookstate/core";
+import { createState, useState } from "@hookstate/core";
 
 export interface ThemeProps {
   backgroundColor: string;
@@ -25,10 +25,18 @@ const themes = {
   pinkYellowDark: PinkYellowDark,
 };
 
-export const changeTheme = (selectedTheme: string) => {
-  themeState.set(themes[selectedTheme]);
-};
-
 const themeState = createState(PinkYellow);
 
-export default themeState;
+const useTheme = () => {
+  const themeHook = useState(themeState);
+
+  const theme = themeHook.get();
+
+  const changeTheme = (selectedTheme: string) => {
+    themeHook.set(themes[selectedTheme]);
+  };
+
+  return { theme, changeTheme };
+};
+
+export default useTheme;

@@ -1,6 +1,5 @@
 import { InputHTMLAttributes, LegacyRef } from "react";
-import themeState from "styleguide/Theme";
-import { useState } from "@hookstate/core";
+import useTheme from "styleguide/Theme";
 
 interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "placeholder"> {
@@ -11,7 +10,7 @@ interface InputProps
 }
 
 const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
-  const theme = useState(themeState);
+  const { theme } = useTheme();
 
   return (
     <>
@@ -38,8 +37,8 @@ const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
         input {
           background: transparent;
           border: 0;
-          border-bottom: 2px solid ${theme.get().defaultColor};
-          color: ${theme.get().backgroundColorTextForeground};
+          border-bottom: 2px solid ${theme.defaultColor};
+          color: ${theme.backgroundColorTextForeground};
           font-family: inherit;
           font-size: 1rem;
           outline: 0;
@@ -53,25 +52,25 @@ const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
         }
 
         input:placeholder-shown ~ label {
-          color: ${theme.get().defaultColor};
+          color: ${theme.defaultColor};
           cursor: text;
           font-size: 1rem;
           top: 1.3rem;
         }
 
         input:focus {
-          border-color: ${theme.get().primaryColor};
+          border-color: ${theme.primaryColor};
         }
 
         input:focus ~ label {
-          color: ${theme.get().primaryColor};
+          color: ${theme.primaryColor};
           cursor: text;
           font-size: 0.75rem;
           top: 0;
         }
 
         label {
-          color: ${theme.get().defaultColor};
+          color: ${theme.defaultColor};
           display: block;
           font-size: 0.75rem;
           position: absolute;
