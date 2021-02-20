@@ -10,7 +10,10 @@ const MainTitle = ({ center, children }: MainTitleProps) => {
     <>
       <h1>{children}</h1>
       <style jsx>{`
-        ${center ? "text-align: center;" : ""}
+        h1 {
+          font-weight: 400;
+          ${center ? "text-align: center;" : ""}
+        }
       `}</style>
     </>
   );

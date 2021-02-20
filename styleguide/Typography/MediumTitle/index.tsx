@@ -10,7 +10,10 @@ const MediumTitle = ({ center, children }: MediumTitleProps) => {
     <>
       <h3>{children}</h3>
       <style jsx>{`
-        ${center ? "text-align: center;" : ""}
+        h3 {
+          font-weight: 400;
+          ${center ? "text-align: center;" : ""}
+        }
       `}</style>
     </>
   );

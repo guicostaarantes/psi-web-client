@@ -10,7 +10,10 @@ const SmallTitle = ({ center, children }: SmallTitleProps) => {
     <>
       <h4>{children}</h4>
       <style jsx>{`
-        ${center ? "text-align: center;" : ""}
+        h4 {
+          font-weight: 400;
+          ${center ? "text-align: center;" : ""}
+        }
       `}</style>
     </>
   );
