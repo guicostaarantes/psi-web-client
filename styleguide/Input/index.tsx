@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, LegacyRef } from "react";
 import themeState from "styleguide/Theme";
 import { useState } from "@hookstate/core";
 
@@ -6,20 +6,22 @@ interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "placeholder"> {
   name: string;
   label: string;
+  reference?: LegacyRef<HTMLInputElement>;
   type?: "text" | "password";
 }
 
-const Input = ({ label, name, type, ...rest }: InputProps) => {
+const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
   const theme = useState(themeState);
 
   return (
     <>
       <div>
         <input
+          aria-label={label}
           id={name}
           name={name}
           placeholder={label}
-          aria-label={label}
+          ref={reference}
           type={type || "text"}
           {...rest}
         />
