@@ -1,17 +1,21 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import themeState from "styleguide/Theme";
+import useTheme from "styleguide/Theme";
+import { ToastContainer } from "styleguide/Toast";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "http://localhost:8080/gql",
+  cache: new InMemoryCache(),
+});
 
 export default function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.push("/login");
-  }, []);
+  const { theme, changeTheme } = useTheme();
 
   return (
     <>
-      <Component {...pageProps} />
+      <ApolloProvider client={client}>
+        <Component {...pageProps} />
+        <ToastContainer />
+      </ApolloProvider>
       <style jsx global>{`
         @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap");
 
@@ -19,7 +23,7 @@ export default function MyApp({ Component, pageProps }) {
         body {
           padding: 0;
           margin: 0;
-          background-color: ${themeState.get().backgroundColor};
+          background-color: ${theme.backgroundColor};
         }
 
         a {

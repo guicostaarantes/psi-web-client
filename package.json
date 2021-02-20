@@ -8,12 +8,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.11",
     "@hookstate/core": "^3.0.6",
+    "graphql": "^15.5.0",
     "next": "10.0.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-grid-system": "^7.1.1",
-    "react-responsive": "^8.2.0"
+    "react-responsive": "^8.2.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.29.4",
@@ -24,6 +27,7 @@
     "@types/react": "^17.0.2",
     "@types/react-responsive": "^8.0.2",
     "@types/styled-jsx": "^2.2.8",
+    "@types/uuid": "^8.3.0",
     "babel-jest": "^26.6.3",
     "jest": "^26.6.3",
     "jest-dom": "^4.0.0",
