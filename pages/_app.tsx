@@ -1,14 +1,29 @@
 import useTheme from "styleguide/Theme";
-import { ToastContainer } from "styleguide/Toast";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import ToastContainer from "styleguide/Toast";
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+
+const httpLink = createHttpLink({
+  uri: process.env.NEXT_PUBLIC_PSI_GRAPHQL_URI,
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("token");
+  return {
+    headers: {
+      ...headers,
+      authorization: token || "",
+    },
+  };
+});
 
 const client = new ApolloClient({
-  uri: "http://localhost:8080/gql",
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
 export default function MyApp({ Component, pageProps }) {
-  const { theme, changeTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <>
