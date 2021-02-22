@@ -1,21 +1,9 @@
+import { MAX_TOASTS, TOAST_LIFESPAN_MS } from "constants/toast";
+import useToast from "hooks/useToast";
 import { useEffect, useMemo, useRef } from "react";
 import { GrClose } from "react-icons/gr";
 import { animated, useSpring } from "react-spring";
 import useTheme from "styleguide/Theme";
-import { v4 as uuid } from "uuid";
-import { createState, useState } from "@hookstate/core";
-
-interface NewToastProps {
-  header: string;
-  message: string;
-}
-
-interface ToastProps {
-  id: string;
-  header: string;
-  message: string;
-  state: "in" | "out";
-}
 
 const Toast = ({ header, id, message, state, ...rest }) => {
   const { theme } = useTheme();
@@ -29,7 +17,7 @@ const Toast = ({ header, id, message, state, ...rest }) => {
   const closeToast = () => removeToast(id);
 
   useEffect(() => {
-    setTimeout(closeToast, 5000);
+    setTimeout(closeToast, TOAST_LIFESPAN_MS);
   }, []);
 
   const { x, opacity } = useSpring({
@@ -56,7 +44,7 @@ const Toast = ({ header, id, message, state, ...rest }) => {
               <GrClose />
             </button>
           </div>
-          <div className="message">{id}</div>
+          <div className="message">{message}</div>
         </div>
       </animated.div>
       <style jsx>{`
@@ -93,7 +81,7 @@ const Toast = ({ header, id, message, state, ...rest }) => {
   );
 };
 
-export const ToastContainer = () => {
+const ToastContainer = () => {
   const { toasts } = useToast();
 
   const refMap = useRef<Element[]>(new Array());
@@ -110,7 +98,9 @@ export const ToastContainer = () => {
         {toasts.map((toast, index) => (
           <div
             key={toast.id}
-            ref={(ref) => (index < 3 ? (refMap.current[index] = ref) : null)}
+            ref={(ref) =>
+              index < MAX_TOASTS ? (refMap.current[index] = ref) : null
+            }
             style={{
               transition: "top 300ms ease",
               position: "absolute",
@@ -139,51 +129,4 @@ export const ToastContainer = () => {
   );
 };
 
-const toastState = createState<ToastProps[]>([]);
-
-const useToast = () => {
-  const toastStateHook = useState<ToastProps[]>(toastState);
-
-  const toasts = toastStateHook.get();
-
-  const addToast = (newToast: NewToastProps) => {
-    setTimeout(
-      () =>
-        toastStateHook.set((toasts) => [
-          { ...newToast, id: uuid(), state: "in" },
-          ...toasts,
-        ]),
-      0
-    );
-    setTimeout(() => {
-      toastStateHook.set((toasts) => [
-        ...toasts.slice(0, 3),
-        ...toasts
-          .slice(3)
-          .map((toast) => ({ ...toast, state: "out" } as ToastProps)),
-      ]);
-    }, 400);
-    setTimeout(() => {
-      toastStateHook.set((toasts) => toasts.slice(0, 3));
-    }, 800);
-  };
-
-  const removeToast = (id: string) => {
-    setTimeout(
-      () =>
-        toastStateHook.set((toasts) =>
-          toasts.map((toast) =>
-            toast.id === id ? { ...toast, state: "out" } : toast
-          )
-        ),
-      0
-    );
-    setTimeout(() => {
-      toastStateHook.set((toasts) => toasts.filter((toast) => toast.id !== id));
-    }, 400);
-  };
-
-  return { toasts, addToast, removeToast };
-};
-
-export default useToast;
+export default ToastContainer;
