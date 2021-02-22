@@ -1,10 +1,10 @@
 import CreatePatientUser from "graphql/CreatePatientUser";
+import useToast from "hooks/useToast";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import Button from "styleguide/Button";
 import Card from "styleguide/Card";
 import Input from "styleguide/Input";
-import useToast from "styleguide/Toast";
 import Paragraph from "styleguide/Typography/Paragraph";
 import { useMutation } from "@apollo/client";
 
@@ -21,12 +21,25 @@ const NewAccountComponent = () => {
 
   useEffect(() => {
     if (error) {
-      addToast({
-        header: "Email já cadastrado",
-        message: "Esse email já está atrelado a uma conta do PSI. Tente outro.",
-      });
+      if (error.message === "invalid email") {
+        addToast({
+          header: "Email inválido",
+          message: "Digite um email válido e tente novamente.",
+        });
+      } else {
+        addToast({
+          header: "Erro no servidor",
+          message:
+            "O servidor do PSI retornou um erro. Tente novamente mais tarde.",
+        });
+      }
     } else if (data) {
-      console.log(data);
+      addToast({
+        header: "Tudo certo!",
+        message:
+          "Confira sua caixa de correio para validar esse cadastro e siga as instruções que estarão lá.",
+      });
+      router.push("/login");
     }
   }, [data, error]);
 

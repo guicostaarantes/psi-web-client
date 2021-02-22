@@ -1,4 +1,5 @@
-import AuthenticateUser from "graphql/AuthenticateUser";
+import AuthenticateUser, { AuthenticateUserResponse } from "graphql/AuthenticateUser";
+import useToast from "hooks/useToast";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import Button from "styleguide/Button";
@@ -10,18 +11,33 @@ import { useLazyQuery } from "@apollo/client";
 const LoginComponent = () => {
   const router = useRouter();
 
+  const { addToast } = useToast();
+
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const [signinQuery, { loading, data, error }] = useLazyQuery(
-    AuthenticateUser
-  );
+  const [
+    signinQuery,
+    { loading, data, error },
+  ] = useLazyQuery<AuthenticateUserResponse>(AuthenticateUser);
 
   useEffect(() => {
     if (error) {
-      console.log(error);
+      if (error.message === "incorrect credentials") {
+        addToast({
+          header: "Credenciais inválidas",
+          message: "Tente novamente.",
+        });
+      } else {
+        addToast({
+          header: "Erro no servidor",
+          message:
+            "O servidor do PSI retornou um erro. Tente novamente mais tarde.",
+        });
+      }
     } else if (data) {
-      console.log(data);
+      localStorage.setItem("token", data.authenticateUser.token);
+      router.push("/");
     }
   }, [data, error]);
 

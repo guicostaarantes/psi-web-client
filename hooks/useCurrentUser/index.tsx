@@ -1,4 +1,4 @@
-import GetOwnUser from "graphql/GetOwnUserId";
+import GetOwnUser, { GetOwnUserIdResponse } from "graphql/GetOwnUserId";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useQuery } from "@apollo/client";
@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/client";
 const useCurrentUser = (redirectIfNotAuthenticated: boolean): string => {
   const router = useRouter();
 
-  const { data, error } = useQuery(GetOwnUser);
+  const { data, error } = useQuery<GetOwnUserIdResponse>(GetOwnUser);
 
   useEffect(() => {
     if (error && redirectIfNotAuthenticated) {
@@ -14,7 +14,7 @@ const useCurrentUser = (redirectIfNotAuthenticated: boolean): string => {
     }
   }, [error]);
 
-  return data?.getOwnUser?.id;
+  return data?.getOwnUser.id;
 };
 
 export default useCurrentUser;
