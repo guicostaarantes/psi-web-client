@@ -7,7 +7,7 @@ interface NewToastProps {
   message: string;
 }
 
-interface ToastProps {
+export interface ToastProps {
   id: string;
   header: string;
   message: string;

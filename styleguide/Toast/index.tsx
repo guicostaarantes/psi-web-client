@@ -32,6 +32,7 @@ const Toast = ({ header, id, message, state, ...rest }) => {
   return (
     <>
       <animated.div
+        role="alert"
         style={{
           opacity,
           transform: x.interpolate((x) => `translateX(${x}%)`),

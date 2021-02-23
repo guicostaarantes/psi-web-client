@@ -1,9 +1,9 @@
 import BigTitle from "styleguide/Typography/BigTitle";
 import { render, screen } from "@testing-library/react";
 
-test("testing big title", () => {
-  render(<BigTitle>testing big title</BigTitle>);
-  const bigtitle = screen.getByText("testing big title");
+test("BigTitle renders", () => {
+  render(<BigTitle>testing BigTitle</BigTitle>);
+  const bigtitle = screen.getByText("testing BigTitle");
 
   expect(bigtitle).toBeInTheDocument();
 });

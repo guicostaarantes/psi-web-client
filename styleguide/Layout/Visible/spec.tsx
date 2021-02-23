@@ -1,7 +1,7 @@
 import Visible from "styleguide/Layout/Visible";
 import { render } from "@testing-library/react";
 
-test("testing visible", () => {
+test("Visible renders", () => {
   render(
     <Visible xs sm>
       testing visible

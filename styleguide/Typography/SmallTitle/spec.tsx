@@ -1,9 +1,9 @@
 import SmallTitle from "styleguide/Typography/SmallTitle";
 import { render, screen } from "@testing-library/react";
 
-test("testing small title", () => {
-  render(<SmallTitle>testing small title</SmallTitle>);
-  const smalltitle = screen.getByText("testing small title");
+test("SmallTitle renders", () => {
+  render(<SmallTitle>testing SmallTitle</SmallTitle>);
+  const smalltitle = screen.getByText("testing SmallTitle");
 
   expect(smalltitle).toBeInTheDocument();
 });

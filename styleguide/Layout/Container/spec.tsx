@@ -1,9 +1,9 @@
 import Container from "styleguide/Layout/Container";
 import { render, screen } from "@testing-library/react";
 
-test("testing container", () => {
-  render(<Container>testing container</Container>);
-  const container = screen.getByText("testing container") as HTMLInputElement;
+test("Container renders", () => {
+  render(<Container>testing Container</Container>);
+  const container = screen.getByText("testing Container") as HTMLInputElement;
 
   expect(container).toBeInTheDocument();
 });

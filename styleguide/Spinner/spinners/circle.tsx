@@ -1,6 +1,7 @@
 const CircleSpinner = ({ size }: { size: string }) => {
   return (
     <svg
+      role="status"
       width={size}
       height={size}
       viewBox="0 0 38 38"

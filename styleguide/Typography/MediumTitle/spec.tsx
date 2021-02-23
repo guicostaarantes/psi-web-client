@@ -1,9 +1,9 @@
 import MediumTitle from "styleguide/Typography/MediumTitle";
 import { render, screen } from "@testing-library/react";
 
-test("testing medium title", () => {
-  render(<MediumTitle>testing medium title</MediumTitle>);
-  const mediumtitle = screen.getByText("testing medium title");
+test("MediumTitle renders", () => {
+  render(<MediumTitle>testing MediumTitle</MediumTitle>);
+  const mediumtitle = screen.getByText("testing MediumTitle");
 
   expect(mediumtitle).toBeInTheDocument();
 });

@@ -1,9 +1,9 @@
 import Paragraph from "styleguide/Typography/Paragraph";
 import { render, screen } from "@testing-library/react";
 
-test("testing paragraph", () => {
-  render(<Paragraph>testing paragraph</Paragraph>);
-  const paragraph = screen.getByText("testing paragraph");
+test("Paragraph renders", () => {
+  render(<Paragraph>testing Paragraph</Paragraph>);
+  const paragraph = screen.getByText("testing Paragraph");
 
   expect(paragraph).toBeInTheDocument();
 });

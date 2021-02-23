@@ -1,13 +1,14 @@
 import { BaseHTMLAttributes } from "react";
 
 interface CoverProps extends BaseHTMLAttributes<HTMLDivElement> {
+  label: string;
   src: string;
 }
 
-const Cover = ({ src, ...rest }: CoverProps) => {
+const Cover = ({ label, src, ...rest }: CoverProps) => {
   return (
     <>
-      <div {...rest}></div>
+      <div aria-label={label} {...rest}></div>
       <style jsx>{`
         div {
           background-image: url(${src});

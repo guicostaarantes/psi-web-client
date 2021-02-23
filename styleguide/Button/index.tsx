@@ -82,7 +82,7 @@ const Button = ({
 
   return (
     <>
-      <button disabled={disabled} role="button" {...rest}>
+      <button disabled={loading || disabled} role="button" {...rest}>
         <ButtonSpinner loading={loading} size={textSize} />
         <div>{children}</div>
       </button>

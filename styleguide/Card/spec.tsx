@@ -1,14 +1,9 @@
-import Button from "styleguide/Button";
-import { fireEvent, render, screen } from "@testing-library/react";
+import Card from "styleguide/Card";
+import { render, screen } from "@testing-library/react";
 
-test("testing button", () => {
-  const mockFn = jest.fn();
+test("Card renders", () => {
+  render(<Card>testing Card</Card>);
+  const card = screen.getByText("testing Card") as HTMLDivElement;
 
-  render(<Button onClick={mockFn}>Testing button</Button>);
-  const btn = screen.getByRole("button") as HTMLButtonElement;
-
-  expect(btn).toBeInTheDocument();
-
-  fireEvent.click(btn);
-  expect(mockFn).toBeCalledTimes(1);
+  expect(card).toBeInTheDocument();
 });
