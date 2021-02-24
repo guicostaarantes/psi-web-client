@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import useTheme from "@src/styleguide/Theme";
+import useTheme from "@src/hooks/useTheme";
 
 interface BigTitleProps {
   center?: boolean;

@@ -1,11 +1,11 @@
 import Head from "next/head";
 import LoginComponent from "@src/components/Login";
+import useTheme from "@src/hooks/useTheme";
 import Cover from "@src/styleguide/Cover";
 import Col from "@src/styleguide/Layout/Col";
 import Container from "@src/styleguide/Layout/Container";
 import Row from "@src/styleguide/Layout/Row";
 import ViewportHigh from "@src/styleguide/Layout/ViewportHigh";
-import useTheme from "@src/styleguide/Theme";
 import MainTitle from "@src/styleguide/Typography/MainTitle";
 
 const LoginPage = () => {

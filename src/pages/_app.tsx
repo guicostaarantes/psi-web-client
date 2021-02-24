@@ -5,7 +5,7 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import useTheme from "@src/styleguide/Theme";
+import useTheme from "@src/hooks/useTheme";
 import ToastContainer from "@src/styleguide/Toast";
 
 const httpLink = createHttpLink({

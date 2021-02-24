@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
+import useTheme from "@src/hooks/useTheme";
 import Spinner from "@src/styleguide/Spinner/index";
-import useTheme from "@src/styleguide/Theme";
 
 interface ButtonSpinnerProps {
   loading: boolean;

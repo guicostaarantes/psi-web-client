@@ -1,5 +1,5 @@
 import { InputHTMLAttributes, LegacyRef } from "react";
-import useTheme from "@src/styleguide/Theme";
+import useTheme from "@src/hooks/useTheme";
 
 interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "placeholder"> {

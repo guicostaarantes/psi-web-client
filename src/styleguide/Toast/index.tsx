@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef } from "react";
 import { GrClose } from "react-icons/gr";
 import { animated, useSpring } from "react-spring";
 import { MAX_TOASTS, TOAST_LIFESPAN_MS } from "@src/constants/toast";
+import useTheme from "@src/hooks/useTheme";
 import useToast, { ToastProps } from "@src/hooks/useToast";
-import useTheme from "@src/styleguide/Theme";
 
 const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
   const { theme } = useTheme();
