@@ -24,7 +24,11 @@ const NewAccountPage = () => {
               label="Imagem de capa"
             />
           </Col>
-          <Col style={{ backgroundColor: theme.primaryColor }} xs={12} lg={4}>
+          <Col
+            style={{ backgroundColor: theme.backgroundColor }}
+            xs={12}
+            lg={4}
+          >
             <ViewportHigh center>
               <NewAccountComponent />
             </ViewportHigh>

@@ -8,7 +8,7 @@ interface CardProps extends BaseHTMLAttributes<HTMLDivElement> {
 const Card = ({ children, ...rest }: CardProps) => {
   const { theme } = useTheme();
 
-  const cardBackgroundColor = theme.backgroundColor;
+  const cardBackgroundColor = theme.focusBackgroundColor;
 
   const cardBorderColor = theme.defaultColor;
 

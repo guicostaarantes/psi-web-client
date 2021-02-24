@@ -11,6 +11,9 @@ export interface ThemeProps {
   defaultColor: string;
   defaultColorHover: string;
   defaultColorTextForeground: string;
+  focusBackgroundColor: string;
+  focusBackgroundColorHover: string;
+  focusBackgroundColorTextForeground: string;
   primaryColor: string;
   primaryColorHover: string;
   primaryColorTextForeground: string;

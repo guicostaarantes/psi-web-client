@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { GrClose } from "react-icons/gr";
+import { MdClose } from "react-icons/md";
 import { animated, useSpring } from "react-spring";
 import { MAX_TOASTS, TOAST_LIFESPAN_MS } from "@src/constants/toast";
 import useTheme from "@src/hooks/useTheme";
@@ -8,9 +8,9 @@ import useToast, { ToastProps } from "@src/hooks/useToast";
 const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
   const { theme } = useTheme();
 
-  const cardBackgroundColor = theme.backgroundColor;
-
+  const cardBackgroundColor = theme.focusBackgroundColor;
   const cardBorderColor = theme.defaultColor;
+  const cardTextColor = theme.defaultColor;
 
   const { removeToast } = useToast();
 
@@ -42,7 +42,7 @@ const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
           <div className="header">
             <div className="header-message">{header}</div>
             <button className="close-btn" onClick={closeToast}>
-              <GrClose />
+              <MdClose size="1rem" />
             </button>
           </div>
           <div className="message">{message}</div>
@@ -52,6 +52,7 @@ const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
         .wrapper {
           background-color: ${cardBackgroundColor};
           border: 1px solid ${cardBorderColor};
+          color: ${cardTextColor};
           margin: 0.5rem 1rem;
           width: 300px;
         }
@@ -69,6 +70,7 @@ const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
         .close-btn {
           background: transparent;
           border: 0;
+          color: ${cardTextColor};
           cursor: pointer;
           margin: 0.6rem;
           outline: 0;

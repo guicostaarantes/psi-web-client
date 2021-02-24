@@ -19,7 +19,11 @@ const LoginPage = () => {
       </Head>
       <Container fluid>
         <Row>
-          <Col style={{ backgroundColor: theme.primaryColor }} xs={12} lg={4}>
+          <Col
+            style={{ backgroundColor: theme.backgroundColor }}
+            xs={12}
+            lg={4}
+          >
             <ViewportHigh center>
               <MainTitle>Oi, bem-vindo ao PSI</MainTitle>
               <LoginComponent />

@@ -1,7 +1,7 @@
 import { ThemeProps } from "@src/styleguide/Theme";
 
 const PinkYellow: ThemeProps = {
-  backgroundColor: "#e6e6e6",
+  backgroundColor: "#d1b8bd",
   backgroundColorHover: "#bfbfbf",
   backgroundColorTextForeground: "#000000",
   dangerColor: "#ce0909",
@@ -10,6 +10,9 @@ const PinkYellow: ThemeProps = {
   defaultColor: "#4d4d4d",
   defaultColorHover: "#737373",
   defaultColorTextForeground: "#ffffff",
+  focusBackgroundColor: "#e6e6e6",
+  focusBackgroundColorHover: "#bfbfbf",
+  focusBackgroundColorTextForeground: "#000000",
   primaryColor: "#f57172",
   primaryColorHover: "#f33f3f",
   primaryColorTextForeground: "#ffffff",
