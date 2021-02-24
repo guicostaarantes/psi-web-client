@@ -17,7 +17,7 @@ const ResetPasswordComponent = () => {
   const confirmRef = useRef<HTMLInputElement>(null);
 
   const [resetPasswordQuery, { loading, data, error }] = useMutation(
-    ResetPassword
+    ResetPassword,
   );
 
   const resetPassword = async () => {

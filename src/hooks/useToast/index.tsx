@@ -28,7 +28,7 @@ const useToast = () => {
           { ...newToast, id: uuid(), state: "in" },
           ...toasts,
         ]),
-      0
+      0,
     );
     setTimeout(() => {
       toastStateHook.set((toasts) => [
@@ -48,10 +48,10 @@ const useToast = () => {
       () =>
         toastStateHook.set((toasts) =>
           toasts.map((toast) =>
-            toast.id === id ? { ...toast, state: "out" } : toast
-          )
+            toast.id === id ? { ...toast, state: "out" } : toast,
+          ),
         ),
-      0
+      0,
     );
     setTimeout(() => {
       toastStateHook.set((toasts) => toasts.filter((toast) => toast.id !== id));

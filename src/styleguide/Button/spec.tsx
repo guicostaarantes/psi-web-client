@@ -26,7 +26,7 @@ test("Button does not click if disabled", () => {
   render(
     <Button disabled onClick={mockFn}>
       Testing button
-    </Button>
+    </Button>,
   );
   const btn = screen.getByRole("button") as HTMLButtonElement;
 
@@ -42,7 +42,7 @@ test("Button does not click if loading", () => {
   render(
     <Button loading onClick={mockFn}>
       Testing button
-    </Button>
+    </Button>,
   );
   const btn = screen.getByRole("button") as HTMLButtonElement;
 

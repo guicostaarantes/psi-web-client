@@ -5,7 +5,7 @@ test("Visible renders", () => {
   render(
     <Visible xs sm>
       testing visible
-    </Visible>
+    </Visible>,
   );
 
   // TODO: tests

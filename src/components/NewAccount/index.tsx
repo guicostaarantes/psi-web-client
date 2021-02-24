@@ -16,7 +16,7 @@ const NewAccountComponent = () => {
   const emailRef = useRef<HTMLInputElement>(null);
 
   const [signupQuery, { loading, data, error }] = useMutation(
-    CreatePatientUser
+    CreatePatientUser,
   );
 
   useEffect(() => {

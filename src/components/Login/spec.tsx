@@ -60,13 +60,13 @@ test("LoginComponent renders", () => {
   render(
     <MockedProvider>
       <LoginComponent />
-    </MockedProvider>
+    </MockedProvider>,
   );
   const email = screen.getByLabelText("Email") as HTMLInputElement;
   const password = screen.getByLabelText("Senha") as HTMLInputElement;
   const signinButton = screen.getByText("Entrar") as HTMLButtonElement;
   const newAccountButton = screen.getByText(
-    "Criar minha conta"
+    "Criar minha conta",
   ) as HTMLButtonElement;
 
   expect(email).toBeInTheDocument();
@@ -79,7 +79,7 @@ test("user must be presented to correct credentials", async () => {
   render(
     <MockedProvider mocks={mocks}>
       <LoginComponent />
-    </MockedProvider>
+    </MockedProvider>,
   );
   const email = screen.getByLabelText("Email") as HTMLInputElement;
   const password = screen.getByLabelText("Senha") as HTMLInputElement;
@@ -93,7 +93,7 @@ test("user must be presented to correct credentials", async () => {
     expect(mockAddToast).not.toBeCalled();
     expect(localStorage.setItem).toBeCalledWith(
       "token",
-      "TJA20rdqNfflNen3zqBXuI2HSOc5ta7U8xuDIJmcb9uLTGeLesANU7Lx76Htj8Y9"
+      "TJA20rdqNfflNen3zqBXuI2HSOc5ta7U8xuDIJmcb9uLTGeLesANU7Lx76Htj8Y9",
     );
     expect(mockPushRoute).toBeCalledWith("/");
   });
@@ -103,7 +103,7 @@ test("user must be presented to incorrect credentials message", async () => {
   render(
     <MockedProvider mocks={mocks}>
       <LoginComponent />
-    </MockedProvider>
+    </MockedProvider>,
   );
   const email = screen.getByLabelText("Email") as HTMLInputElement;
   const password = screen.getByLabelText("Senha") as HTMLInputElement;
@@ -127,7 +127,7 @@ test("user must be presented to incorrect credentials message", async () => {
   render(
     <MockedProvider mocks={mocks}>
       <LoginComponent />
-    </MockedProvider>
+    </MockedProvider>,
   );
   const email = screen.getByLabelText("Email") as HTMLInputElement;
   const password = screen.getByLabelText("Senha") as HTMLInputElement;
