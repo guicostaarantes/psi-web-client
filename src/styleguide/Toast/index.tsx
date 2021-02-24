@@ -2,10 +2,10 @@ import { useEffect, useMemo, useRef } from "react";
 import { GrClose } from "react-icons/gr";
 import { animated, useSpring } from "react-spring";
 import { MAX_TOASTS, TOAST_LIFESPAN_MS } from "@src/constants/toast";
-import useToast from "@src/hooks/useToast";
+import useToast, { ToastProps } from "@src/hooks/useToast";
 import useTheme from "@src/styleguide/Theme";
 
-const Toast = ({ header, id, message, state, ...rest }) => {
+const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
   const { theme } = useTheme();
 
   const cardBackgroundColor = theme.backgroundColor;
@@ -85,7 +85,7 @@ const Toast = ({ header, id, message, state, ...rest }) => {
 const ToastContainer = () => {
   const { toasts } = useToast();
 
-  const refMap = useRef<Element[]>(new Array());
+  const refMap = useRef<Element[]>([]);
 
   const tops = useMemo(() => {
     return refMap.current.map((rm) => {

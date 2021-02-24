@@ -1,4 +1,6 @@
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient, ApolloProvider, createHttpLink, InMemoryCache,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import useTheme from "@src/styleguide/Theme";
 import ToastContainer from "@src/styleguide/Toast";

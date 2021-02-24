@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useMutation } from "@apollo/client";
 import ResetPassword from "@src/graphql/ResetPassword";
 import useToast from "@src/hooks/useToast";

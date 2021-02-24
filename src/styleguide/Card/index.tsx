@@ -5,7 +5,7 @@ interface CardProps extends BaseHTMLAttributes<HTMLDivElement> {
   loading?: boolean;
 }
 
-const Card = ({ children, loading, ...rest }: CardProps) => {
+const Card = ({ children, ...rest }: CardProps) => {
   const { theme } = useTheme();
 
   const cardBackgroundColor = theme.backgroundColor;

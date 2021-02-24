@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useLazyQuery } from "@apollo/client";
-import AuthenticateUser, { AuthenticateUserResponse } from "@src/graphql/AuthenticateUser";
+import AuthenticateUser, {
+  AuthenticateUserResponse,
+} from "@src/graphql/AuthenticateUser";
 import useToast from "@src/hooks/useToast";
 import Button from "@src/styleguide/Button";
 import Card from "@src/styleguide/Card";

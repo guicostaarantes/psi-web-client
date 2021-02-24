@@ -1,5 +1,4 @@
 import { GraphQLError } from "graphql";
-import { useRouter } from "next/router";
 import { MockedProvider } from "@apollo/client/testing";
 import LoginComponent from "@src/components/Login";
 import AuthenticateUser from "@src/graphql/AuthenticateUser";
