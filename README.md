@@ -19,10 +19,10 @@ Feel free to open an issue or create a pull request. Please follow the rules:
 - This project is based on React and NextJS.
 - Make sure to read the [NextJS documentation](https://nextjs.org/docs) to better understand what is going on.
 
-### GraphQL
+### Server
 
 - This app consumes a GraphQL API available at [https://github.com/guicostaarantes/psi-server](https://github.com/guicostaarantes/psi-server).
-- It is recommended to read the server documentation and run it with Docker Compose to make sure this app is working properly.
+- It is recommended to clone this repo and run it with `docker-compose up --build` so that you can fully test the features on the web client.
 
 ### Folder structure
 
@@ -46,6 +46,12 @@ Feel free to open an issue or create a pull request. Please follow the rules:
 - Following NextJS documentation, environment variables for development purposes are declared in `./.env.development`. Set all necessary environment variables in this file so it can be used as a reference as to what environment variables to set when deploying in production.
 - If you'd like to deploy this project manually, an easy way to set the environment variables for the production environment is to create a file `./.env.production` with the same keys as `./.env.development`. However remember not to commit this file to the repo as it probably contains secret information.
 - [Following NextJS documentation](https://nextjs.org/docs/basic-features/environment-variables), in order to make an environment variable public (appear in the code client-side), prefix it with `NEXT_PUBLIC_`.
+
+### State management
+
+- State management in this application is handled by the [@hookstate/core](https://hookstate.js.org/docs/getting-started) library.
+- This library provides a simple API for state that needs to be shared between multiple components. For global states, it is not necessary to wrap the whole application in a provider like the Context API.
+- Global states should be handled by a custom hook in `./src/hooks`. Check `useToast` for an example.
 
 ### Import statements
 
