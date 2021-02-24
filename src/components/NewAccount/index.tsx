@@ -50,7 +50,9 @@ const NewAccountComponent = () => {
           email: emailRef.current.value,
         },
       });
-    } catch (err) {}
+    } catch (err) {
+      // empty
+    }
   };
 
   return (

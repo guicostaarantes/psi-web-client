@@ -29,7 +29,9 @@ const ResetPasswordComponent = () => {
           newPassword: passwordRef.current.value,
         },
       });
-    } catch (err) {}
+    } catch (err) {
+      // empty
+    }
   };
 
   useEffect(() => {
