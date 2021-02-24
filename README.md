@@ -1,34 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Psi web client
 
-## Getting Started
+This is the web client application for Psi.
 
-First, run the development server:
+Psi is a project that aims to provide low-cost psychological treatment to people that are not able to afford the high prices of the market, and also to help people in vulnerable situations with volunteering, totally free appointments.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+Feel free to open an issue or create a pull request. Please follow the rules:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Be gentle with your colleagues 😊.
+- Write code and documentation in English.
+- Write issues and pull requests in English.
+- Use variable names that explain what that variable/function is supposed to do.
+- Prepend every commit message with an emoji 😎 to help others understand what you are doing there (use https://gitmoji.dev as a reference).
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Instructions to help you get going
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### NextJS
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- This project is based on React and NextJS.
+- Make sure to read the [NextJS documentation](https://nextjs.org/docs) to better understand what is going on.
 
-## Learn More
+### GraphQL
 
-To learn more about Next.js, take a look at the following resources:
+- This app consumes a GraphQL API available at [https://github.com/guicostaarantes/psi-server](https://github.com/guicostaarantes/psi-server).
+- It is recommended to read the server documentation and run it with Docker Compose to make sure this app is working properly.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Folder structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- `./public`: static served files, [following NextJS documentation](https://nextjs.org/docs/basic-features/static-file-serving).
+- `./src/pages`: a place for React components that represent whole pages of the application. [Following NextJS documentation](https://nextjs.org/docs/basic-features/pages), the route structure of the app will mimic the file structure under this folder.
+- `./src/styleguide`: a place for React components that are small and likely to be used in other React components multiple times, such as a Button, an Input, etc.
+- `./src/components`: a place for React components that are larger and not likely to be used in other React components multiple times, and also do not constitute the whole of a page, such as the login form, the registration form, etc.
+- `./src/hooks`: a place for React custom hooks that are likely to be used in other React components multiple times.
+- `./src/constants`: a place for numeric or string constants that are likely to be used multiple times in other files.
+- `./src/graphql`: a place for GraphQL queries and mutations that shall be used in React components by the @apollo/client library.
 
-## Deploy on Vercel
+### Component structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Every React component and hook is described in a folder with two files: `index.tsx` and `spec.tsx`.
+- `index.tsx` files hold all the information for rendering the component (logic, markup and styles).
+- Styles are delivered by using `<style jsx>` tags, [following NextJS documentation](https://nextjs.org/docs/basic-features/built-in-css-support#css-in-js).
+- `spec.tsx` files hold the tests for the React component or hook in the `index.tsx` file in the same folder.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Environment variables
+
+- Following NextJS documentation, environment variables for development purposes are declared in `./.env.development`. Set all necessary environment variables in this file so it can be used as a reference as to what environment variables to set when deploying in production.
+- If you'd like to deploy this project manually, an easy way to set the environment variables for the production environment is to create a file `./.env.production` with the same keys as `./.env.development`. However remember not to commit this file to the repo as it probably contains secret information.
+- [Following NextJS documentation](https://nextjs.org/docs/basic-features/environment-variables), in order to make an environment variable public (appear in the code client-side), prefix it with `NEXT_PUBLIC_`.
+
+### Import statements
+
+- Import statements have absolute paths, [following NextJS documentation](https://nextjs.org/docs/advanced-features/module-path-aliases). The `@src/` prefix references the src folder. Do not use `../` in your imports as it makes the code less readable and movable.
+- If you are using VSCode, install the `mike-co.import-sorter` extension that will help you organize your import statements.
+
+### Linting
+
+- You may run `yarn lint` to check all your files for static and formatting errors.
+- If you are using VSCode, install the `dbaeumer.vscode-eslint` and `esbenp.prettier-vscode` extensions that will help you lint and organize your code.
+
+### Unit testing
+
+- You may run `yarn test` to run all the spec.tsx files.
+- If you are using VSCode, install the `orta.vscode-jest` extension that runs the tests as you save the files.
+
+### VSCode
+
+- This repo has extension recommendations and settings if you are using VSCode. Make sure to use them for a better programming experience.
