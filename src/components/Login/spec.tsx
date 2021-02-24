@@ -122,7 +122,7 @@ test("user must be presented to incorrect credentials message", async () => {
   });
 });
 
-test("user must be presented to incorrect credentials message", async () => {
+test("user must be presented to server error message", async () => {
   render(
     <MockedProvider mocks={mocks}>
       <LoginComponent />
@@ -133,13 +133,14 @@ test("user must be presented to incorrect credentials message", async () => {
   const signinButton = screen.getByText("Entrar") as HTMLButtonElement;
 
   fireEvent.change(email, { target: { value: "tom.brady@psi.com.br" } });
-  fireEvent.change(password, { target: { value: "Abc123!@#-wrong" } });
+  fireEvent.change(password, { target: { value: "Abc123!@#-other" } });
   fireEvent.click(signinButton);
 
   await waitFor(() => {
     expect(mockAddToast).toBeCalledWith({
-      header: "Credenciais inválidas",
-      message: "Tente novamente.",
+      header: "Erro no servidor",
+      message:
+        "O servidor do PSI retornou um erro. Tente novamente mais tarde.",
     });
     expect(localStorage.setItem).not.toBeCalled();
     expect(mockPushRoute).not.toBeCalled();

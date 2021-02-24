@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useMutation } from "@apollo/client";
 import ResetPassword from "@src/graphql/ResetPassword";
+import useSearchParams from "@src/hooks/useSearchParams";
 import useToast from "@src/hooks/useToast";
 import Button from "@src/styleguide/Button";
 import Card from "@src/styleguide/Card";
@@ -16,13 +17,23 @@ const ResetPasswordComponent = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmRef = useRef<HTMLInputElement>(null);
 
+  const { getSearchParam } = useSearchParams();
+
   const [resetPasswordQuery, { loading, data, error }] = useMutation(
     ResetPassword,
   );
 
   const resetPassword = async () => {
     try {
-      const token = new URLSearchParams(window.location.search).get("token");
+      if (passwordRef.current.value !== confirmRef.current.value) {
+        addToast({
+          header: "Senha não confere",
+          message:
+            "As senhas informadas nos dois campos não são as mesmas. Tente novamente.",
+        });
+        return;
+      }
+      const token = getSearchParam("token");
       await resetPasswordQuery({
         variables: {
           token,
@@ -49,7 +60,6 @@ const ResetPasswordComponent = () => {
             "Esse link para redefinir senha já foi utilizado ou já expirou.",
         });
       } else {
-        console.log(error.message);
         addToast({
           header: "Erro no servidor",
           message:
@@ -71,18 +81,18 @@ const ResetPasswordComponent = () => {
       <Paragraph center>Insira e confirme sua nova senha</Paragraph>
       <Input
         name="new-password"
-        label="New Password"
+        label="Nova senha"
         type="password"
         reference={passwordRef}
       />
       <Input
         name="confirm-password"
-        label="Confirm Password"
+        label="Digite novamente a nova senha"
         type="password"
         reference={confirmRef}
       />
       <Button block color="primary" loading={loading} onClick={resetPassword}>
-        Cadastrar
+        Redefinir senha
       </Button>
       <Button block color="secondary" onClick={() => router.push("/login")}>
         Voltar
