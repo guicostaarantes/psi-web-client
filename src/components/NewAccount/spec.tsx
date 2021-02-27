@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 import { MockedProvider } from "@apollo/client/testing";
 import NewAccountComponent from "@src/components/NewAccount";
-import CreatePatientUser from "@src/graphql/CreatePatientUser";
+import CreatePatientUser from "@src/components/NewAccount/graphql";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 const mockAddToast = jest.fn();

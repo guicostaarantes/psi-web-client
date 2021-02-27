@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import GetOwnUser, {
   GetOwnUserResponse,
   GetOwnUserResponseData,
-} from "@src/graphql/GetOwnUser";
+} from "@src/hooks/useCurrentUser/graphql";
 
 const useCurrentUser = (
   redirectIfNotAuthenticated: boolean,

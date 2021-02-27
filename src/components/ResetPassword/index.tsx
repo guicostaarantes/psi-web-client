@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useMutation } from "@apollo/client";
-import ResetPassword from "@src/graphql/ResetPassword";
+import ResetPassword from "@src/components/ResetPassword/graphql";
 import useSearchParams from "@src/hooks/useSearchParams";
 import useToast from "@src/hooks/useToast";
 import Button from "@src/styleguide/Button";
