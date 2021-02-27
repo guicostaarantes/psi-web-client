@@ -10,6 +10,7 @@ const PinkYellow: ThemeProps = {
   defaultColor: "#4d4d4d",
   defaultColorHover: "#737373",
   defaultColorTextForeground: "#ffffff",
+  disabledColor: "#fff8f6",
   focusBackgroundColor: "#e6e6e6",
   focusBackgroundColorHover: "#bfbfbf",
   focusBackgroundColorTextForeground: "#000000",
