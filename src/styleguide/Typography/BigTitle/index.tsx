@@ -3,10 +3,17 @@ import useTheme from "@src/hooks/useTheme";
 
 interface BigTitleProps {
   center?: boolean;
+  noMarginBottom?: boolean;
+  noMarginTop?: boolean;
   children: ReactNode;
 }
 
-const BigTitle = ({ center, children }: BigTitleProps) => {
+const BigTitle = ({
+  center,
+  children,
+  noMarginBottom,
+  noMarginTop,
+}: BigTitleProps) => {
   const { theme } = useTheme();
 
   return (
@@ -17,6 +24,8 @@ const BigTitle = ({ center, children }: BigTitleProps) => {
           color: ${theme.backgroundColorTextForeground};
           font-weight: 400;
           ${center ? "text-align: center;" : ""}
+          ${noMarginBottom ? "margin-bottom: 0;" : ""}
+          ${noMarginTop ? "margin-top: 0;" : ""}
         }
       `}</style>
     </>

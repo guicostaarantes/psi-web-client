@@ -3,10 +3,17 @@ import useTheme from "@src/hooks/useTheme";
 
 interface MainTitleProps {
   center?: boolean;
+  noMarginBottom?: boolean;
+  noMarginTop?: boolean;
   children: ReactNode;
 }
 
-const MainTitle = ({ center, children }: MainTitleProps) => {
+const MainTitle = ({
+  center,
+  children,
+  noMarginBottom,
+  noMarginTop,
+}: MainTitleProps) => {
   const { theme } = useTheme();
   return (
     <>
@@ -16,6 +23,8 @@ const MainTitle = ({ center, children }: MainTitleProps) => {
           color: ${theme.backgroundColorTextForeground};
           font-weight: 400;
           ${center ? "text-align: center;" : ""}
+          ${noMarginBottom ? "margin-bottom: 0;" : ""}
+          ${noMarginTop ? "margin-top: 0;" : ""}
         }
       `}</style>
     </>
