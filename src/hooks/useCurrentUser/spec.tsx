@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import { MockedProvider } from "@apollo/client/testing";
-import GetOwnUser from "@src/graphql/GetOwnUserId";
+import GetOwnUser from "@src/graphql/GetOwnUser";
 import useCurrentUser from "@src/hooks/useCurrentUser";
 import { render, screen, waitFor } from "@testing-library/react";
 
@@ -19,6 +19,8 @@ const successMock = [
       data: {
         getOwnUser: {
           id: "6c82b9eb-722a-48f5-9418-0fcd3fbbca47",
+          email: "tom.brady@psi.com.br",
+          role: "PSYCHOLOGIST",
         },
       },
     },
@@ -35,7 +37,7 @@ const errorMock = [
 ];
 
 const TestComponent = () => {
-  const id = useCurrentUser(true);
+  const { id } = useCurrentUser(true);
 
   return <div>current user id is {id}</div>;
 };
