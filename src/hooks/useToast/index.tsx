@@ -22,7 +22,7 @@ const toastState = createState<ToastProps[]>([]);
 const useToast = () => {
   const toastStateHook = useState<ToastProps[]>(toastState);
 
-  const toasts = toastStateHook.get();
+  const toasts = toastStateHook.value;
 
   const addToast = (newToast: NewToastProps) => {
     setTimeout(

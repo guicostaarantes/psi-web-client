@@ -15,7 +15,7 @@ const useTheme = () => {
     }
   }, []);
 
-  const theme = themeHook.get();
+  const theme = themeHook.value;
 
   const changeTheme = (selectedTheme: ThemeKey) => {
     themeHook.set(themes[selectedTheme]);
