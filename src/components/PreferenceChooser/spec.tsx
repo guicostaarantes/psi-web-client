@@ -1,53 +1,47 @@
 import { Downgraded, useState } from "@hookstate/core";
-import CharacteristicChooserComponent from "@src/components/CharacteristicChooser";
+import PreferenceChooserComponent from "@src/components/PreferenceChooser";
 import { render, screen, waitFor } from "@testing-library/react";
 
 const initialState: {
   name: string;
   type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
-  selectedValues: string[];
   possibleValues: string[];
 }[] = [
   {
     name: "has-consulted-before",
     type: "BOOLEAN",
-    selectedValues: ["true"],
     possibleValues: ["true", "false"],
   },
   {
     name: "gender",
     type: "SINGLE",
-    selectedValues: ["female"],
     possibleValues: ["male", "female", "non-binary"],
   },
   {
     name: "disabilities",
     type: "MULTIPLE",
-    selectedValues: ["vision", " locomotion"],
     possibleValues: ["vision", "hearing", "locomotion"],
   },
 ];
 
 const WrapperTestComponent = () => {
-  const characteristics = useState<
+  const preferences = useState<
     {
       name: string;
       type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
-      selectedValues: string[];
       possibleValues: string[];
     }[]
   >(initialState).attach(Downgraded);
 
-  const choices = useState<Record<string, unknown>>({}).attach(Downgraded);
+  const weights = useState<Record<string, Record<string, number>>>({}).attach(
+    Downgraded,
+  );
 
   return (
-    <CharacteristicChooserComponent
-      characteristics={characteristics}
-      choices={choices}
-    />
+    <PreferenceChooserComponent preferences={preferences} weights={weights} />
   );
 };
-test("CharacteristicChooserComponent renders options", async () => {
+test("PreferenceChooserComponent renders options", async () => {
   render(<WrapperTestComponent />);
 
   await waitFor(() => {
