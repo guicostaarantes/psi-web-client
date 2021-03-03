@@ -1,9 +1,12 @@
 import { MockedProvider } from "@apollo/client/testing";
 import PatientDataComponent from "@src/components/PatientData";
-import GetOwnPatientProfile from "@src/components/PatientData/graphql";
+import {
+  GetCharacteristics,
+  GetOwnPatientProfile,
+} from "@src/components/PatientData/graphql";
 import { render, screen, waitFor } from "@testing-library/react";
 
-const mock = [
+const mocks = [
   {
     request: {
       query: GetOwnPatientProfile,
@@ -20,24 +23,74 @@ const mock = [
               name: "has-consulted-before",
               type: "BOOLEAN",
               selectedValues: [],
-              possibleValues: ["true", "false"],
             },
             {
               name: "gender",
               type: "SINGLE",
               selectedValues: ["male"],
-              possibleValues: ["male", "female", "non-binary"],
             },
             {
               name: "disabilities",
               type: "MULTIPLE",
               selectedValues: ["locomotion"],
-              possibleValues: ["vision", "hearing", "locomotion"],
             },
           ],
-          preferences: [],
+          preferences: [
+            {
+              characteristicName: "black",
+              selectedValue: "true",
+              weight: 3,
+            },
+            {
+              characteristicName: "black",
+              selectedValue: "false",
+              weight: -3,
+            },
+          ],
         },
-        getPsychologistCharacteristics: [],
+      },
+    },
+  },
+  {
+    request: {
+      query: GetCharacteristics,
+    },
+    result: {
+      data: {
+        getPatientCharacteristics: [
+          {
+            name: "has-consulted-before",
+            type: "BOOLEAN",
+            possibleValues: ["true", "false"],
+          },
+          {
+            name: "gender",
+            type: "SINGLE",
+            possibleValues: ["male", "female", "non-binary"],
+          },
+          {
+            name: "disabilities",
+            type: "MULTIPLE",
+            possibleValues: ["vision", "hearing", "locomotion"],
+          },
+        ],
+        getPsychologistCharacteristics: [
+          {
+            name: "black",
+            type: "BOOLEAN",
+            possibleValues: ["true", "false"],
+          },
+          {
+            name: "gender",
+            type: "SINGLE",
+            possibleValues: ["male", "female", "non-binary"],
+          },
+          {
+            name: "disabilities",
+            type: "MULTIPLE",
+            possibleValues: ["vision", "hearing", "locomotion"],
+          },
+        ],
       },
     },
   },
@@ -45,7 +98,7 @@ const mock = [
 
 test("PatientDataComponent renders with data from database", async () => {
   render(
-    <MockedProvider mocks={mock}>
+    <MockedProvider mocks={mocks}>
       <PatientDataComponent />
     </MockedProvider>,
   );

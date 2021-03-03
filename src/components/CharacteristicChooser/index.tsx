@@ -10,7 +10,6 @@ interface CharacteristicChooserComponentProps {
     {
       name: string;
       type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
-      selectedValues: string[];
       possibleValues: string[];
     }[]
   >;
