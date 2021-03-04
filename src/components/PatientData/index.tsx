@@ -17,6 +17,7 @@ import {
 } from "@src/components/PatientData/graphql";
 import PreferenceChooserComponent from "@src/components/PreferenceChooser";
 import { HAPPINESS_OPTIONS } from "@src/constants/happiness";
+import useToast from "@src/hooks/useToast";
 import Button from "@src/styleguide/Button";
 import Card from "@src/styleguide/Card";
 import Input from "@src/styleguide/Input";
@@ -26,6 +27,8 @@ import MediumTitle from "@src/styleguide/Typography/MediumTitle";
 
 const PatientDataComponent = () => {
   const router = useRouter();
+
+  const { addToast } = useToast();
 
   const { data: characteristicData } = useQuery<GetCharacteristicsResponse>(
     GetCharacteristics,
@@ -64,7 +67,19 @@ const PatientDataComponent = () => {
 
   // If profileError is different than "resource not found", something is wrong
   useEffect(() => {
-    console.log(profileError);
+    if (
+      profileError?.message &&
+      profileError.message !== "resource not found" &&
+      profileError.message !== "forbidden"
+    ) {
+      addToast({
+        header: "Erro ao carregar informações",
+        message:
+          "Sentimos muito pelo transtorno. Vamos investigar e resolver este problema.",
+      });
+      console.error(profileError);
+      router.push("/");
+    }
   }, [profileError]);
 
   // Load current values and fill the fields
@@ -90,7 +105,7 @@ const PatientDataComponent = () => {
 
   // Load current characteristic choices and fill the fields
   useEffect(() => {
-    if (profileData && characteristics.value) {
+    if (profileData && characteristics.value.length) {
       const initialChoices = {};
       for (const char of profileData.getOwnPatientProfile.characteristics) {
         if (char.selectedValues.length) {
@@ -151,61 +166,121 @@ const PatientDataComponent = () => {
   >(SetOwnPatientCharacteristicChoicesAndPreferences);
 
   const handleSave = async () => {
+    // Gathering profile input information
+    const profileInput = {
+      fullName: fullNameRef.current.value,
+      likeName: likeNameRef.current.value,
+      birthDate: Number(birthDateRef.current.value),
+      city: cityRef.current.value,
+    };
+
+    // Checking if profileInput is invalid
+    if (
+      profileInput.fullName === "" ||
+      profileInput.likeName === "" ||
+      profileInput.city === "" ||
+      isNaN(profileInput.birthDate)
+    ) {
+      addToast({
+        header: "Verifique as informações",
+        message: "Há campos em branco que devem ser preenchidos.",
+      });
+      return;
+    }
+
+    // Gathering characteristic choice input information
+    const choiceInput = Object.keys(choices.value).map((cho) => {
+      if (typeof choices.value[cho] === "string") {
+        return {
+          characteristicName: cho,
+          selectedValues: [choices.value[cho] as string],
+        };
+      } else {
+        return {
+          characteristicName: cho,
+          selectedValues: Object.keys(choices.value[cho]),
+        };
+      }
+    });
+
+    // Checking if choiceInput is invalid (all BOOLEAN and SINGLE fields must be filled)
+    if (
+      !characteristics.value
+        .filter((ch) => ["BOOLEAN", "SINGLE"].includes(ch.type))
+        .every((ch) => Object.keys(choices.value).includes(ch.name))
+    ) {
+      addToast({
+        header: "Verifique as informações",
+        message: "Há características em branco que devem ser preenchidas.",
+      });
+      return;
+    }
+
+    // Gathering preferences weights input information
+    const weightInput = Object.keys(weights.value).flatMap((charName) => {
+      return Object.keys(weights.value[charName]).map((value) => {
+        return {
+          characteristicName: charName,
+          selectedValue: value,
+          weight: weights.value[charName][value],
+        };
+      });
+    });
+
+    // Checking if weightInput is invalid
+    if (
+      preferences.value.reduce(
+        (final, current) => final + current.possibleValues.length,
+        0,
+      ) !== weightInput.length
+    ) {
+      addToast({
+        header: "Verifique as informações",
+        message: "Há preferências em branco que devem ser preenchidas.",
+      });
+      return;
+    }
+
+    // Sending new information to server
     try {
       const profileExists = !(profileError?.message === "resource not found");
 
       if (profileExists) {
         await updateOwnPatientProfile({
           variables: {
-            input: {
-              fullName: fullNameRef.current.value,
-              likeName: likeNameRef.current.value,
-              birthDate: Number(birthDateRef.current.value),
-              city: cityRef.current.value,
-            },
+            profileInput,
           },
         });
       } else {
         await createOwnPatientProfile({
           variables: {
-            input: {
-              fullName: fullNameRef.current.value,
-              likeName: likeNameRef.current.value,
-              birthDate: Number(birthDateRef.current.value),
-              city: cityRef.current.value,
-            },
+            profileInput,
           },
         });
       }
 
       await setOwnPatientCharacteristicChoicesAndPreferences({
         variables: {
-          choiceInput: Object.keys(choices.value).map((cho) => {
-            if (typeof choices.value[cho] === "string") {
-              return {
-                characteristicName: cho,
-                selectedValues: [choices.value[cho] as string],
-              };
-            } else {
-              return {
-                characteristicName: cho,
-                selectedValues: Object.keys(choices.value[cho]),
-              };
-            }
-          }),
-          weightInput: Object.keys(weights.value).flatMap((charName) => {
-            return Object.keys(weights.value[charName]).map((value) => {
-              return {
-                characteristicName: charName,
-                selectedValue: value,
-                weight: weights.value[charName][value],
-              };
-            });
-          }),
+          choiceInput,
+          weightInput,
         },
       });
+
+      addToast({
+        header: "Tudo certo",
+        message: `Perfil ${
+          profileExists ? "atualizado" : "criado"
+        } com sucesso.`,
+      });
+      router.push("/");
     } catch (err) {
-      console.log(err);
+      addToast({
+        header: "Erro ao enviar informações",
+        message:
+          "Sentimos muito pelo transtorno. Vamos investigar e resolver este problema.",
+      });
+      console.error(err);
+      router.push("/");
     }
   };
 

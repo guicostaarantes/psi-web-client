@@ -71,7 +71,7 @@ export const GetCharacteristics = gql`
 `;
 
 export interface CreateOrUpdatePatientProfileInput {
-  input: {
+  profileInput: {
     fullName: string;
     likeName: string;
     birthDate: number;
@@ -80,14 +80,18 @@ export interface CreateOrUpdatePatientProfileInput {
 }
 
 export const CreateOwnPatientProfile = gql`
-  mutation CreateOwnPatientProfile($input: CreateOwnPatientProfileInput!) {
-    createOwnPatientProfile(input: $input)
+  mutation CreateOwnPatientProfile(
+    $profileInput: CreateOwnPatientProfileInput!
+  ) {
+    createOwnPatientProfile(input: $profileInput)
   }
 `;
 
 export const UpdateOwnPatientProfile = gql`
-  mutation UpdateOwnPatientProfile($input: UpdateOwnPatientProfileInput!) {
-    updateOwnPatientProfile(input: $input)
+  mutation UpdateOwnPatientProfile(
+    $profileInput: UpdateOwnPatientProfileInput!
+  ) {
+    updateOwnPatientProfile(input: $profileInput)
   }
 `;
 
