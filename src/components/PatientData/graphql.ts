@@ -70,6 +70,29 @@ export const GetCharacteristics = gql`
   }
 `;
 
+export interface GetCharacteristicMessagesInput {
+  lang: string;
+  keys: string[];
+}
+
+export interface GetCharacteristicMessagesResponse {
+  getMessages: {
+    lang: string;
+    key: string;
+    value: string;
+  }[];
+}
+
+export const GetCharacteristicMessages = gql`
+  query GetCharacteristicMessages($lang: String!, $keys: [String!]!) {
+    getMessages(lang: $lang, keys: $keys) {
+      lang
+      key
+      value
+    }
+  }
+`;
+
 export interface CreateOrUpdatePatientProfileInput {
   profileInput: {
     fullName: string;

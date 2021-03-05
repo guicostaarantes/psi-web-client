@@ -1,12 +1,15 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { Downgraded, useState } from "@hookstate/core";
 import CharacteristicChooserComponent from "@src/components/CharacteristicChooser";
 import {
   CharacteristicType,
   CreateOrUpdatePatientProfileInput,
   CreateOwnPatientProfile,
+  GetCharacteristicMessages,
+  GetCharacteristicMessagesInput,
+  GetCharacteristicMessagesResponse,
   GetCharacteristics,
   GetCharacteristicsResponse,
   GetOwnPatientProfile,
@@ -33,10 +36,27 @@ const PatientDataComponent = () => {
   const { data: characteristicData } = useQuery<GetCharacteristicsResponse>(
     GetCharacteristics,
   );
+
   const {
     data: profileData,
     error: profileError,
   } = useQuery<GetOwnPatientProfileResponse>(GetOwnPatientProfile);
+
+  const [
+    getCharacteristicMessages,
+    { data: characteristicMessagesData },
+  ] = useLazyQuery<
+    GetCharacteristicMessagesResponse,
+    GetCharacteristicMessagesInput
+  >(GetCharacteristicMessages);
+
+  const [
+    getPreferenceMessages,
+    { data: preferenceMessagesData },
+  ] = useLazyQuery<
+    GetCharacteristicMessagesResponse,
+    GetCharacteristicMessagesInput
+  >(GetCharacteristicMessages);
 
   const fullNameRef = useRef<HTMLInputElement>(null);
   const likeNameRef = useRef<HTMLInputElement>(null);
@@ -62,6 +82,14 @@ const PatientDataComponent = () => {
   >([]).attach(Downgraded);
 
   const weights = useState<Record<string, Record<string, number>>>({}).attach(
+    Downgraded,
+  );
+
+  const characteristicMessages = useState<Record<string, string>>({}).attach(
+    Downgraded,
+  );
+
+  const preferenceMessages = useState<Record<string, string>>({}).attach(
     Downgraded,
   );
 
@@ -102,6 +130,61 @@ const PatientDataComponent = () => {
       preferences.set(characteristicData.getPsychologistCharacteristics);
     }
   }, [characteristicData]);
+
+  // Fetch messages for characteristics and preferences
+  useEffect(() => {
+    if (characteristicData) {
+      let keys = [];
+
+      for (const i of characteristicData.getPatientCharacteristics) {
+        keys.push(`char:${i.name}`);
+        for (const j of i.possibleValues) {
+          keys.push(`char:${i.name}:${j}`);
+        }
+      }
+      getCharacteristicMessages({ variables: { lang: "pt-BR", keys } });
+
+      keys = [];
+
+      for (const i of characteristicData.getPsychologistCharacteristics) {
+        for (const j of i.possibleValues) {
+          keys.push(`pref:${i.name}:${j}`);
+        }
+      }
+
+      getPreferenceMessages({ variables: { lang: "pt-BR", keys } });
+    }
+  }, [characteristicData]);
+
+  // Set characteristic messages from server
+  useEffect(() => {
+    if (characteristicMessagesData) {
+      characteristicMessages.set(
+        characteristicMessagesData?.getMessages.reduce(
+          (final, current) => ({
+            ...final,
+            [current.key]: current.value,
+          }),
+          {},
+        ),
+      );
+    }
+  }, [characteristicMessagesData]);
+
+  // Set preference messages from server
+  useEffect(() => {
+    if (preferenceMessagesData) {
+      preferenceMessages.set(
+        preferenceMessagesData?.getMessages.reduce(
+          (final, current) => ({
+            ...final,
+            [current.key]: current.value,
+          }),
+          {},
+        ),
+      );
+    }
+  }, [preferenceMessagesData]);
 
   // Load current characteristic choices and fill the fields
   useEffect(() => {
@@ -324,6 +407,7 @@ const PatientDataComponent = () => {
         <CharacteristicChooserComponent
           characteristics={characteristics}
           choices={choices}
+          messages={characteristicMessages}
         />
       </Card>
       <Card>
@@ -333,6 +417,7 @@ const PatientDataComponent = () => {
         <PreferenceChooserComponent
           preferences={preferences}
           weights={weights}
+          messages={preferenceMessages}
         />
       </Card>
       <Row style={{ margin: "1rem" }}>

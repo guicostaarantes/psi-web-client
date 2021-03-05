@@ -14,11 +14,13 @@ interface CharacteristicChooserComponentProps {
     }[]
   >;
   choices: State<Record<string, unknown>>;
+  messages: State<Record<string, string>>;
 }
 
 const CharacteristicChooserComponent = ({
   characteristics,
   choices,
+  messages,
 }: CharacteristicChooserComponentProps) => {
   return (
     <>
@@ -26,7 +28,7 @@ const CharacteristicChooserComponent = ({
         <div key={char.name}>
           <Row style={{ margin: "1rem" }}>
             <Paragraph noMarginBottom noMarginTop>
-              {char.name}
+              {messages.value[`char:${char.name}`]}
             </Paragraph>
           </Row>
           <Row style={{ margin: "1rem" }}>
@@ -36,7 +38,7 @@ const CharacteristicChooserComponent = ({
                     <Radio
                       name={char.name}
                       value={pv}
-                      label={pv === "false" ? "Não" : "Sim"}
+                      label={messages.value[`char:${char.name}:${pv}`]}
                       checked={choices.value[char.name] === pv}
                       onChange={() =>
                         choices.set((old) => ({ ...old, [char.name]: pv }))
@@ -50,7 +52,7 @@ const CharacteristicChooserComponent = ({
                     <Radio
                       name={char.name}
                       value={pv}
-                      label={pv}
+                      label={messages.value[`char:${char.name}:${pv}`]}
                       checked={choices.value[char.name] === pv}
                       onChange={() =>
                         choices.set((old) => ({ ...old, [char.name]: pv }))
@@ -63,7 +65,7 @@ const CharacteristicChooserComponent = ({
                   <Col xs={12} md={4} key={pv}>
                     <Checkbox
                       name={pv}
-                      label={pv}
+                      label={messages.value[`char:${char.name}:${pv}`]}
                       checked={choices.value[char.name]?.[pv] || false}
                       onChange={() =>
                         choices.set((old) => ({

@@ -2,13 +2,13 @@ import { Downgraded, useState } from "@hookstate/core";
 import PreferenceChooserComponent from "@src/components/PreferenceChooser";
 import { render, screen, waitFor } from "@testing-library/react";
 
-const initialState: {
+const initialPreferences: {
   name: string;
   type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
   possibleValues: string[];
 }[] = [
   {
-    name: "has-consulted-before",
+    name: "black",
     type: "BOOLEAN",
     possibleValues: ["true", "false"],
   },
@@ -24,6 +24,42 @@ const initialState: {
   },
 ];
 
+const initialWeights: Record<string, Record<string, number>> = {
+  black: {
+    true: 3,
+    false: -1,
+  },
+  gender: {
+    male: 0,
+    female: 1,
+    "non-binary": 3,
+  },
+  disabilities: {
+    vision: 0,
+    hearing: 0,
+    locomotion: 0,
+  },
+};
+
+const initialMessages: Record<string, string> = {
+  "pref:black:true":
+    "Quão confortável você se sente sendo atendido por um psicólogo negro?",
+  "pref:black:false":
+    "Quão confortável você se sente sendo atendido por um psicólogo que não seja negro?",
+  "pref:gender:male":
+    "Quão confortável você se sente sendo atendido por um psicólogo do gênero masculino?",
+  "pref:gender:female":
+    "Quão confortável você se sente sendo atendido por um psicólogo do gênero feminino?",
+  "pref:gender:non-binary":
+    "Quão confortável você se sente sendo atendido por um psicólogo de gênero não binário?",
+  "pref:disabilities:vision":
+    "Quão confortável você se sente sendo atendido por um psicólogo com deficiência visual?",
+  "pref:disabilities:hearing":
+    "Quão confortável você se sente sendo atendido por um psicólogo com deficiência auditiva?",
+  "pref:disabilities:locomotion":
+    "Quão confortável você se sente sendo atendido por um psicólogo com deficiência locomotiva?",
+};
+
 const WrapperTestComponent = () => {
   const preferences = useState<
     {
@@ -31,14 +67,20 @@ const WrapperTestComponent = () => {
       type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
       possibleValues: string[];
     }[]
-  >(initialState).attach(Downgraded);
+  >(initialPreferences).attach(Downgraded);
 
-  const weights = useState<Record<string, Record<string, number>>>({}).attach(
-    Downgraded,
-  );
+  const weights = useState<Record<string, Record<string, number>>>(
+    initialWeights,
+  ).attach(Downgraded);
+
+  const messages = useState<Record<string, string>>(initialMessages);
 
   return (
-    <PreferenceChooserComponent preferences={preferences} weights={weights} />
+    <PreferenceChooserComponent
+      preferences={preferences}
+      weights={weights}
+      messages={messages}
+    />
   );
 };
 test("PreferenceChooserComponent renders options", async () => {
@@ -46,14 +88,10 @@ test("PreferenceChooserComponent renders options", async () => {
 
   await waitFor(() => {
     const optionTitle1 = screen.getByText(
-      "has-consulted-before",
+      "Quão confortável você se sente sendo atendido por um psicólogo negro?",
     ) as HTMLDivElement;
-    const optionTitle2 = screen.getByText("gender") as HTMLDivElement;
-    const optionTitle3 = screen.getByText("disabilities") as HTMLDivElement;
 
     expect(optionTitle1).toBeInTheDocument();
-    expect(optionTitle2).toBeInTheDocument();
-    expect(optionTitle3).toBeInTheDocument();
   });
 });
 
