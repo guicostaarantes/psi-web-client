@@ -27,6 +27,7 @@ const Checkbox = ({
         disabled={disabled}
         id={name}
         name={name}
+        ref={reference}
         type="checkbox"
         {...rest}
       />
@@ -89,13 +90,13 @@ const Checkbox = ({
         }
 
         label {
-          color: ${theme.defaultColor};
+          color: ${theme.backgroundColorTextForeground};
           font-size: 1rem;
           line-height: 1.3rem;
           display: inline-block;
           vertical-align: top;
           cursor: pointer;
-          margin-left: 0.25rem;
+          margin-left: 0.5rem;
         }
       `}</style>
     </>

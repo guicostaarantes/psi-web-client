@@ -91,12 +91,12 @@ const Checkbox = ({
         }
 
         label {
-          color: ${theme.defaultColor};
+          color: ${theme.backgroundColorTextForeground};
           cursor: pointer;
           display: inline-block;
           font-size: 1rem;
           line-height: 1.3rem;
-          margin-left: 0.25rem;
+          margin-left: 0.5rem;
           vertical-align: top;
         }
       `}</style>
