@@ -1,7 +1,7 @@
-import PatientDataComponent from "@src/components/PatientData";
-import useCurrentUser from "@src/hooks/useCurrentUser";
-import Container from "@src/styleguide/Layout/Container";
-import BigTitle from "@src/styleguide/Typography/BigTitle";
+import useCurrentUser from "@src/modules/auth/hooks/useCurrentUser";
+import PatientDataComponent from "@src/modules/profiles/components/PatientData";
+import Container from "@src/modules/styleguide/components/Layout/Container";
+import BigTitle from "@src/modules/styleguide/components/Typography/BigTitle";
 
 const PatientPage = () => {
   useCurrentUser(true);

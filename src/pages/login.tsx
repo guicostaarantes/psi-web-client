@@ -1,12 +1,12 @@
 import Head from "next/head";
-import LoginComponent from "@src/components/Login";
-import useTheme from "@src/hooks/useTheme";
-import Cover from "@src/styleguide/Cover";
-import Col from "@src/styleguide/Layout/Col";
-import Container from "@src/styleguide/Layout/Container";
-import Row from "@src/styleguide/Layout/Row";
-import ViewportHigh from "@src/styleguide/Layout/ViewportHigh";
-import MainTitle from "@src/styleguide/Typography/MainTitle";
+import LoginComponent from "@src/modules/auth/components/Login";
+import Cover from "@src/modules/styleguide/components/Cover";
+import Col from "@src/modules/styleguide/components/Layout/Col";
+import Container from "@src/modules/styleguide/components/Layout/Container";
+import Row from "@src/modules/styleguide/components/Layout/Row";
+import ViewportHigh from "@src/modules/styleguide/components/Layout/ViewportHigh";
+import MainTitle from "@src/modules/styleguide/components/Typography/MainTitle";
+import useTheme from "@src/modules/styleguide/hooks/useTheme";
 
 const LoginPage = () => {
   const { theme } = useTheme();

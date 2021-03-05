@@ -1,4 +1,4 @@
-import useCurrentUser from "@src/hooks/useCurrentUser";
+import useCurrentUser from "@src/modules/auth/hooks/useCurrentUser";
 
 const Index = () => {
   useCurrentUser(true);
