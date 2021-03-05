@@ -76,6 +76,7 @@ const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
           position: absolute;
           top: 0;
           transition: 0.25s;
+          user-select: none;
         }
       `}</style>
     </>

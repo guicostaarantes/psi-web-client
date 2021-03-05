@@ -4,9 +4,16 @@ import useTheme from "@src/hooks/useTheme";
 interface MediumTitleProps {
   center?: boolean;
   children: ReactNode;
+  noMarginBottom?: boolean;
+  noMarginTop?: boolean;
 }
 
-const MediumTitle = ({ center, children }: MediumTitleProps) => {
+const MediumTitle = ({
+  center,
+  children,
+  noMarginBottom,
+  noMarginTop,
+}: MediumTitleProps) => {
   const { theme } = useTheme();
   return (
     <>
@@ -16,6 +23,8 @@ const MediumTitle = ({ center, children }: MediumTitleProps) => {
           color: ${theme.backgroundColorTextForeground};
           font-weight: 400;
           ${center ? "text-align: center;" : ""}
+          ${noMarginBottom ? "margin-bottom: 0;" : ""}
+          ${noMarginTop ? "margin-top: 0;" : ""}
         }
       `}</style>
     </>

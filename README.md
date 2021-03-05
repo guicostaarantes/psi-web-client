@@ -32,14 +32,14 @@ Feel free to open an issue or create a pull request. Please follow the rules:
 - `./src/components`: a place for React components that are larger and not likely to be used in other React components multiple times, and also do not constitute the whole of a page, such as the login form, the registration form, etc.
 - `./src/hooks`: a place for React custom hooks that are likely to be used in other React components multiple times.
 - `./src/constants`: a place for numeric or string constants that are likely to be used multiple times in other files.
-- `./src/graphql`: a place for GraphQL queries and mutations that shall be used in React components by the @apollo/client library.
 
 ### Component structure
 
-- Every React component and hook is described in a folder with two files: `index.tsx` and `spec.tsx`.
+- Every React component and hook is described in a folder with at least two files: `index.ts(x)` and `spec.tsx`.
 - `index.tsx` files hold all the information for rendering the component (logic, markup and styles).
 - Styles are delivered by using `<style jsx>` tags, [following NextJS documentation](https://nextjs.org/docs/basic-features/built-in-css-support#css-in-js).
 - `spec.tsx` files hold the tests for the React component or hook in the `index.tsx` file in the same folder.
+- If the component requires a call to the GraphQL API, it will also have a `graphql.ts` file with the queries and mutations.
 
 ### Environment variables
 

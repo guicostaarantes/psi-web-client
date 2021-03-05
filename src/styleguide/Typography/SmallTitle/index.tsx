@@ -4,9 +4,16 @@ import useTheme from "@src/hooks/useTheme";
 interface SmallTitleProps {
   center?: boolean;
   children: ReactNode;
+  noMarginBottom?: boolean;
+  noMarginTop?: boolean;
 }
 
-const SmallTitle = ({ center, children }: SmallTitleProps) => {
+const SmallTitle = ({
+  center,
+  children,
+  noMarginBottom,
+  noMarginTop,
+}: SmallTitleProps) => {
   const { theme } = useTheme();
   return (
     <>
@@ -16,6 +23,8 @@ const SmallTitle = ({ center, children }: SmallTitleProps) => {
           color: ${theme.backgroundColorTextForeground};
           font-weight: 400;
           ${center ? "text-align: center;" : ""}
+          ${noMarginBottom ? "margin-bottom: 0;" : ""}
+          ${noMarginTop ? "margin-top: 0;" : ""}
         }
       `}</style>
     </>

@@ -1,5 +1,11 @@
 import useToast from "@src/hooks/useToast";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 
 jest.useFakeTimers();
 
@@ -69,7 +75,7 @@ test("add and remove toasts between unrelated components", async () => {
 
   fireEvent.click(rmv1);
 
-  jest.runOnlyPendingTimers();
+  act(jest.runOnlyPendingTimers);
 
   await waitFor(() => {
     rmv1 = screen.queryByText("removeToast1");

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useMutation } from "@apollo/client";
-import CreatePatientUser from "@src/graphql/CreatePatientUser";
+import CreatePatientUser from "@src/components/NewAccount/graphql";
 import useToast from "@src/hooks/useToast";
 import Button from "@src/styleguide/Button";
 import Card from "@src/styleguide/Card";
