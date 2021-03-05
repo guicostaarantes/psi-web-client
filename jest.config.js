@@ -1,7 +1,7 @@
 module.exports = {
   moduleDirectories: ["node_modules", "./src"],
   moduleNameMapper: {
-    "@psi/(.*)": "<rootDir>/src/modules/$1",
+    "@psi/(.*)": "<rootDir>/modules/$1",
   },
   testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/"],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
