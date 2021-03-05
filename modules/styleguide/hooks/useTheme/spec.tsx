@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import useTheme from "@psi/styleguide/hooks/useTheme";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 

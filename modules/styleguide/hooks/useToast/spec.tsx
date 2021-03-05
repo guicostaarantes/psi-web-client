@@ -54,7 +54,7 @@ test("add and remove toasts between unrelated components", async () => {
   );
 
   const btn1 = screen.getByText("addToast1");
-  const btn2 = screen.getByText("addToast2");
+  screen.getByText("addToast2");
   const btn3 = screen.getByText("addToast3");
   let rmv1: HTMLElement;
   let rmv2: HTMLElement;
