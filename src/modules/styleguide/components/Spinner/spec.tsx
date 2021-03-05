@@ -1,4 +1,4 @@
-import Spinner from "@src/modules/styleguide/components/Spinner";
+import Spinner from "@psi/styleguide/components/Spinner";
 import { render, screen } from "@testing-library/react";
 
 test("Spinner renders", () => {

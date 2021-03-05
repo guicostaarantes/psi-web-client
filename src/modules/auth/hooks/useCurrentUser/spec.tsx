@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 import { MockedProvider } from "@apollo/client/testing";
-import useCurrentUser from "@src/modules/auth/hooks/useCurrentUser";
-import GetOwnUser from "@src/modules/auth/hooks/useCurrentUser/graphql";
+import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
+import GetOwnUser from "@psi/auth/hooks/useCurrentUser/graphql";
 import { render, screen, waitFor } from "@testing-library/react";
 
 const mockPushRoute = jest.fn();

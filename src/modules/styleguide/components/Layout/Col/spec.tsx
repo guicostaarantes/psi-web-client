@@ -1,4 +1,4 @@
-import Col from "@src/modules/styleguide/components/Layout/Col";
+import Col from "@psi/styleguide/components/Layout/Col";
 import { render, screen } from "@testing-library/react";
 
 test("Col renders", () => {

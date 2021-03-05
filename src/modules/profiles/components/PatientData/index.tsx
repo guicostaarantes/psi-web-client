@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { Downgraded, useState } from "@hookstate/core";
-import CharacteristicChooserComponent from "@src/modules/profiles/components/CharacteristicChooser";
+import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import {
   CharacteristicType,
   CreateOrUpdatePatientProfileInput,
@@ -17,16 +17,16 @@ import {
   SetOwnPatientCharacteristicChoicesAndPreferences,
   SetOwnPatientCharacteristicChoicesAndPreferencesInput,
   UpdateOwnPatientProfile,
-} from "@src/modules/profiles/components/PatientData/graphql";
-import PreferenceChooserComponent from "@src/modules/profiles/components/PreferenceChooser";
-import { HAPPINESS_OPTIONS } from "@src/modules/profiles/constants/happiness";
-import Button from "@src/modules/styleguide/components/Button";
-import Card from "@src/modules/styleguide/components/Card";
-import Input from "@src/modules/styleguide/components/Input";
-import Col from "@src/modules/styleguide/components/Layout/Col";
-import Row from "@src/modules/styleguide/components/Layout/Row";
-import MediumTitle from "@src/modules/styleguide/components/Typography/MediumTitle";
-import useToast from "@src/modules/styleguide/hooks/useToast";
+} from "@psi/profiles/components/PatientData/graphql";
+import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
+import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
+import Button from "@psi/styleguide/components/Button";
+import Card from "@psi/styleguide/components/Card";
+import Input from "@psi/styleguide/components/Input";
+import Col from "@psi/styleguide/components/Layout/Col";
+import Row from "@psi/styleguide/components/Layout/Row";
+import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
+import useToast from "@psi/styleguide/hooks/useToast";
 
 const PatientDataComponent = () => {
   const router = useRouter();

@@ -1,4 +1,4 @@
-import Switch from "@src/modules/styleguide/components/Switch";
+import Switch from "@psi/styleguide/components/Switch";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 test("Switch renders", () => {

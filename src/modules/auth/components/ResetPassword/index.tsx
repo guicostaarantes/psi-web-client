@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { useMutation } from "@apollo/client";
-import ResetPassword from "@src/modules/auth/components/ResetPassword/graphql";
-import useSearchParams from "@src/modules/shared/hooks/useSearchParams";
-import Button from "@src/modules/styleguide/components/Button";
-import Card from "@src/modules/styleguide/components/Card";
-import Input from "@src/modules/styleguide/components/Input";
-import Paragraph from "@src/modules/styleguide/components/Typography/Paragraph";
-import useToast from "@src/modules/styleguide/hooks/useToast";
+import ResetPassword from "@psi/auth/components/ResetPassword/graphql";
+import useSearchParams from "@psi/shared/hooks/useSearchParams";
+import Button from "@psi/styleguide/components/Button";
+import Card from "@psi/styleguide/components/Card";
+import Input from "@psi/styleguide/components/Input";
+import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
+import useToast from "@psi/styleguide/hooks/useToast";
 
 const ResetPasswordComponent = () => {
   const router = useRouter();

@@ -1,9 +1,9 @@
 import { MockedProvider } from "@apollo/client/testing";
-import PatientDataComponent from "@src/modules/profiles/components/PatientData";
+import PatientDataComponent from "@psi/profiles/components/PatientData";
 import {
   GetCharacteristics,
   GetOwnPatientProfile,
-} from "@src/modules/profiles/components/PatientData/graphql";
+} from "@psi/profiles/components/PatientData/graphql";
 import { render, screen, waitFor } from "@testing-library/react";
 
 const mocks = [

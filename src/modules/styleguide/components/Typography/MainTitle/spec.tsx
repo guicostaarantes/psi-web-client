@@ -1,4 +1,4 @@
-import MainTitle from "@src/modules/styleguide/components/Typography/MainTitle";
+import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import { render, screen } from "@testing-library/react";
 
 test("MainTitle renders", () => {

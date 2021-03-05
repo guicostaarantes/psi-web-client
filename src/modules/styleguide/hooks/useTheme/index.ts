@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import { createState, useState } from "@hookstate/core";
-import {
-  DEFAULT_THEME,
-  ThemeKey,
-} from "@src/modules/styleguide/constants/theme";
-import themes, { ThemeProps } from "@src/modules/styleguide/theme";
+import { DEFAULT_THEME, ThemeKey } from "@psi/styleguide/constants/theme";
+import themes, { ThemeProps } from "@psi/styleguide/theme";
 
 const themeState = createState<ThemeProps>(themes[DEFAULT_THEME]);
 

@@ -1,5 +1,5 @@
 import { Downgraded, useState } from "@hookstate/core";
-import PreferenceChooserComponent from "@src/modules/profiles/components/PreferenceChooser";
+import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 import { render, screen, waitFor } from "@testing-library/react";
 
 const initialPreferences: {

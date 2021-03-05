@@ -3,7 +3,7 @@ import { createState, useState } from "@hookstate/core";
 import {
   MAX_TOASTS,
   TOAST_OUT_ANIMATION_DELAY_DURATION_MS,
-} from "@src/modules/styleguide/constants/toast";
+} from "@psi/styleguide/constants/toast";
 
 interface NewToastProps {
   header: string;

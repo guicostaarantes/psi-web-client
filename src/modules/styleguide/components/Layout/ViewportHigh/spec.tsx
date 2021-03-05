@@ -1,4 +1,4 @@
-import ViewportHigh from "@src/modules/styleguide/components/Layout/ViewportHigh";
+import ViewportHigh from "@psi/styleguide/components/Layout/ViewportHigh";
 import { render, screen } from "@testing-library/react";
 
 test("ViewportHigh renders", () => {

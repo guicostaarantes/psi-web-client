@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { Col, Container, Row } from "react-grid-system";
-import ResetPasswordComponent from "@src/modules/auth/components/ResetPassword";
-import Cover from "@src/modules/styleguide/components/Cover";
-import ViewportHigh from "@src/modules/styleguide/components/Layout/ViewportHigh";
-import MainTitle from "@src/modules/styleguide/components/Typography/MainTitle";
-import useTheme from "@src/modules/styleguide/hooks/useTheme";
+import ResetPasswordComponent from "@psi/auth/components/ResetPassword";
+import Cover from "@psi/styleguide/components/Cover";
+import ViewportHigh from "@psi/styleguide/components/Layout/ViewportHigh";
+import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
+import useTheme from "@psi/styleguide/hooks/useTheme";
 
 const SetPasswordPage = () => {
   const { theme } = useTheme();

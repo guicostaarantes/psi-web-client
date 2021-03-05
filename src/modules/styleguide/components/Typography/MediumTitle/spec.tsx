@@ -1,4 +1,4 @@
-import MediumTitle from "@src/modules/styleguide/components/Typography/MediumTitle";
+import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import { render, screen } from "@testing-library/react";
 
 test("MediumTitle renders", () => {

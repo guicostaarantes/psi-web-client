@@ -1,4 +1,4 @@
-import useToast from "@src/modules/styleguide/hooks/useToast";
+import useToast from "@psi/styleguide/hooks/useToast";
 import {
   act,
   fireEvent,

@@ -1,4 +1,4 @@
-import Visible from "@src/modules/styleguide/components/Layout/Visible";
+import Visible from "@psi/styleguide/components/Layout/Visible";
 import { render } from "@testing-library/react";
 
 test("Visible renders", () => {

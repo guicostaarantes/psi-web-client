@@ -5,8 +5,8 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import ToastContainer from "@src/modules/styleguide/components/Toast";
-import useTheme from "@src/modules/styleguide/hooks/useTheme";
+import ToastContainer from "@psi/styleguide/components/Toast";
+import useTheme from "@psi/styleguide/hooks/useTheme";
 
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_PSI_GRAPHQL_URI,

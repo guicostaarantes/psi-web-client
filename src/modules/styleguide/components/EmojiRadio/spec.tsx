@@ -1,5 +1,5 @@
 import React from "react";
-import EmojiRadio from "@src/modules/styleguide/components/EmojiRadio";
+import EmojiRadio from "@psi/styleguide/components/EmojiRadio";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 export const TEST_OPTIONS = [

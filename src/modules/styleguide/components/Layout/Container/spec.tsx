@@ -1,4 +1,4 @@
-import Container from "@src/modules/styleguide/components/Layout/Container";
+import Container from "@psi/styleguide/components/Layout/Container";
 import { render, screen } from "@testing-library/react";
 
 test("Container renders", () => {

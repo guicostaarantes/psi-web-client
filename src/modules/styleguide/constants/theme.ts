@@ -1,4 +1,4 @@
-import themes from "@src/modules/styleguide/theme";
+import themes from "@psi/styleguide/theme";
 
 export type ThemeKey = keyof typeof themes;
 

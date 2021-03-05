@@ -1,4 +1,4 @@
-import Card from "@src/modules/styleguide/components/Card";
+import Card from "@psi/styleguide/components/Card";
 import { render, screen } from "@testing-library/react";
 
 test("Card renders", () => {

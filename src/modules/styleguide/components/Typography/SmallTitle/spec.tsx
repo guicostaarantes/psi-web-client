@@ -1,4 +1,4 @@
-import SmallTitle from "@src/modules/styleguide/components/Typography/SmallTitle";
+import SmallTitle from "@psi/styleguide/components/Typography/SmallTitle";
 import { render, screen } from "@testing-library/react";
 
 test("SmallTitle renders", () => {

@@ -1,11 +1,11 @@
-import useTheme from "@src/modules/styleguide/hooks/useTheme";
+import useTheme from "@psi/styleguide/hooks/useTheme";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-jest.mock("@src/modules/styleguide/constants/theme", () => ({
+jest.mock("@psi/styleguide/constants/theme", () => ({
   DEFAULT_THEME: "theme1",
 }));
 
-jest.mock("@src/modules/styleguide/theme", () => ({
+jest.mock("@psi/styleguide/theme", () => ({
   __esModule: true,
   default: {
     theme1: { defaultColor: "green" },

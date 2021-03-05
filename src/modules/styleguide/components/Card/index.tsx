@@ -1,5 +1,5 @@
 import { BaseHTMLAttributes } from "react";
-import useTheme from "@src/modules/styleguide/hooks/useTheme";
+import useTheme from "@psi/styleguide/hooks/useTheme";
 
 interface CardProps extends BaseHTMLAttributes<HTMLDivElement> {
   loading?: boolean;

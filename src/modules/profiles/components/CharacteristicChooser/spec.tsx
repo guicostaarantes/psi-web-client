@@ -1,5 +1,5 @@
 import { Downgraded, useState } from "@hookstate/core";
-import CharacteristicChooserComponent from "@src/modules/profiles/components/CharacteristicChooser";
+import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import { render, screen, waitFor } from "@testing-library/react";
 
 const initialCharacteristics: {

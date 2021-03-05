@@ -1,4 +1,4 @@
-import Input from "@src/modules/styleguide/components/Input";
+import Input from "@psi/styleguide/components/Input";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 test("Input renders", () => {

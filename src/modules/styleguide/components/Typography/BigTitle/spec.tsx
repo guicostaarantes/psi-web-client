@@ -1,4 +1,4 @@
-import BigTitle from "@src/modules/styleguide/components/Typography/BigTitle";
+import BigTitle from "@psi/styleguide/components/Typography/BigTitle";
 import { render, screen } from "@testing-library/react";
 
 test("BigTitle renders", () => {

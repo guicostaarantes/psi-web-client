@@ -1,4 +1,4 @@
-import Row from "@src/modules/styleguide/components/Layout/Row";
+import Row from "@psi/styleguide/components/Layout/Row";
 import { render, screen } from "@testing-library/react";
 
 test("Row renders", () => {

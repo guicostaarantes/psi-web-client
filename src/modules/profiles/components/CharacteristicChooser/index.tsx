@@ -1,9 +1,9 @@
 import { State } from "@hookstate/core";
-import Checkbox from "@src/modules/styleguide/components/Checkbox";
-import Col from "@src/modules/styleguide/components/Layout/Col";
-import Row from "@src/modules/styleguide/components/Layout/Row";
-import Radio from "@src/modules/styleguide/components/Radio";
-import Paragraph from "@src/modules/styleguide/components/Typography/Paragraph";
+import Checkbox from "@psi/styleguide/components/Checkbox";
+import Col from "@psi/styleguide/components/Layout/Col";
+import Row from "@psi/styleguide/components/Layout/Row";
+import Radio from "@psi/styleguide/components/Radio";
+import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 interface CharacteristicChooserComponentProps {
   characteristics: State<

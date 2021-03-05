@@ -3,12 +3,12 @@ import { useEffect, useRef } from "react";
 import { useLazyQuery } from "@apollo/client";
 import AuthenticateUser, {
   AuthenticateUserResponse,
-} from "@src/modules/auth/components/Login/graphql";
-import Button from "@src/modules/styleguide/components/Button";
-import Card from "@src/modules/styleguide/components/Card";
-import Input from "@src/modules/styleguide/components/Input";
-import Paragraph from "@src/modules/styleguide/components/Typography/Paragraph";
-import useToast from "@src/modules/styleguide/hooks/useToast";
+} from "@psi/auth/components/Login/graphql";
+import Button from "@psi/styleguide/components/Button";
+import Card from "@psi/styleguide/components/Card";
+import Input from "@psi/styleguide/components/Input";
+import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
+import useToast from "@psi/styleguide/hooks/useToast";
 
 const LoginComponent = () => {
   const router = useRouter();

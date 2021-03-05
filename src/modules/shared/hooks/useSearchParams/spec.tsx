@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useSearchParams from "@src/modules/shared/hooks/useSearchParams";
+import useSearchParams from "@psi/shared/hooks/useSearchParams";
 import { render, screen, waitFor } from "@testing-library/react";
 
 const TestComponent = () => {

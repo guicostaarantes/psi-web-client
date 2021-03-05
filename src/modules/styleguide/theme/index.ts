@@ -1,5 +1,5 @@
-import PinkYellow from "@src/modules/styleguide/theme/themes/PinkYellow";
-import PinkYellowDark from "@src/modules/styleguide/theme/themes/PinkYellowDark";
+import PinkYellow from "@psi/styleguide/theme/themes/PinkYellow";
+import PinkYellowDark from "@psi/styleguide/theme/themes/PinkYellowDark";
 
 export interface ThemeProps {
   backgroundColor: string;

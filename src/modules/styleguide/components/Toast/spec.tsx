@@ -1,10 +1,10 @@
-import ToastContainer from "@src/modules/styleguide/components/Toast";
-import { ToastProps } from "@src/modules/styleguide/hooks/useToast";
+import ToastContainer from "@psi/styleguide/components/Toast";
+import { ToastProps } from "@psi/styleguide/hooks/useToast";
 import { render, screen } from "@testing-library/react";
 
 let mockToasts: ToastProps[];
 
-jest.mock("@src/modules/styleguide/hooks/useToast", () => {
+jest.mock("@psi/styleguide/hooks/useToast", () => {
   return jest.fn(() => ({
     toasts: mockToasts,
   }));

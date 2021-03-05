@@ -1,4 +1,4 @@
-import Radio from "@src/modules/styleguide/components/Radio";
+import Radio from "@psi/styleguide/components/Radio";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 test("Radio renders", () => {

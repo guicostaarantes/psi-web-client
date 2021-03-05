@@ -1,4 +1,4 @@
-import Paragraph from "@src/modules/styleguide/components/Typography/Paragraph";
+import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import { render, screen } from "@testing-library/react";
 
 test("Paragraph renders", () => {

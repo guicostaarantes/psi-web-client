@@ -1,12 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
 import { MdClose } from "react-icons/md";
 import { animated, useSpring } from "react-spring";
-import {
-  MAX_TOASTS,
-  TOAST_LIFESPAN_MS,
-} from "@src/modules/styleguide/constants/toast";
-import useTheme from "@src/modules/styleguide/hooks/useTheme";
-import useToast, { ToastProps } from "@src/modules/styleguide/hooks/useToast";
+import { MAX_TOASTS, TOAST_LIFESPAN_MS } from "@psi/styleguide/constants/toast";
+import useTheme from "@psi/styleguide/hooks/useTheme";
+import useToast, { ToastProps } from "@psi/styleguide/hooks/useToast";
 
 const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
   const { theme } = useTheme();

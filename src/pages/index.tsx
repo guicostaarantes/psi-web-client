@@ -1,4 +1,4 @@
-import useCurrentUser from "@src/modules/auth/hooks/useCurrentUser";
+import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
 
 const Index = () => {
   useCurrentUser(true);

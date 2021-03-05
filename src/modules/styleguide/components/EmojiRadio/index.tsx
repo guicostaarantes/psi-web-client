@@ -1,4 +1,4 @@
-import useTheme from "@src/modules/styleguide/hooks/useTheme";
+import useTheme from "@psi/styleguide/hooks/useTheme";
 
 interface EmojiRadioProps {
   checkedValue: number;

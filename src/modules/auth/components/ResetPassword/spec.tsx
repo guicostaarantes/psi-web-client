@@ -1,12 +1,12 @@
 import { GraphQLError } from "graphql";
 import { MockedProvider } from "@apollo/client/testing";
-import ResetPasswordComponent from "@src/modules/auth/components/ResetPassword";
-import ResetPassword from "@src/modules/auth/components/ResetPassword/graphql";
+import ResetPasswordComponent from "@psi/auth/components/ResetPassword";
+import ResetPassword from "@psi/auth/components/ResetPassword/graphql";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 const mockAddToast = jest.fn();
 
-jest.mock("@src/modules/styleguide/hooks/useToast", () => {
+jest.mock("@psi/styleguide/hooks/useToast", () => {
   return jest.fn(() => ({
     addToast: mockAddToast,
   }));
@@ -14,7 +14,7 @@ jest.mock("@src/modules/styleguide/hooks/useToast", () => {
 
 const mockGetSearchParam = jest.fn();
 
-jest.mock("@src/modules/shared/hooks/useSearchParams", () => {
+jest.mock("@psi/shared/hooks/useSearchParams", () => {
   return jest.fn(() => ({
     getSearchParam: mockGetSearchParam,
   }));

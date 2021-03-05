@@ -1,11 +1,11 @@
 import Head from "next/head";
-import NewAccountComponent from "@src/modules/auth/components/NewAccount";
-import Cover from "@src/modules/styleguide/components/Cover";
-import Col from "@src/modules/styleguide/components/Layout/Col";
-import Container from "@src/modules/styleguide/components/Layout/Container";
-import Row from "@src/modules/styleguide/components/Layout/Row";
-import ViewportHigh from "@src/modules/styleguide/components/Layout/ViewportHigh";
-import useTheme from "@src/modules/styleguide/hooks/useTheme";
+import NewAccountComponent from "@psi/auth/components/NewAccount";
+import Cover from "@psi/styleguide/components/Cover";
+import Col from "@psi/styleguide/components/Layout/Col";
+import Container from "@psi/styleguide/components/Layout/Container";
+import Row from "@psi/styleguide/components/Layout/Row";
+import ViewportHigh from "@psi/styleguide/components/Layout/ViewportHigh";
+import useTheme from "@psi/styleguide/hooks/useTheme";
 
 const NewAccountPage = () => {
   const { theme } = useTheme();

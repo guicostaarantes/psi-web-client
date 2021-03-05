@@ -1,4 +1,4 @@
-import Button from "@src/modules/styleguide/components/Button";
+import Button from "@psi/styleguide/components/Button";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 test("Button renders", () => {

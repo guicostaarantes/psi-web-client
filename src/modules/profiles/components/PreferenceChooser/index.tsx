@@ -1,6 +1,6 @@
 import { State } from "@hookstate/core";
-import { HAPPINESS_OPTIONS } from "@src/modules/profiles/constants/happiness";
-import EmojiRadio from "@src/modules/styleguide/components/EmojiRadio";
+import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
+import EmojiRadio from "@psi/styleguide/components/EmojiRadio";
 
 interface PreferenceChooserComponentProps {
   preferences: State<

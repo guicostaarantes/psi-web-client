@@ -1,4 +1,4 @@
-import { ThemeProps } from "@src/modules/styleguide/theme";
+import { ThemeProps } from "@psi/styleguide/theme";
 
 const PinkYellowDark: ThemeProps = {
   backgroundColor: "#5b3e41",
