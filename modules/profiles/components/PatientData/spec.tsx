@@ -122,7 +122,7 @@ test("PatientDataComponent renders with data from database", async () => {
   await waitFor(() => {
     expect(fullName.value).toBe("Thomas Edward Patrick Brady, Jr.");
     expect(likeName.value).toBe("Tom Brady");
-    expect(birthDate.value).toBe("239414400");
+    expect(birthDate.value).toBe("02/08/1977");
     expect(city.value).toBe("Boston - MA");
   });
 });
