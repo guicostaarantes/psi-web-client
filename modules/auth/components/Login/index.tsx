@@ -7,6 +7,7 @@ import AuthenticateUser, {
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Input from "@psi/styleguide/components/Input";
+import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import useToast from "@psi/styleguide/hooks/useToast";
 
@@ -54,6 +55,7 @@ const LoginComponent = () => {
 
   return (
     <Card style={{ width: "100%", maxWidth: 440 }}>
+      <MainTitle center>Oi, bem-vindo ao PSI</MainTitle>
       <Paragraph center>
         Entre com suas credenciais ou crie uma nova conta
       </Paragraph>

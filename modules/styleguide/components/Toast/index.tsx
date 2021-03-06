@@ -8,7 +8,7 @@ import useToast, { ToastProps } from "@psi/styleguide/hooks/useToast";
 const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
   const { theme } = useTheme();
 
-  const cardBackgroundColor = theme.focusBackgroundColor;
+  const cardBackgroundColor = theme.focusBackgroundColor + "99";
   const cardBorderColor = theme.defaultColor;
   const cardTextColor = theme.defaultColor;
 
@@ -50,11 +50,26 @@ const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
       </animated.div>
       <style jsx>{`
         .wrapper {
-          background-color: ${cardBackgroundColor};
-          border: 1px solid ${cardBorderColor};
+          border-radius: 0.5rem;
           color: ${cardTextColor};
           margin: 0.5rem 1rem;
+          padding: 1rem;
+          position: relative;
           width: 300px;
+          z-index: 1;
+        }
+
+        .wrapper:before {
+          background-color: ${cardBackgroundColor};
+          backdrop-filter: blur(25px);
+          border-radius: 0.5rem;
+          content: "";
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          z-index: -1;
         }
 
         .header {
@@ -126,6 +141,7 @@ const ToastContainer = () => {
           position: fixed;
           top: 0;
           right: 0;
+          z-index: 10;
         }
       `}</style>
     </>

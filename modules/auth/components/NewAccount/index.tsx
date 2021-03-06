@@ -5,6 +5,7 @@ import CreatePatientUser from "@psi/auth/components/NewAccount/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Input from "@psi/styleguide/components/Input";
+import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import useToast from "@psi/styleguide/hooks/useToast";
 
@@ -57,6 +58,7 @@ const NewAccountComponent = () => {
 
   return (
     <Card style={{ width: "100%", maxWidth: 440 }}>
+      <MainTitle center>Cadastrar nova conta</MainTitle>
       <Paragraph center>Digite o email que deseja cadastrar no PSI</Paragraph>
       <Input name="email" label="Email" reference={emailRef} />
       <Button block color="primary" loading={loading} onClick={signup}>

@@ -6,6 +6,7 @@ import useSearchParams from "@psi/shared/hooks/useSearchParams";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Input from "@psi/styleguide/components/Input";
+import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import useToast from "@psi/styleguide/hooks/useToast";
 
@@ -78,6 +79,7 @@ const ResetPasswordComponent = () => {
 
   return (
     <Card style={{ width: "100%", maxWidth: 440 }}>
+      <MainTitle center>Definir nova senha</MainTitle>
       <Paragraph center>Insira e confirme sua nova senha</Paragraph>
       <Input
         name="new-password"

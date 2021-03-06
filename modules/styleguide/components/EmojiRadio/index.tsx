@@ -47,6 +47,7 @@ const EmojiRadio = ({
         .wrapper {
           align-items: center;
           display: flex;
+          justify-content: center;
           height: ${ZOOM_ICON_WIDTH}rem;
           width: ${2 * ZOOM_ICON_WIDTH +
           (options.length - 1) * (ICON_WIDTH + 2 * MARGIN)}rem;
