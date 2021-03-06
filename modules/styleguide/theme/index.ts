@@ -5,6 +5,7 @@ export interface ThemeProps {
   backgroundColor: string;
   backgroundColorHover: string;
   backgroundColorTextForeground: string;
+  backgroundUrl: string;
   dangerColor: string;
   dangerColorHover: string;
   dangerColorTextForeground: string;

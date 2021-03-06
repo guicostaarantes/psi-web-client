@@ -34,7 +34,7 @@ const CharacteristicChooserComponent = ({
           <Row style={{ margin: "1rem" }}>
             {char.type === "BOOLEAN"
               ? char.possibleValues.map((pv) => (
-                  <Col xs={12} md={4} key={pv}>
+                  <Col xs={12} md={4} key={pv} style={{ padding: "0.5rem" }}>
                     <Radio
                       name={char.name}
                       value={pv}
@@ -48,7 +48,7 @@ const CharacteristicChooserComponent = ({
                 ))
               : char.type === "SINGLE"
               ? char.possibleValues.map((pv) => (
-                  <Col xs={12} md={4} key={pv}>
+                  <Col xs={12} md={4} key={pv} style={{ padding: "0.5rem" }}>
                     <Radio
                       name={char.name}
                       value={pv}
@@ -62,7 +62,7 @@ const CharacteristicChooserComponent = ({
                 ))
               : char.type === "MULTIPLE"
               ? char.possibleValues.map((pv) => (
-                  <Col xs={12} md={4} key={pv}>
+                  <Col xs={12} md={4} key={pv} style={{ padding: "0.5rem" }}>
                     <Checkbox
                       name={pv}
                       label={messages.value[`char:${char.name}:${pv}`]}

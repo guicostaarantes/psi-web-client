@@ -1,6 +1,7 @@
 import { State } from "@hookstate/core";
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
 import EmojiRadio from "@psi/styleguide/components/EmojiRadio";
+import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 interface PreferenceChooserComponentProps {
   preferences: State<
@@ -27,7 +28,9 @@ const PreferenceChooserComponent = ({
           {pref.possibleValues.map((pv) => (
             <div key={`${pref.name}:${pv}`} className="wrapper">
               <div>
-                <span>{messages.value[`pref:${pref.name}:${pv}`]}</span>
+                <Paragraph noMarginBottom>
+                  {messages.value[`pref:${pref.name}:${pv}`]}
+                </Paragraph>
               </div>
               <div>
                 <EmojiRadio

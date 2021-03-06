@@ -25,6 +25,7 @@ import Card from "@psi/styleguide/components/Card";
 import Input from "@psi/styleguide/components/Input";
 import Col from "@psi/styleguide/components/Layout/Col";
 import Row from "@psi/styleguide/components/Layout/Row";
+import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import useToast from "@psi/styleguide/hooks/useToast";
 
@@ -374,6 +375,9 @@ const PatientDataComponent = () => {
   return (
     <>
       <Card>
+        <MainTitle center>Atualização do perfil do paciente</MainTitle>
+      </Card>
+      <Card>
         <MediumTitle center noMarginTop>
           Dados do paciente
         </MediumTitle>
@@ -420,18 +424,20 @@ const PatientDataComponent = () => {
           messages={preferenceMessages}
         />
       </Card>
-      <Row style={{ margin: "1rem" }}>
-        <Col xs={12} md={6}>
-          <Button block color="primary" onClick={handleSave}>
-            Salvar
-          </Button>
-        </Col>
-        <Col xs={12} md={6}>
-          <Button block color="secondary" onClick={handleCancel}>
-            Cancelar
-          </Button>
-        </Col>
-      </Row>
+      <Card>
+        <Row style={{ margin: "1rem" }}>
+          <Col xs={12} md={6}>
+            <Button block color="primary" onClick={handleSave}>
+              Salvar
+            </Button>
+          </Col>
+          <Col xs={12} md={6}>
+            <Button block color="secondary" onClick={handleCancel}>
+              Cancelar
+            </Button>
+          </Col>
+        </Row>
+      </Card>
     </>
   );
 };
