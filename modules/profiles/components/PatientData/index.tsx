@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
@@ -22,11 +23,13 @@ import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChoos
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
+import DateInput from "@psi/styleguide/components/DateInput";
 import Input from "@psi/styleguide/components/Input";
 import Col from "@psi/styleguide/components/Layout/Col";
 import Row from "@psi/styleguide/components/Layout/Row";
 import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
+import { BIRTH_DATE_FORMAT } from "@psi/styleguide/constants/locale";
 import useToast from "@psi/styleguide/hooks/useToast";
 
 const PatientDataComponent = () => {
@@ -63,6 +66,7 @@ const PatientDataComponent = () => {
   const likeNameRef = useRef<HTMLInputElement>(null);
   const birthDateRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
+  const birthDateInitialValue = useState<string>("");
 
   const characteristics = useState<
     {
@@ -118,9 +122,19 @@ const PatientDataComponent = () => {
         profileData.getOwnPatientProfile?.fullName || "";
       likeNameRef.current.value =
         profileData.getOwnPatientProfile?.likeName || "";
-      birthDateRef.current.value =
-        profileData.getOwnPatientProfile?.birthDate || "";
+      // birthDateRef.current.value =
+      //   dayjs(profileData.getOwnPatientProfile?.birthDate).format(
+      //     DATE_FORMAT,
+      //   ) || "";
       cityRef.current.value = profileData.getOwnPatientProfile?.city || "";
+
+      const birthDate = Number(profileData.getOwnPatientProfile?.birthDate)
+        ? new Date(1000 * Number(profileData.getOwnPatientProfile.birthDate))
+        : undefined;
+
+      if (birthDate) {
+        birthDateInitialValue.set(dayjs(birthDate).format(BIRTH_DATE_FORMAT));
+      }
     }
   }, [profileData]);
 
@@ -254,7 +268,11 @@ const PatientDataComponent = () => {
     const profileInput = {
       fullName: fullNameRef.current.value,
       likeName: likeNameRef.current.value,
-      birthDate: Number(birthDateRef.current.value),
+      birthDate: dayjs(
+        birthDateRef.current.value,
+        BIRTH_DATE_FORMAT,
+        true,
+      ).unix(),
       city: cityRef.current.value,
     };
 
@@ -267,7 +285,7 @@ const PatientDataComponent = () => {
     ) {
       addToast({
         header: "Verifique as informações",
-        message: "Há campos em branco que devem ser preenchidos.",
+        message: "Há campos em branco ou inválidos que devem ser preenchidos.",
       });
       return;
     }
@@ -389,7 +407,9 @@ const PatientDataComponent = () => {
         />
         <Row>
           <Col xs={12} md={4}>
-            <Input
+            <DateInput
+              format={BIRTH_DATE_FORMAT}
+              forwardedValue={birthDateInitialValue.value}
               name="birthDate"
               label="Data de nascimento"
               reference={birthDateRef}

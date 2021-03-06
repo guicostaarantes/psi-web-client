@@ -12,12 +12,14 @@
   "dependencies": {
     "@apollo/client": "^3.3.11",
     "@hookstate/core": "^3.0.6",
+    "dayjs": "^1.10.4",
     "graphql": "^15.5.0",
     "next": "10.0.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-grid-system": "^7.1.1",
     "react-icons": "^4.2.0",
+    "react-input-mask": "^2.0.4",
     "react-spring": "^8.0.27",
     "uuid": "^8.3.2"
   },
