@@ -1,9 +1,28 @@
-import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
+import Head from "next/head";
+import usePagePermission from "@psi/auth/hooks/usePagePermission";
+import LoadingPage from "@psi/shared/components/LoadingPage";
 
 const Index = () => {
-  useCurrentUser(true);
+  const { pageStatus } = usePagePermission({
+    requiresAuth: true,
+    requiresPatientProfile: true,
+  });
 
-  return "Index";
+  if (pageStatus === "loading") {
+    return <LoadingPage />;
+  }
+
+  if (pageStatus === "ready") {
+    return (
+      <>
+        <Head>
+          <title>Página inicial | PSI</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <span>Página inicial</span>
+      </>
+    );
+  }
 };
 
 export default Index;
