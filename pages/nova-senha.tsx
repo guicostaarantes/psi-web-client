@@ -7,7 +7,7 @@ const ResetPasswordPage = () => {
   return (
     <>
       <Head>
-        <title>PSI web client</title>
+        <title>Nova senha | PSI</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container fluid>

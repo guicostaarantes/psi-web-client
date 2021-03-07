@@ -7,7 +7,7 @@ const SetPasswordPage = () => {
   return (
     <>
       <Head>
-        <title>PSI web client</title>
+        <title>Cadastro | PSI</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container fluid>
