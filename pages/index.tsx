@@ -5,7 +5,6 @@ import LoadingPage from "@psi/shared/components/LoadingPage";
 const Index = () => {
   const { pageStatus } = usePagePermission({
     requiresAuth: true,
-    requiresPatientProfile: true,
   });
 
   if (pageStatus === "loading") {

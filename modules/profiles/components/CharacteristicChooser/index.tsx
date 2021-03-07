@@ -15,74 +15,105 @@ interface CharacteristicChooserComponentProps {
   >;
   choices: State<Record<string, unknown>>;
   messages: State<Record<string, string>>;
+  prefix: string;
 }
 
 const CharacteristicChooserComponent = ({
   characteristics,
   choices,
   messages,
+  prefix,
 }: CharacteristicChooserComponentProps) => {
   return (
     <>
-      {characteristics?.value?.map((char) => (
-        <div key={char.name}>
-          <Row style={{ margin: "1rem" }}>
-            <Paragraph noMarginBottom noMarginTop>
-              {messages.value[`char:${char.name}`]}
-            </Paragraph>
-          </Row>
-          <Row style={{ margin: "1rem" }}>
-            {char.type === "BOOLEAN"
-              ? char.possibleValues.map((pv) => (
-                  <Col xs={12} md={4} key={pv} style={{ padding: "0.5rem" }}>
-                    <Radio
-                      name={char.name}
-                      value={pv}
-                      label={messages.value[`char:${char.name}:${pv}`]}
-                      checked={choices.value[char.name] === pv}
-                      onChange={() =>
-                        choices.set((old) => ({ ...old, [char.name]: pv }))
-                      }
-                    />
-                  </Col>
-                ))
-              : char.type === "SINGLE"
-              ? char.possibleValues.map((pv) => (
-                  <Col xs={12} md={4} key={pv} style={{ padding: "0.5rem" }}>
-                    <Radio
-                      name={char.name}
-                      value={pv}
-                      label={messages.value[`char:${char.name}:${pv}`]}
-                      checked={choices.value[char.name] === pv}
-                      onChange={() =>
-                        choices.set((old) => ({ ...old, [char.name]: pv }))
-                      }
-                    />
-                  </Col>
-                ))
-              : char.type === "MULTIPLE"
-              ? char.possibleValues.map((pv) => (
-                  <Col xs={12} md={4} key={pv} style={{ padding: "0.5rem" }}>
-                    <Checkbox
-                      name={pv}
-                      label={messages.value[`char:${char.name}:${pv}`]}
-                      checked={choices.value[char.name]?.[pv] || false}
-                      onChange={() =>
-                        choices.set((old) => ({
-                          ...old,
-                          [char.name]: {
-                            ...(old as object)[char.name], // eslint-disable-line @typescript-eslint/ban-types
-                            [pv]: !old[char.name]?.[pv],
-                          },
-                        }))
-                      }
-                    />
-                  </Col>
-                ))
-              : null}
-          </Row>
-        </div>
-      ))}
+      {characteristics?.value
+        ?.filter((char) => messages.value[`${prefix}:${char.name}`])
+        .map((char) => (
+          <div key={char.name}>
+            <Row style={{ margin: "1rem" }}>
+              <Paragraph noMarginBottom noMarginTop>
+                {messages.value[`${prefix}:${char.name}`]}
+              </Paragraph>
+            </Row>
+            <Row style={{ margin: "1rem" }}>
+              {char.type === "BOOLEAN"
+                ? char.possibleValues
+                    .filter(
+                      (pv) => messages.value[`${prefix}:${char.name}:${pv}`],
+                    )
+                    .map((pv) => (
+                      <Col
+                        xs={12}
+                        md={4}
+                        key={pv}
+                        style={{ padding: "0.5rem" }}
+                      >
+                        <Radio
+                          name={char.name}
+                          value={pv}
+                          label={messages.value[`${prefix}:${char.name}:${pv}`]}
+                          checked={choices.value[char.name] === pv}
+                          onChange={() =>
+                            choices.set((old) => ({ ...old, [char.name]: pv }))
+                          }
+                        />
+                      </Col>
+                    ))
+                : char.type === "SINGLE"
+                ? char.possibleValues
+                    .filter(
+                      (pv) => messages.value[`${prefix}:${char.name}:${pv}`],
+                    )
+                    .map((pv) => (
+                      <Col
+                        xs={12}
+                        md={4}
+                        key={pv}
+                        style={{ padding: "0.5rem" }}
+                      >
+                        <Radio
+                          name={char.name}
+                          value={pv}
+                          label={messages.value[`${prefix}:${char.name}:${pv}`]}
+                          checked={choices.value[char.name] === pv}
+                          onChange={() =>
+                            choices.set((old) => ({ ...old, [char.name]: pv }))
+                          }
+                        />
+                      </Col>
+                    ))
+                : char.type === "MULTIPLE"
+                ? char.possibleValues
+                    .filter(
+                      (pv) => messages.value[`${prefix}:${char.name}:${pv}`],
+                    )
+                    .map((pv) => (
+                      <Col
+                        xs={12}
+                        md={4}
+                        key={pv}
+                        style={{ padding: "0.5rem" }}
+                      >
+                        <Checkbox
+                          name={pv}
+                          label={messages.value[`${prefix}:${char.name}:${pv}`]}
+                          checked={choices.value[char.name]?.[pv] || false}
+                          onChange={() =>
+                            choices.set((old) => ({
+                              ...old,
+                              [char.name]: {
+                                ...(old as object)[char.name], // eslint-disable-line @typescript-eslint/ban-types
+                                [pv]: !old[char.name]?.[pv],
+                              },
+                            }))
+                          }
+                        />
+                      </Col>
+                    ))
+                : null}
+            </Row>
+          </div>
+        ))}
     </>
   );
 };

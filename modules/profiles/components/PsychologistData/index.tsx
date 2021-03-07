@@ -4,22 +4,22 @@ import React, { useEffect, useRef } from "react";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { Downgraded, useState } from "@hookstate/core";
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
+import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 import {
   CharacteristicType,
-  CreateOrUpdatePatientProfileInput,
-  CreateOwnPatientProfile,
+  CreateOrUpdatePsychologistProfileInput,
+  CreateOwnPsychologistProfile,
   GetCharacteristicMessages,
   GetCharacteristicMessagesInput,
   GetCharacteristicMessagesResponse,
   GetCharacteristics,
   GetCharacteristicsResponse,
-  GetOwnPatientProfile,
-  GetOwnPatientProfileResponse,
-  SetOwnPatientCharacteristicChoicesAndPreferences,
-  SetOwnPatientCharacteristicChoicesAndPreferencesInput,
-  UpdateOwnPatientProfile,
-} from "@psi/profiles/components/PatientData/graphql";
-import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
+  GetOwnPsychologistProfile,
+  GetOwnPsychologistProfileResponse,
+  SetOwnPsychologistCharacteristicChoicesAndPreferences,
+  SetOwnPsychologistCharacteristicChoicesAndPreferencesInput,
+  UpdateOwnPsychologistProfile,
+} from "@psi/profiles/components/PsychologistData/graphql";
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
@@ -32,7 +32,7 @@ import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import { BIRTH_DATE_FORMAT } from "@psi/styleguide/constants/locale";
 import useToast from "@psi/styleguide/hooks/useToast";
 
-const PatientDataComponent = () => {
+const PsychologistDataComponent = () => {
   const router = useRouter();
 
   const { addToast } = useToast();
@@ -44,7 +44,7 @@ const PatientDataComponent = () => {
   const {
     data: profileData,
     error: profileError,
-  } = useQuery<GetOwnPatientProfileResponse>(GetOwnPatientProfile);
+  } = useQuery<GetOwnPsychologistProfileResponse>(GetOwnPsychologistProfile);
 
   const [
     getCharacteristicMessages,
@@ -119,17 +119,15 @@ const PatientDataComponent = () => {
   useEffect(() => {
     if (profileData) {
       fullNameRef.current.value =
-        profileData.getOwnPatientProfile?.fullName || "";
+        profileData.getOwnPsychologistProfile?.fullName || "";
       likeNameRef.current.value =
-        profileData.getOwnPatientProfile?.likeName || "";
-      // birthDateRef.current.value =
-      //   dayjs(profileData.getOwnPatientProfile?.birthDate).format(
-      //     DATE_FORMAT,
-      //   ) || "";
-      cityRef.current.value = profileData.getOwnPatientProfile?.city || "";
+        profileData.getOwnPsychologistProfile?.likeName || "";
+      cityRef.current.value = profileData.getOwnPsychologistProfile?.city || "";
 
-      const birthDate = Number(profileData.getOwnPatientProfile?.birthDate)
-        ? new Date(1000 * Number(profileData.getOwnPatientProfile.birthDate))
+      const birthDate = Number(profileData.getOwnPsychologistProfile?.birthDate)
+        ? new Date(
+            1000 * Number(profileData.getOwnPsychologistProfile.birthDate),
+          )
         : undefined;
 
       if (birthDate) {
@@ -141,8 +139,8 @@ const PatientDataComponent = () => {
   // Load all characteristics and all preferences
   useEffect(() => {
     if (characteristicData) {
-      characteristics.set(characteristicData.getPatientCharacteristics);
-      preferences.set(characteristicData.getPsychologistCharacteristics);
+      characteristics.set(characteristicData.getPsychologistCharacteristics);
+      preferences.set(characteristicData.getPatientCharacteristics);
     }
   }, [characteristicData]);
 
@@ -151,19 +149,19 @@ const PatientDataComponent = () => {
     if (characteristicData) {
       let keys = [];
 
-      for (const i of characteristicData.getPatientCharacteristics) {
-        keys.push(`pat-char:${i.name}`);
+      for (const i of characteristicData.getPsychologistCharacteristics) {
+        keys.push(`psy-char:${i.name}`);
         for (const j of i.possibleValues) {
-          keys.push(`pat-char:${i.name}:${j}`);
+          keys.push(`psy-char:${i.name}:${j}`);
         }
       }
       getCharacteristicMessages({ variables: { lang: "pt-BR", keys } });
 
       keys = [];
 
-      for (const i of characteristicData.getPsychologistCharacteristics) {
+      for (const i of characteristicData.getPatientCharacteristics) {
         for (const j of i.possibleValues) {
-          keys.push(`psy-pref:${i.name}:${j}`);
+          keys.push(`pat-pref:${i.name}:${j}`);
         }
       }
 
@@ -205,7 +203,8 @@ const PatientDataComponent = () => {
   useEffect(() => {
     if (profileData && characteristics.value.length) {
       const initialChoices = {};
-      for (const char of profileData.getOwnPatientProfile.characteristics) {
+      for (const char of profileData.getOwnPsychologistProfile
+        .characteristics) {
         if (char.selectedValues.length) {
           const possibleValues = characteristics.value.find(
             (ch) => ch.name === char.name,
@@ -235,7 +234,7 @@ const PatientDataComponent = () => {
 
       const possibleWeights = HAPPINESS_OPTIONS.map((ho) => ho.value);
 
-      for (const pref of profileData?.getOwnPatientProfile?.preferences) {
+      for (const pref of profileData?.getOwnPsychologistProfile?.preferences) {
         if (!initialWeights[pref.characteristicName]) {
           initialWeights[pref.characteristicName] = {};
         }
@@ -248,20 +247,20 @@ const PatientDataComponent = () => {
     }
   }, [profileData, preferences.value]);
 
-  const [createOwnPatientProfile] = useMutation<
+  const [createOwnPsychologistProfile] = useMutation<
     null,
-    CreateOrUpdatePatientProfileInput
-  >(CreateOwnPatientProfile);
+    CreateOrUpdatePsychologistProfileInput
+  >(CreateOwnPsychologistProfile);
 
-  const [updateOwnPatientProfile] = useMutation<
+  const [updateOwnPsychologistProfile] = useMutation<
     null,
-    CreateOrUpdatePatientProfileInput
-  >(UpdateOwnPatientProfile);
+    CreateOrUpdatePsychologistProfileInput
+  >(UpdateOwnPsychologistProfile);
 
-  const [setOwnPatientCharacteristicChoicesAndPreferences] = useMutation<
+  const [setOwnPsychologistCharacteristicChoicesAndPreferences] = useMutation<
     null,
-    SetOwnPatientCharacteristicChoicesAndPreferencesInput
-  >(SetOwnPatientCharacteristicChoicesAndPreferences);
+    SetOwnPsychologistCharacteristicChoicesAndPreferencesInput
+  >(SetOwnPsychologistCharacteristicChoicesAndPreferences);
 
   const handleSave = async () => {
     // Gathering profile input information
@@ -348,20 +347,20 @@ const PatientDataComponent = () => {
       const profileExists = !(profileError?.message === "resource not found");
 
       if (profileExists) {
-        await updateOwnPatientProfile({
+        await updateOwnPsychologistProfile({
           variables: {
             profileInput,
           },
         });
       } else {
-        await createOwnPatientProfile({
+        await createOwnPsychologistProfile({
           variables: {
             profileInput,
           },
         });
       }
 
-      await setOwnPatientCharacteristicChoicesAndPreferences({
+      await setOwnPsychologistCharacteristicChoicesAndPreferences({
         variables: {
           choiceInput,
           weightInput,
@@ -393,11 +392,11 @@ const PatientDataComponent = () => {
   return (
     <>
       <Card>
-        <MainTitle center>Atualização do perfil do paciente</MainTitle>
+        <MainTitle center>Atualização do perfil do psicólogo</MainTitle>
       </Card>
       <Card>
         <MediumTitle center noMarginTop>
-          Dados do paciente
+          Dados do psicólogo
         </MediumTitle>
         <Input name="fullName" label="Nome completo" reference={fullNameRef} />
         <Input
@@ -426,24 +425,24 @@ const PatientDataComponent = () => {
       </Card>
       <Card>
         <MediumTitle center noMarginTop>
-          Características do paciente
+          Características do psicólogo
         </MediumTitle>
         <CharacteristicChooserComponent
           characteristics={characteristics}
           choices={choices}
           messages={characteristicMessages}
-          prefix="pat-char"
+          prefix="psy-char"
         />
       </Card>
       <Card>
         <MediumTitle center noMarginTop>
-          Preferências do paciente
+          Preferências do psicólogo
         </MediumTitle>
         <PreferenceChooserComponent
           preferences={preferences}
           weights={weights}
           messages={preferenceMessages}
-          prefix="psy-pref"
+          prefix="pat-pref"
         />
       </Card>
       <Card>
@@ -464,4 +463,4 @@ const PatientDataComponent = () => {
   );
 };
 
-export default PatientDataComponent;
+export default PsychologistDataComponent;

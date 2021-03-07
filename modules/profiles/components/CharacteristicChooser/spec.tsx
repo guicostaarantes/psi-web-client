@@ -60,6 +60,7 @@ const WrapperTestComponent = () => {
       characteristics={characteristics}
       choices={choices}
       messages={messages}
+      prefix="char"
     />
   );
 };

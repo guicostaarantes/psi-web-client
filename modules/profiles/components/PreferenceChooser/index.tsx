@@ -13,40 +13,44 @@ interface PreferenceChooserComponentProps {
   >;
   weights: State<Record<string, Record<string, number>>>;
   messages: State<Record<string, string>>;
+  prefix: string;
 }
 
 const PreferenceChooserComponent = ({
   preferences,
   weights,
   messages,
+  prefix,
 }: PreferenceChooserComponentProps) => {
   return (
     <>
       {preferences?.value?.map((pref, index) => (
         <div key={pref.name}>
           {index > 0 ? <div style={{ padding: "0.5rem" }}></div> : null}
-          {pref.possibleValues.map((pv) => (
-            <div key={`${pref.name}:${pv}`} className="wrapper">
-              <div>
-                <Paragraph noMarginBottom>
-                  {messages.value[`pref:${pref.name}:${pv}`]}
-                </Paragraph>
+          {pref.possibleValues
+            .filter((pv) => messages.value[`${prefix}:${pref.name}:${pv}`])
+            .map((pv) => (
+              <div key={`${pref.name}:${pv}`} className="wrapper">
+                <div>
+                  <Paragraph noMarginBottom>
+                    {messages.value[`${prefix}:${pref.name}:${pv}`]}
+                  </Paragraph>
+                </div>
+                <div>
+                  <EmojiRadio
+                    name={`${pref.name}:${pv}`}
+                    checkedValue={weights.value?.[pref.name]?.[pv]}
+                    onChange={(newValue) =>
+                      weights.set((old) => ({
+                        ...old,
+                        [pref.name]: { ...old[pref.name], [pv]: newValue },
+                      }))
+                    }
+                    options={HAPPINESS_OPTIONS}
+                  />
+                </div>
               </div>
-              <div>
-                <EmojiRadio
-                  name={`${pref.name}:${pv}`}
-                  checkedValue={weights.value?.[pref.name]?.[pv]}
-                  onChange={(newValue) =>
-                    weights.set((old) => ({
-                      ...old,
-                      [pref.name]: { ...old[pref.name], [pv]: newValue },
-                    }))
-                  }
-                  options={HAPPINESS_OPTIONS}
-                />
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       ))}
       <style jsx>{`
