@@ -80,6 +80,7 @@ const WrapperTestComponent = () => {
       preferences={preferences}
       weights={weights}
       messages={messages}
+      prefix="pref"
     />
   );
 };
