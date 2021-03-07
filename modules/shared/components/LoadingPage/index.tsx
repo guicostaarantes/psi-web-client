@@ -1,22 +1,22 @@
 import Head from "next/head";
-import { Container } from "react-grid-system";
-import ResetPasswordComponent from "@psi/auth/components/ResetPassword";
+import Container from "@psi/styleguide/components/Layout/Container";
 import ViewportHigh from "@psi/styleguide/components/Layout/ViewportHigh";
+import CircleSpinner from "@psi/styleguide/components/Spinner";
 
-const ResetPasswordPage = () => {
+const LoadingPage = () => {
   return (
     <>
       <Head>
-        <title>Nova senha | PSI</title>
+        <title>PSI</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container fluid>
         <ViewportHigh center>
-          <ResetPasswordComponent />
+          <CircleSpinner size="3rem" />
         </ViewportHigh>
       </Container>
     </>
   );
 };
 
-export default ResetPasswordPage;
+export default LoadingPage;

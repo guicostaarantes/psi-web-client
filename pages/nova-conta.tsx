@@ -7,7 +7,7 @@ const NewAccountPage = () => {
   return (
     <>
       <Head>
-        <title>PSI web client</title>
+        <title>Nova conta | PSI</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container fluid>
