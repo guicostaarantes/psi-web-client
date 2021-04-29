@@ -76,7 +76,7 @@ const PsychologistDataComponent = () => {
     }[]
   >([]).attach(Downgraded);
 
-  const choices = useState<Record<string, unknown>>({}).attach(Downgraded);
+  const choices = useState<Record<string, unknown>>({});
 
   const preferences = useState<
     {
@@ -86,17 +86,11 @@ const PsychologistDataComponent = () => {
     }[]
   >([]).attach(Downgraded);
 
-  const weights = useState<Record<string, Record<string, number>>>({}).attach(
-    Downgraded,
-  );
+  const weights = useState<Record<string, Record<string, number>>>({});
 
-  const characteristicMessages = useState<Record<string, string>>({}).attach(
-    Downgraded,
-  );
+  const characteristicMessages = useState<Record<string, string>>({});
 
-  const preferenceMessages = useState<Record<string, string>>({}).attach(
-    Downgraded,
-  );
+  const preferenceMessages = useState<Record<string, string>>({});
 
   // If profileError is different than "resource not found", something is wrong
   useEffect(() => {

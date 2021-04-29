@@ -1,4 +1,4 @@
-import { State } from "@hookstate/core";
+import { State, useState } from "@hookstate/core";
 import Checkbox from "@psi/styleguide/components/Checkbox";
 import Col from "@psi/styleguide/components/Layout/Col";
 import Row from "@psi/styleguide/components/Layout/Row";
@@ -36,51 +36,19 @@ const CharacteristicChooserComponent = ({
               </Paragraph>
             </Row>
             <Row style={{ margin: "1rem" }}>
-              {char.type === "BOOLEAN"
+              {char.type === "BOOLEAN" || char.type === "SINGLE"
                 ? char.possibleValues
                     .filter(
                       (pv) => messages.value[`${prefix}:${char.name}:${pv}`],
                     )
                     .map((pv) => (
-                      <Col
-                        xs={12}
-                        md={4}
-                        key={pv}
-                        style={{ padding: "0.5rem" }}
-                      >
-                        <Radio
-                          name={char.name}
-                          value={pv}
-                          label={messages.value[`${prefix}:${char.name}:${pv}`]}
-                          checked={choices.value[char.name] === pv}
-                          onChange={() =>
-                            choices.set((old) => ({ ...old, [char.name]: pv }))
-                          }
-                        />
-                      </Col>
-                    ))
-                : char.type === "SINGLE"
-                ? char.possibleValues
-                    .filter(
-                      (pv) => messages.value[`${prefix}:${char.name}:${pv}`],
-                    )
-                    .map((pv) => (
-                      <Col
-                        xs={12}
-                        md={4}
-                        key={pv}
-                        style={{ padding: "0.5rem" }}
-                      >
-                        <Radio
-                          name={char.name}
-                          value={pv}
-                          label={messages.value[`${prefix}:${char.name}:${pv}`]}
-                          checked={choices.value[char.name] === pv}
-                          onChange={() =>
-                            choices.set((old) => ({ ...old, [char.name]: pv }))
-                          }
-                        />
-                      </Col>
+                      <RadioCharacteristicSelector
+                        key={`${char.name}:${pv}`}
+                        charName={char.name}
+                        choice={choices[char.name]}
+                        message={messages.value[`${prefix}:${char.name}:${pv}`]}
+                        pv={pv}
+                      />
                     ))
                 : char.type === "MULTIPLE"
                 ? char.possibleValues
@@ -88,33 +56,74 @@ const CharacteristicChooserComponent = ({
                       (pv) => messages.value[`${prefix}:${char.name}:${pv}`],
                     )
                     .map((pv) => (
-                      <Col
-                        xs={12}
-                        md={4}
-                        key={pv}
-                        style={{ padding: "0.5rem" }}
-                      >
-                        <Checkbox
-                          name={pv}
-                          label={messages.value[`${prefix}:${char.name}:${pv}`]}
-                          checked={choices.value[char.name]?.[pv] || false}
-                          onChange={() =>
-                            choices.set((old) => ({
-                              ...old,
-                              [char.name]: {
-                                ...(old as object)[char.name], // eslint-disable-line @typescript-eslint/ban-types
-                                [pv]: !old[char.name]?.[pv],
-                              },
-                            }))
-                          }
-                        />
-                      </Col>
+                      <CheckboxCharacteristicSelector
+                        key={`${char.name}:${pv}`}
+                        charName={char.name}
+                        choice={choices[char.name]}
+                        message={messages.value[`${prefix}:${char.name}:${pv}`]}
+                        pv={pv}
+                      />
                     ))
                 : null}
             </Row>
           </div>
         ))}
     </>
+  );
+};
+
+interface RadioCharacteristicSelectorProps {
+  charName: string;
+  choice: State<unknown>;
+  message: string;
+  pv: string;
+}
+
+const RadioCharacteristicSelector = ({
+  charName,
+  choice,
+  message,
+  pv,
+}: RadioCharacteristicSelectorProps) => {
+  const internalChoice = useState(choice);
+
+  return (
+    <Col xs={12} md={4} key={pv} style={{ padding: "0.5rem" }}>
+      <Radio
+        name={charName}
+        value={pv}
+        label={message}
+        checked={internalChoice.value === pv}
+        onChange={() => internalChoice.set(pv)}
+      />
+    </Col>
+  );
+};
+
+interface CheckboxCharacteristicSelectorProps {
+  charName: string;
+  choice: State<unknown>;
+  message: string;
+  pv: string;
+}
+
+const CheckboxCharacteristicSelector = ({
+  charName,
+  choice,
+  message,
+  pv,
+}: CheckboxCharacteristicSelectorProps) => {
+  const internalChoice = useState(choice[pv]);
+
+  return (
+    <Col xs={12} md={4} key={pv} style={{ padding: "0.5rem" }}>
+      <Checkbox
+        name={pv}
+        label={message}
+        checked={internalChoice.value || false}
+        onChange={() => internalChoice.set((old) => !old)}
+      />
+    </Col>
   );
 };
 

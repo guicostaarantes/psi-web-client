@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, LegacyRef } from "react";
 import useTheme from "@psi/styleguide/hooks/useTheme";
 
-interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
   checked?: boolean;
   disabled?: boolean;
   label: string;
@@ -10,14 +10,14 @@ interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   value: string;
 }
 
-const Checkbox = ({
+const Radio = ({
   disabled,
   label,
   name,
   reference,
   value,
   ...rest
-}: CheckboxProps) => {
+}: RadioProps) => {
   const { theme } = useTheme();
 
   return (
@@ -104,4 +104,4 @@ const Checkbox = ({
   );
 };
 
-export default Checkbox;
+export default Radio;
