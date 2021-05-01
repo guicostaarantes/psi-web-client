@@ -1,8 +1,8 @@
-import { Downgraded, useState } from "@hookstate/core";
+import { useState } from "@hookstate/core";
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import { render, screen, waitFor } from "@testing-library/react";
 
-const initialCharacteristics: {
+const characteristics: {
   name: string;
   type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
   possibleValues: string[];
@@ -26,7 +26,7 @@ const initialCharacteristics: {
 
 const initialChoices: Record<string, unknown> = {};
 
-const initialMessages: Record<string, string> = {
+const messages: Record<string, string> = {
   "char:has-consulted-before": "Você já se consultou com um psicólogo antes?",
   "char:has-consulted-before:true": "Sim",
   "char:has-consulted-before:false": "Não",
@@ -41,19 +41,7 @@ const initialMessages: Record<string, string> = {
 };
 
 const WrapperTestComponent = () => {
-  const characteristics = useState<
-    {
-      name: string;
-      type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
-      possibleValues: string[];
-    }[]
-  >(initialCharacteristics).attach(Downgraded);
-
-  const choices = useState<Record<string, unknown>>(initialChoices).attach(
-    Downgraded,
-  );
-
-  const messages = useState<Record<string, string>>(initialMessages);
+  const choices = useState<Record<string, unknown>>(initialChoices);
 
   return (
     <CharacteristicChooserComponent

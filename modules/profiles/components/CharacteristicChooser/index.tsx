@@ -6,15 +6,13 @@ import Radio from "@psi/styleguide/components/Radio";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 interface CharacteristicChooserComponentProps {
-  characteristics: State<
-    {
-      name: string;
-      type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
-      possibleValues: string[];
-    }[]
-  >;
+  characteristics: {
+    name: string;
+    type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
+    possibleValues: string[];
+  }[];
   choices: State<Record<string, unknown>>;
-  messages: State<Record<string, string>>;
+  messages: Record<string, string>;
   prefix: string;
 }
 
@@ -26,41 +24,36 @@ const CharacteristicChooserComponent = ({
 }: CharacteristicChooserComponentProps) => {
   return (
     <>
-      {characteristics?.value
-        ?.filter((char) => messages.value[`${prefix}:${char.name}`])
+      {characteristics
+        .filter((char) => messages[`${prefix}:${char.name}`])
         .map((char) => (
           <div key={char.name}>
             <Row style={{ margin: "1rem" }}>
               <Paragraph noMarginBottom noMarginTop>
-                {messages.value[`${prefix}:${char.name}`]}
+                {messages[`${prefix}:${char.name}`]}
               </Paragraph>
             </Row>
             <Row style={{ margin: "1rem" }}>
               {char.type === "BOOLEAN" || char.type === "SINGLE"
                 ? char.possibleValues
-                    .filter(
-                      (pv) => messages.value[`${prefix}:${char.name}:${pv}`],
-                    )
+                    .filter((pv) => messages[`${prefix}:${char.name}:${pv}`])
                     .map((pv) => (
                       <RadioCharacteristicSelector
                         key={`${char.name}:${pv}`}
                         charName={char.name}
                         choice={choices[char.name]}
-                        message={messages.value[`${prefix}:${char.name}:${pv}`]}
+                        message={messages[`${prefix}:${char.name}:${pv}`]}
                         pv={pv}
                       />
                     ))
                 : char.type === "MULTIPLE"
                 ? char.possibleValues
-                    .filter(
-                      (pv) => messages.value[`${prefix}:${char.name}:${pv}`],
-                    )
+                    .filter((pv) => messages[`${prefix}:${char.name}:${pv}`])
                     .map((pv) => (
                       <CheckboxCharacteristicSelector
                         key={`${char.name}:${pv}`}
-                        charName={char.name}
                         choice={choices[char.name]}
-                        message={messages.value[`${prefix}:${char.name}:${pv}`]}
+                        message={messages[`${prefix}:${char.name}:${pv}`]}
                         pv={pv}
                       />
                     ))
@@ -101,14 +94,12 @@ const RadioCharacteristicSelector = ({
 };
 
 interface CheckboxCharacteristicSelectorProps {
-  charName: string;
   choice: State<unknown>;
   message: string;
   pv: string;
 }
 
 const CheckboxCharacteristicSelector = ({
-  charName,
   choice,
   message,
   pv,

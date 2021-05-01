@@ -4,15 +4,13 @@ import EmojiRadio from "@psi/styleguide/components/EmojiRadio";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 interface PreferenceChooserComponentProps {
-  preferences: State<
-    {
-      name: string;
-      type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
-      possibleValues: string[];
-    }[]
-  >;
+  preferences: {
+    name: string;
+    type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
+    possibleValues: string[];
+  }[];
   weights: State<Record<string, Record<string, number>>>;
-  messages: State<Record<string, string>>;
+  messages: Record<string, string>;
   prefix: string;
 }
 
@@ -24,15 +22,15 @@ const PreferenceChooserComponent = ({
 }: PreferenceChooserComponentProps) => {
   return (
     <>
-      {preferences?.value?.map((pref, index) => (
+      {preferences.map((pref, index) => (
         <div key={pref.name}>
           {index > 0 ? <div style={{ padding: "0.5rem" }}></div> : null}
           {pref.possibleValues
-            .filter((pv) => messages.value[`${prefix}:${pref.name}:${pv}`])
+            .filter((pv) => messages[`${prefix}:${pref.name}:${pv}`])
             .map((pv) => (
               <PreferenceSelector
                 key={`${pref.name}:${pv}`}
-                message={messages.value[`${prefix}:${pref.name}:${pv}`]}
+                message={messages[`${prefix}:${pref.name}:${pv}`]}
                 prefName={pref.name}
                 pv={pv}
                 weight={weights[pref.name]}

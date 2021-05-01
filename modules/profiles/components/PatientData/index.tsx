@@ -219,7 +219,6 @@ const PatientDataComponent = () => {
         }
       }
       choices.set(initialChoices);
-      console.log(initialChoices);
     }
   }, [profileData, characteristics.value]);
 
@@ -424,9 +423,9 @@ const PatientDataComponent = () => {
           Características do paciente
         </MediumTitle>
         <CharacteristicChooserComponent
-          characteristics={characteristics}
+          characteristics={characteristics.value}
           choices={choices}
-          messages={characteristicMessages}
+          messages={characteristicMessages.value}
           prefix="pat-char"
         />
       </Card>
@@ -435,9 +434,9 @@ const PatientDataComponent = () => {
           Preferências do paciente
         </MediumTitle>
         <PreferenceChooserComponent
-          preferences={preferences}
+          preferences={preferences.value}
           weights={weights}
-          messages={preferenceMessages}
+          messages={preferenceMessages.value}
           prefix="psy-pref"
         />
       </Card>
