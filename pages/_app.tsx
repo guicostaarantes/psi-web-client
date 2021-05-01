@@ -41,9 +41,10 @@ export default function MyApp({ Component, pageProps }) {
 
         html,
         body {
-          background: url(${theme.backgroundUrl});
+          /*background: url(${theme.backgroundUrl});
           background-attachment: fixed;
-          background-size: cover;
+          background-size: cover;*/
+          background-color: ${theme.backgroundColor};
           padding: 0;
           margin: 0;
         }
