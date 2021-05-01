@@ -21,6 +21,7 @@ module.exports = {
   plugins: ["react", "@typescript-eslint", "prettier", "simple-import-sort"],
   rules: {
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": "error",
     "no-restricted-imports": ["error", { patterns: [".*"] }],
     "prettier/prettier": "error",
     "react/prop-types": "off",
