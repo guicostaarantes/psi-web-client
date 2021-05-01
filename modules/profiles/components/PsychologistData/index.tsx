@@ -1,8 +1,9 @@
-import dayjs from "dayjs";
-import { useRouter } from "next/router";
-import React, { useEffect, useRef } from "react";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { Downgraded, useState } from "@hookstate/core";
+import dayjs from "dayjs";
+import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
+
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 import {

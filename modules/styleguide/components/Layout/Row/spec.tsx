@@ -1,5 +1,6 @@
-import Row from "@psi/styleguide/components/Layout/Row";
 import { render, screen } from "@testing-library/react";
+
+import Row from "@psi/styleguide/components/Layout/Row";
 
 test("Row renders", () => {
   render(<Row>testing Row</Row>);

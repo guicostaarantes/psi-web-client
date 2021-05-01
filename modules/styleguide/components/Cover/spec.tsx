@@ -1,5 +1,6 @@
-import Cover from "@psi/styleguide/components/Cover";
 import { render, screen } from "@testing-library/react";
+
+import Cover from "@psi/styleguide/components/Cover";
 
 test("Cover renders", () => {
   render(

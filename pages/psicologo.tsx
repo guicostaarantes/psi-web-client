@@ -1,4 +1,5 @@
 import Head from "next/head";
+
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
 import PsychologistDataComponent from "@psi/profiles/components/PsychologistData";
 import LoadingPage from "@psi/shared/components/LoadingPage";

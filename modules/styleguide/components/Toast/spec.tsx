@@ -1,6 +1,7 @@
+import { render, screen } from "@testing-library/react";
+
 import ToastContainer from "@psi/styleguide/components/Toast";
 import { ToastProps } from "@psi/styleguide/hooks/useToast";
-import { render, screen } from "@testing-library/react";
 
 let mockToasts: ToastProps[];
 

@@ -1,6 +1,7 @@
-import React from "react";
-import EmojiRadio from "@psi/styleguide/components/EmojiRadio";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { useState } from "react";
+
+import EmojiRadio from "@psi/styleguide/components/EmojiRadio";
 
 export const TEST_OPTIONS = [
   {
@@ -31,7 +32,7 @@ export const TEST_OPTIONS = [
 ];
 
 const WrapperTestComponent = () => {
-  const [value, setValue] = React.useState<number>(1);
+  const [value, setValue] = useState<number>(1);
 
   return (
     <>

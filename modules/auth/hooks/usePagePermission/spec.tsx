@@ -1,11 +1,12 @@
-import { GraphQLError } from "graphql";
 import { MockedProvider } from "@apollo/client/testing";
+import { render, screen, waitFor } from "@testing-library/react";
+import { GraphQLError } from "graphql";
+
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
 import {
   GetOwnPatientProfile,
   GetOwnUser,
 } from "@psi/auth/hooks/usePagePermission/graphql";
-import { render, screen, waitFor } from "@testing-library/react";
 
 const mockPushRoute = jest
   .fn()

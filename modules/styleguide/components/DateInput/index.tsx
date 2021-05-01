@@ -1,6 +1,7 @@
+import { useState } from "@hookstate/core";
 import { ChangeEvent, InputHTMLAttributes, LegacyRef, useEffect } from "react";
 import InputMask from "react-input-mask";
-import { useState } from "@hookstate/core";
+
 import { DATE_FORMATS } from "@psi/styleguide/constants/locale";
 import useTheme from "@psi/styleguide/hooks/useTheme";
 

@@ -1,5 +1,6 @@
-import { v4 as uuid } from "uuid";
 import { createState, useState } from "@hookstate/core";
+import { v4 as uuid } from "uuid";
+
 import {
   MAX_TOASTS,
   TOAST_OUT_ANIMATION_DELAY_DURATION_MS,

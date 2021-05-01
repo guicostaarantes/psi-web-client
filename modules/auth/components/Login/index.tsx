@@ -1,6 +1,7 @@
+import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import { useLazyQuery } from "@apollo/client";
+
 import AuthenticateUser, {
   AuthenticateUserResponse,
 } from "@psi/auth/components/Login/graphql";

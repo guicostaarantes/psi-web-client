@@ -1,8 +1,9 @@
-import { GraphQLError } from "graphql";
 import { MockedProvider } from "@apollo/client/testing";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { GraphQLError } from "graphql";
+
 import ResetPasswordComponent from "@psi/auth/components/ResetPassword";
 import ResetPassword from "@psi/auth/components/ResetPassword/graphql";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 const mockAddToast = jest.fn();
 

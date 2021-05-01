@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+
 import GetOwnUser, {
   GetOwnUserResponse,
   GetOwnUserResponseData,

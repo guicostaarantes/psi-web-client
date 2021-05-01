@@ -1,5 +1,6 @@
-import Checkbox from "@psi/styleguide/components/Checkbox";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+import Checkbox from "@psi/styleguide/components/Checkbox";
 
 test("Checkbox renders", () => {
   render(<Checkbox name="test" label="testing Checkbox" />);

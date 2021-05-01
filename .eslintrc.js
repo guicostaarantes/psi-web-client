@@ -18,12 +18,15 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint", "prettier"],
+  plugins: ["react", "@typescript-eslint", "prettier", "simple-import-sort"],
   rules: {
-    "prettier/prettier": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-restricted-imports": ["error", { patterns: [".*"] }],
+    "prettier/prettier": "error",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
+    "simple-import-sort/imports": ["error", { groups: [["^"], ["^@psi"]] }],
+    "simple-import-sort/exports": "error",
   },
   settings: {
     react: {

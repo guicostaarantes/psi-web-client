@@ -1,5 +1,6 @@
-import Button from "@psi/styleguide/components/Button";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+import Button from "@psi/styleguide/components/Button";
 
 test("Button renders", () => {
   render(<Button>Testing button</Button>);

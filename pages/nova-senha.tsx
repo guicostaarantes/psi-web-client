@@ -1,6 +1,7 @@
 import Head from "next/head";
-import { Container } from "react-grid-system";
+
 import ResetPasswordComponent from "@psi/auth/components/ResetPassword";
+import Container from "@psi/styleguide/components/Layout/Container";
 import ViewportHigh from "@psi/styleguide/components/Layout/ViewportHigh";
 
 const ResetPasswordPage = () => {

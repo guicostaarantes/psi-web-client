@@ -1,7 +1,8 @@
-import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { useState } from "@hookstate/core";
+import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
+
 import { Role } from "@psi/auth/constants/roles";
 import {
   GetOwnPatientProfile,

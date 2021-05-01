@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+
 import { Role } from "@psi/auth/constants/roles";
 
 export interface GetOwnUserResponseData {

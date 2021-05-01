@@ -1,6 +1,7 @@
 import { useState } from "@hookstate/core";
-import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import { render, screen, waitFor } from "@testing-library/react";
+
+import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 
 const characteristics: {
   name: string;

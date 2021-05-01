@@ -1,8 +1,9 @@
-import { GraphQLError } from "graphql";
 import { MockedProvider } from "@apollo/client/testing";
+import { render, screen, waitFor } from "@testing-library/react";
+import { GraphQLError } from "graphql";
+
 import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
 import GetOwnUser from "@psi/auth/hooks/useCurrentUser/graphql";
-import { render, screen, waitFor } from "@testing-library/react";
 
 const successMock = [
   {

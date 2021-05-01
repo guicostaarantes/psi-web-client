@@ -1,6 +1,7 @@
+import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import { useMutation } from "@apollo/client";
+
 import ResetPassword from "@psi/auth/components/ResetPassword/graphql";
 import useSearchParams from "@psi/shared/hooks/useSearchParams";
 import Button from "@psi/styleguide/components/Button";

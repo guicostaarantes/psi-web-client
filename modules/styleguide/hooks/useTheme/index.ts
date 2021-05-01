@@ -1,5 +1,6 @@
-import { useEffect } from "react";
 import { createState, useState } from "@hookstate/core";
+import { useEffect } from "react";
+
 import { DEFAULT_THEME, ThemeKey } from "@psi/styleguide/constants/theme";
 import themes, { ThemeProps } from "@psi/styleguide/theme";
 

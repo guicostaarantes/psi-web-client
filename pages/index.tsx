@@ -1,4 +1,5 @@
 import Head from "next/head";
+
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
 import LoadingPage from "@psi/shared/components/LoadingPage";
 

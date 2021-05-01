@@ -1,11 +1,10 @@
 {
-	"recommendations": [
-        "blanu.vscode-styled-jsx",
-        "dbaeumer.vscode-eslint",
-        "vtrois.gitmoji-vscode",
-        "kumar-harsh.graphql-for-vscode",
-        "mike-co.import-sorter",
-        "esbenp.prettier-vscode",
-        "orta.vscode-jest"
-    ]
+  "recommendations": [
+    "blanu.vscode-styled-jsx",
+    "dbaeumer.vscode-eslint",
+    "vtrois.gitmoji-vscode",
+    "kumar-harsh.graphql-for-vscode",
+    "esbenp.prettier-vscode",
+    "orta.vscode-jest"
+  ]
 }

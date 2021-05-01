@@ -1,5 +1,6 @@
-import Input from "@psi/styleguide/components/Input";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+import Input from "@psi/styleguide/components/Input";
 
 test("Input renders", () => {
   render(<Input name="test" label="testing input" />);

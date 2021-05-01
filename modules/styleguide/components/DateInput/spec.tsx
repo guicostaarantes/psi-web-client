@@ -1,5 +1,6 @@
-import DateInput from "@psi/styleguide/components/DateInput";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+import DateInput from "@psi/styleguide/components/DateInput";
 
 test("DateInput renders", () => {
   render(<DateInput format="DD/MM/YYYY" name="test" label="testing input" />);

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+
 import useTheme from "@psi/styleguide/hooks/useTheme";
 
 interface SmallTitleProps {

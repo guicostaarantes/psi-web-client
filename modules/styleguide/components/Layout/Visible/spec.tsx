@@ -1,5 +1,6 @@
-import Visible from "@psi/styleguide/components/Layout/Visible";
 import { render } from "@testing-library/react";
+
+import Visible from "@psi/styleguide/components/Layout/Visible";
 
 test("Visible renders", () => {
   render(

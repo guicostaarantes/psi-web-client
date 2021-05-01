@@ -1,4 +1,5 @@
 import { BaseHTMLAttributes } from "react";
+
 import useTheme from "@psi/styleguide/hooks/useTheme";
 
 interface CardProps extends BaseHTMLAttributes<HTMLDivElement> {
@@ -7,8 +8,6 @@ interface CardProps extends BaseHTMLAttributes<HTMLDivElement> {
 
 const Card = ({ children, ...rest }: CardProps) => {
   const { theme } = useTheme();
-
-  const cardBackgroundColor = theme.focusBackgroundColor;
 
   return (
     <>

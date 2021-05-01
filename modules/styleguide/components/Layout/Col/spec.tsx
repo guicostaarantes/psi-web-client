@@ -1,5 +1,6 @@
-import Col from "@psi/styleguide/components/Layout/Col";
 import { render, screen } from "@testing-library/react";
+
+import Col from "@psi/styleguide/components/Layout/Col";
 
 test("Col renders", () => {
   render(<Col>testing Col</Col>);

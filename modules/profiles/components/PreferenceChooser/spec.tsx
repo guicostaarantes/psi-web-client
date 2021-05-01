@@ -1,6 +1,7 @@
 import { useState } from "@hookstate/core";
-import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 import { render, screen, waitFor } from "@testing-library/react";
+
+import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 
 const preferences: {
   name: string;

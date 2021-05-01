@@ -1,5 +1,6 @@
-import Radio from "@psi/styleguide/components/Radio";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+import Radio from "@psi/styleguide/components/Radio";
 
 test("Radio renders", () => {
   render(

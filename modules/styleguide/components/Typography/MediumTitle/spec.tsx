@@ -1,5 +1,6 @@
-import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import { render, screen } from "@testing-library/react";
+
+import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 
 test("MediumTitle renders", () => {
   render(<MediumTitle>testing MediumTitle</MediumTitle>);

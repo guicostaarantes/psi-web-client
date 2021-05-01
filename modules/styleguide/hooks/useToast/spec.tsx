@@ -1,4 +1,3 @@
-import useToast from "@psi/styleguide/hooks/useToast";
 import {
   act,
   fireEvent,
@@ -6,6 +5,8 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
+
+import useToast from "@psi/styleguide/hooks/useToast";
 
 jest.useFakeTimers();
 

@@ -1,5 +1,6 @@
-import Switch from "@psi/styleguide/components/Switch";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+import Switch from "@psi/styleguide/components/Switch";
 
 test("Switch renders", () => {
   render(<Switch name="test" label="testing Switch" />);

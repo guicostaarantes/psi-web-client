@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import useSearchParams from "@psi/shared/hooks/useSearchParams";
 import { render, screen, waitFor } from "@testing-library/react";
+import { useEffect, useState } from "react";
+
+import useSearchParams from "@psi/shared/hooks/useSearchParams";
 
 const TestComponent = () => {
   const { getSearchParam } = useSearchParams();
 
-  const [token, setToken] = React.useState("");
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     setToken(getSearchParam("token"));

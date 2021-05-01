@@ -1,4 +1,5 @@
 import Head from "next/head";
+
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
 import PatientDataComponent from "@psi/profiles/components/PatientData";
 import LoadingPage from "@psi/shared/components/LoadingPage";
