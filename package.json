@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
+    "build": "yarn install && next build",
+    "export": "next export",
+    "dev": "yarn install && next dev",
     "lint": "eslint .",
     "new-component": "hygen component new",
     "new-page": "hygen page new",
