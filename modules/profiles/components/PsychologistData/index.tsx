@@ -422,9 +422,9 @@ const PsychologistDataComponent = () => {
           Características do psicólogo
         </MediumTitle>
         <CharacteristicChooserComponent
-          characteristics={characteristics}
+          characteristics={characteristics.value}
           choices={choices}
-          messages={characteristicMessages}
+          messages={characteristicMessages.value}
           prefix="psy-char"
         />
       </Card>
@@ -433,9 +433,9 @@ const PsychologistDataComponent = () => {
           Preferências do psicólogo
         </MediumTitle>
         <PreferenceChooserComponent
-          preferences={preferences}
+          preferences={preferences.value}
           weights={weights}
-          messages={preferenceMessages}
+          messages={preferenceMessages.value}
           prefix="pat-pref"
         />
       </Card>
