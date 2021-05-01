@@ -1,8 +1,8 @@
-import { Downgraded, useState } from "@hookstate/core";
+import { useState } from "@hookstate/core";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 import { render, screen, waitFor } from "@testing-library/react";
 
-const initialPreferences: {
+const preferences: {
   name: string;
   type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
   possibleValues: string[];
@@ -41,7 +41,7 @@ const initialWeights: Record<string, Record<string, number>> = {
   },
 };
 
-const initialMessages: Record<string, string> = {
+const messages: Record<string, string> = {
   "pref:black:true":
     "Quão confortável você se sente sendo atendido por um psicólogo negro?",
   "pref:black:false":
@@ -61,19 +61,9 @@ const initialMessages: Record<string, string> = {
 };
 
 const WrapperTestComponent = () => {
-  const preferences = useState<
-    {
-      name: string;
-      type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
-      possibleValues: string[];
-    }[]
-  >(initialPreferences).attach(Downgraded);
-
   const weights = useState<Record<string, Record<string, number>>>(
     initialWeights,
-  ).attach(Downgraded);
-
-  const messages = useState<Record<string, string>>(initialMessages);
+  );
 
   return (
     <PreferenceChooserComponent
