@@ -43,6 +43,12 @@ Feel free to open an issue or create a pull request. Please follow the rules:
 - `spec.tsx` files hold the tests for the React component or hook in the `index.tsx` file in the same folder.
 - If the component requires a call to the GraphQL API, it will also have a `graphql.ts` file with the queries and mutations.
 
+### Templates
+
+- It is recommended to create pages and components using the commands below.
+- To create a new page, run `yarn new-page name-of-the-page`.
+- To create a new component, run `yarn new-component name-of-the-component --module name-of-the-module`.
+
 ### Environment variables
 
 - Following NextJS documentation, environment variables for development purposes are declared in `./.env.development`. Set all necessary environment variables in this file so it can be used as a reference as to what environment variables to set when deploying in production.
