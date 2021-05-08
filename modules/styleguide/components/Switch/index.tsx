@@ -2,20 +2,14 @@ import { InputHTMLAttributes } from "react";
 
 import useTheme from "@psi/styleguide/hooks/useTheme";
 
-interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+interface SwitchProps extends InputHTMLAttributes<HTMLInputElement> {
   checked?: boolean;
   disabled?: boolean;
   label: string;
   name: string;
 }
 
-const Checkbox = ({
-  checked,
-  disabled,
-  label,
-  name,
-  ...rest
-}: CheckboxProps) => {
+const Switch = ({ checked, disabled, label, name, ...rest }: SwitchProps) => {
   const { theme } = useTheme();
 
   return (
@@ -114,4 +108,4 @@ const Checkbox = ({
   );
 };
 
-export default Checkbox;
+export default Switch;

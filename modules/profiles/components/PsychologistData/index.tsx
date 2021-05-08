@@ -245,17 +245,23 @@ const PsychologistDataComponent = () => {
   const [createOwnPsychologistProfile] = useMutation<
     null,
     CreateOrUpdatePsychologistProfileInput
-  >(CreateOwnPsychologistProfile);
+  >(CreateOwnPsychologistProfile, {
+    refetchQueries: [{ query: GetOwnPsychologistProfile }],
+  });
 
   const [updateOwnPsychologistProfile] = useMutation<
     null,
     CreateOrUpdatePsychologistProfileInput
-  >(UpdateOwnPsychologistProfile);
+  >(UpdateOwnPsychologistProfile, {
+    refetchQueries: [{ query: GetOwnPsychologistProfile }],
+  });
 
   const [setOwnPsychologistCharacteristicChoicesAndPreferences] = useMutation<
     null,
     SetOwnPsychologistCharacteristicChoicesAndPreferencesInput
-  >(SetOwnPsychologistCharacteristicChoicesAndPreferences);
+  >(SetOwnPsychologistCharacteristicChoicesAndPreferences, {
+    refetchQueries: [{ query: GetCharacteristics }],
+  });
 
   const handleSave = async () => {
     // Gathering profile input information

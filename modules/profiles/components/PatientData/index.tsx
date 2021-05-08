@@ -246,17 +246,23 @@ const PatientDataComponent = () => {
   const [createOwnPatientProfile] = useMutation<
     null,
     CreateOrUpdatePatientProfileInput
-  >(CreateOwnPatientProfile);
+  >(CreateOwnPatientProfile, {
+    refetchQueries: [{ query: GetOwnPatientProfile }],
+  });
 
   const [updateOwnPatientProfile] = useMutation<
     null,
     CreateOrUpdatePatientProfileInput
-  >(UpdateOwnPatientProfile);
+  >(UpdateOwnPatientProfile, {
+    refetchQueries: [{ query: GetOwnPatientProfile }],
+  });
 
   const [setOwnPatientCharacteristicChoicesAndPreferences] = useMutation<
     null,
     SetOwnPatientCharacteristicChoicesAndPreferencesInput
-  >(SetOwnPatientCharacteristicChoicesAndPreferences);
+  >(SetOwnPatientCharacteristicChoicesAndPreferences, {
+    refetchQueries: [{ query: GetCharacteristics }],
+  });
 
   const handleSave = async () => {
     // Gathering profile input information
