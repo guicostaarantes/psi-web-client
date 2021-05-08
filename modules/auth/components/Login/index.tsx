@@ -23,7 +23,9 @@ const LoginComponent = () => {
   const [
     signinQuery,
     { loading, data, error },
-  ] = useLazyQuery<AuthenticateUserResponse>(AuthenticateUser);
+  ] = useLazyQuery<AuthenticateUserResponse>(AuthenticateUser, {
+    fetchPolicy: "no-cache",
+  });
 
   useEffect(() => {
     if (error) {

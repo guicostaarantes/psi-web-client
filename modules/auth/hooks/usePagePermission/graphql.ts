@@ -19,17 +19,3 @@ export const GetOwnUser = gql`
     }
   }
 `;
-
-export interface GetOwnPatientProfileResponse {
-  getOwnPatientProfile: {
-    fullName: string;
-  };
-}
-
-export const GetOwnPatientProfile = gql`
-  query GetOwnPatientProfile {
-    getOwnPatientProfile {
-      fullName
-    }
-  }
-`;

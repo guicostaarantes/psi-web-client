@@ -3,10 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { GraphQLError } from "graphql";
 
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
-import {
-  GetOwnPatientProfile,
-  GetOwnUser,
-} from "@psi/auth/hooks/usePagePermission/graphql";
+import { GetOwnUser } from "@psi/auth/hooks/usePagePermission/graphql";
 
 const mockPushRoute = jest
   .fn()
@@ -34,27 +31,11 @@ const successMock = [
       },
     },
   },
-  {
-    request: { query: GetOwnPatientProfile },
-    result: {
-      data: {
-        getPatientProfile: {
-          fullName: "Thomas Edward Patrick Brady, Jr.",
-        },
-      },
-    },
-  },
 ];
 
 const notAuthenticatedMock = [
   {
     request: { query: GetOwnUser },
-    result: {
-      errors: [new GraphQLError("forbidden")],
-    },
-  },
-  {
-    request: { query: GetOwnPatientProfile },
     result: {
       errors: [new GraphQLError("forbidden")],
     },
@@ -73,16 +54,10 @@ const userWithoutPatientProfileMock = [
       },
     },
   },
-  {
-    request: { query: GetOwnPatientProfile },
-    result: {
-      errors: [new GraphQLError("resource not found")],
-    },
-  },
 ];
 
 const PublicComponent = () => {
-  const { pageStatus } = usePagePermission({});
+  const { pageStatus } = usePagePermission({ requiresAuth: false });
 
   return <div>current pageStatus is {pageStatus}</div>;
 };
@@ -148,43 +123,6 @@ test("should redirect to /login if user not found", async () => {
     const text = screen.getByText("current pageStatus is ready");
     expect(text).toBeInTheDocument();
     expect(mockPushRoute).toBeCalledWith("/login");
-  });
-});
-
-const NeedsPatientProfileComponent = () => {
-  const { pageStatus } = usePagePermission({
-    requiresAuth: true,
-    requiresPatientProfile: true,
-  });
-
-  return <div>current pageStatus is {pageStatus}</div>;
-};
-
-test("should show id if patient profile is found", async () => {
-  render(
-    <MockedProvider mocks={successMock}>
-      <NeedsPatientProfileComponent />
-    </MockedProvider>,
-  );
-
-  await waitFor(() => {
-    const text = screen.getByText("current pageStatus is ready");
-    expect(text).toBeInTheDocument();
-    expect(mockPushRoute).not.toBeCalled();
-  });
-});
-
-test("should redirect to /paciente if patient profile not found", async () => {
-  render(
-    <MockedProvider mocks={userWithoutPatientProfileMock}>
-      <NeedsPatientProfileComponent />
-    </MockedProvider>,
-  );
-
-  await waitFor(() => {
-    const text = screen.getByText("current pageStatus is ready");
-    expect(text).toBeInTheDocument();
-    expect(mockPushRoute).toBeCalledWith("/paciente");
   });
 });
 
