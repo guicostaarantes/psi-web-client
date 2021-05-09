@@ -12,6 +12,7 @@ const mocks = [
     result: {
       data: {
         getOwnPatientProfile: {
+          id: "123",
           likeName: "Tom Brady",
         },
       },

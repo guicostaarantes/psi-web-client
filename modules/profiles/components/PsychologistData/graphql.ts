@@ -4,6 +4,7 @@ export type CharacteristicType = "BOOLEAN" | "SINGLE" | "MULTIPLE";
 
 export interface GetOwnPsychologistProfileResponse {
   getOwnPsychologistProfile: {
+    id: string;
     fullName: string;
     likeName: string;
     birthDate: string;
@@ -24,6 +25,7 @@ export interface GetOwnPsychologistProfileResponse {
 export const GetOwnPsychologistProfile = gql`
   query GetOwnPsychologistProfile {
     getOwnPsychologistProfile {
+      id
       fullName
       likeName
       birthDate

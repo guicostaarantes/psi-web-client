@@ -15,6 +15,7 @@ const mocks = [
     result: {
       data: {
         getOwnPatientProfile: {
+          id: "456",
           fullName: "Thomas Edward Patrick Brady, Jr.",
           likeName: "Tom Brady",
           birthDate: 239414400,

@@ -9,6 +9,7 @@ export interface GetOwnLikeNameResponse {
 export const GetOwnLikeName = gql`
   query GetOwnLikeName {
     getOwnPatientProfile {
+      id
       likeName
     }
   }
