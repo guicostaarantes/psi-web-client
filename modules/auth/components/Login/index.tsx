@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { KeyboardEventHandler, useEffect, useRef } from "react";
 
 import AuthenticateUser, {
   AuthenticateUserResponse,
@@ -56,6 +56,14 @@ const LoginComponent = () => {
     });
   };
 
+  const handlePasswordKeyPress: KeyboardEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
+    if (event.key === "Enter") {
+      signin();
+    }
+  };
+
   return (
     <Card style={{ width: "100%", maxWidth: 440 }}>
       <MainTitle center>Oi, bem-vindo ao PSI</MainTitle>
@@ -66,6 +74,7 @@ const LoginComponent = () => {
       <Input
         name="password"
         label="Senha"
+        onKeyPress={handlePasswordKeyPress}
         reference={passwordRef}
         type="password"
       />
