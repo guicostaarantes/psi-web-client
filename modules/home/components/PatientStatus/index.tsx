@@ -15,7 +15,6 @@ type StatusType =
   | "HIDDEN"
   | "AWAITING_PROFILE"
   | "TREATMENT_SELECTION"
-  | "TREATMENT_APPROVAL"
   | "APPOINTMENT_SELECTION"
   | "APPOINTMENT_APPROVAL"
   | "APPOINTMENT_READY";
@@ -56,30 +55,10 @@ const PatientStatus = () => {
     const treatments = data.getOwnPatientProfile?.treatments;
     const appointments = data.getOwnPatientProfile?.appointments;
 
-    // Checks for at least one treatment with pending or active status
-    let treatmentStatus: "MISSING" | "PENDING" | "ACTIVE" = "MISSING";
-    for (const t of treatments) {
-      if (t.status === "PENDING") {
-        treatmentStatus = "PENDING";
-        break;
-      }
-      if (t.status === "ACTIVE") {
-        treatmentStatus = "ACTIVE";
-        break;
-      }
-    }
-
     // If there's no active nor pending treatments, show message for user to
     // start matchmaking algorithm and get a treatment
-    if (treatmentStatus === "MISSING") {
+    if (treatments.every((t) => t.status !== "ACTIVE")) {
       status.set("TREATMENT_SELECTION");
-      return;
-    }
-
-    // If there is a pending treatment, show message asking user to wait for
-    // psychologist approval
-    if (treatmentStatus === "PENDING") {
-      status.set("TREATMENT_APPROVAL");
       return;
     }
 
@@ -127,8 +106,6 @@ const PatientStatus = () => {
       return <AwaitingProfile />;
     case "TREATMENT_SELECTION":
       return <TreatmentSelection />;
-    case "TREATMENT_APPROVAL":
-      return <div>TREATMENT_APPROVAL</div>;
     case "APPOINTMENT_SELECTION":
       return <div>APPOINTMENT_SELECTION</div>;
     case "APPOINTMENT_APPROVAL":

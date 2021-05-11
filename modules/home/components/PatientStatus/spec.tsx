@@ -150,61 +150,6 @@ test("should render TREATMENT_SELECTION if user has no active or pending treatme
   });
 });
 
-test("should render TREATMENT_APPROVAL if user has a pending treatment", async () => {
-  mockUser = {
-    id: "123",
-    email: "tom.brady@psi.com.br",
-    role: "PATIENT",
-  };
-
-  const mocks = [
-    {
-      request: {
-        query: GetTreatmentsAppointments,
-      },
-      result: {
-        data: {
-          getOwnPatientProfile: {
-            id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
-            likeName: "Tom Brady",
-            treatments: [
-              {
-                id: "0a8460a8-1bd2-4243-86bf-884f7a13ee8a",
-                status: "FINALIZED",
-              },
-              {
-                id: "7ed839b0-a0d1-468d-8f6a-300c5375eae3",
-                status: "INTERRUPTED_BY_PSYCHOLOGIST",
-              },
-              {
-                id: "ca54685f-967d-463f-84c2-792c8a75fd77",
-                status: "INTERRUPTED_BY_PATIENT",
-              },
-              {
-                id: "b8c85fd4-47fa-41a1-a4b4-9e0941ae9254",
-                status: "PENDING",
-              },
-            ],
-            appointments: [],
-          },
-        },
-      },
-    },
-  ];
-
-  render(
-    <MockedProvider mocks={mocks}>
-      <PatientStatus />
-    </MockedProvider>,
-  );
-
-  await waitFor(() => {
-    const text = screen.getByText("TREATMENT_APPROVAL");
-
-    expect(text).toBeInTheDocument();
-  });
-});
-
 test("should render APPOINTMENT_SELECTION if user has an active treatment but no proposed/confirmed appointments", async () => {
   mockUser = {
     id: "123",
