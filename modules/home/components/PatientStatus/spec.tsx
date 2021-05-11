@@ -1,5 +1,5 @@
 import { MockedProvider } from "@apollo/client/testing";
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import MockDate from "mockdate";
 
 import { GetOwnUserResponseData } from "@psi/auth/hooks/useCurrentUser/graphql";
@@ -17,10 +17,22 @@ jest.mock("@psi/auth/hooks/useCurrentUser", () => {
   return jest.fn(() => mockUser);
 });
 
+const mockPushRoute = jest.fn();
+
+jest.mock("next/router", () => ({
+  useRouter: () => ({
+    push: mockPushRoute,
+  }),
+}));
+
+beforeEach(() => {
+  mockPushRoute.mockClear();
+});
+
 test("should render nothing if user is not patient", async () => {
   mockUser = {
     id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
-    email: "tom.brady@psi.com",
+    email: "tom.brady@psi.com.br",
     role: "PSYCHOLOGIST",
   };
 
@@ -38,7 +50,7 @@ test("should render nothing if user is not patient", async () => {
 test("should render AWAITING_PROFILE if user has no likeName", async () => {
   mockUser = {
     id: "123",
-    email: "tom.brady@psi.com",
+    email: "tom.brady@psi.com.br",
     role: "PATIENT",
   };
 
@@ -67,16 +79,23 @@ test("should render AWAITING_PROFILE if user has no likeName", async () => {
   );
 
   await waitFor(() => {
-    const text = screen.getByText("AWAITING_PROFILE");
+    const button = screen.getByText(
+      "Preencher meu perfil",
+    ) as HTMLButtonElement;
 
-    expect(text).toBeInTheDocument();
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(1);
+    expect(mockPushRoute).toBeCalledWith("/paciente");
   });
 });
 
 test("should render TREATMENT_SELECTION if user has no active or pending treatment", async () => {
   mockUser = {
     id: "123",
-    email: "tom.brady@psi.com",
+    email: "tom.brady@psi.com.br",
     role: "PATIENT",
   };
 
@@ -118,16 +137,23 @@ test("should render TREATMENT_SELECTION if user has no active or pending treatme
   );
 
   await waitFor(() => {
-    const text = screen.getByText("TREATMENT_SELECTION");
+    const button = screen.getByText(
+      "Encontrar um psicólogo",
+    ) as HTMLButtonElement;
 
-    expect(text).toBeInTheDocument();
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(1);
+    expect(mockPushRoute).toBeCalledWith("/tratamento");
   });
 });
 
 test("should render TREATMENT_APPROVAL if user has a pending treatment", async () => {
   mockUser = {
     id: "123",
-    email: "tom.brady@psi.com",
+    email: "tom.brady@psi.com.br",
     role: "PATIENT",
   };
 
@@ -182,7 +208,7 @@ test("should render TREATMENT_APPROVAL if user has a pending treatment", async (
 test("should render APPOINTMENT_SELECTION if user has an active treatment but no proposed/confirmed appointments", async () => {
   mockUser = {
     id: "123",
-    email: "tom.brady@psi.com",
+    email: "tom.brady@psi.com.br",
     role: "PATIENT",
   };
 
@@ -253,7 +279,7 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but no
 test("should render APPOINTMENT_SELECTION if user has an active treatment but all proposed/confirmed appointments are in the past", async () => {
   mockUser = {
     id: "123",
-    email: "tom.brady@psi.com",
+    email: "tom.brady@psi.com.br",
     role: "PATIENT",
   };
 
@@ -334,7 +360,7 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but al
 test("should render APPOINTMENT_APPROVAL if user has an active treatment and a proposed appointment in the future", async () => {
   mockUser = {
     id: "123",
-    email: "tom.brady@psi.com",
+    email: "tom.brady@psi.com.br",
     role: "PATIENT",
   };
 
@@ -415,7 +441,7 @@ test("should render APPOINTMENT_APPROVAL if user has an active treatment and a p
 test("should render APPOINTMENT_READY if user has an active treatment and a confirmed appointment in the future", async () => {
   mockUser = {
     id: "123",
-    email: "tom.brady@psi.com",
+    email: "tom.brady@psi.com.br",
     role: "PATIENT",
   };
 

@@ -3,6 +3,8 @@ import { useState } from "@hookstate/core";
 import { useEffect } from "react";
 
 import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
+import AwaitingProfile from "@psi/home/components/PatientStatus/components/AwaitingProfile";
+import TreatmentSelection from "@psi/home/components/PatientStatus/components/TreatmentSelection";
 import {
   GetTreatmentsAppointments,
   GetTreatmentsAppointmentsResponse,
@@ -122,9 +124,9 @@ const PatientStatus = () => {
     case "HIDDEN":
       return null;
     case "AWAITING_PROFILE":
-      return <div>AWAITING_PROFILE</div>;
+      return <AwaitingProfile />;
     case "TREATMENT_SELECTION":
-      return <div>TREATMENT_SELECTION</div>;
+      return <TreatmentSelection />;
     case "TREATMENT_APPROVAL":
       return <div>TREATMENT_APPROVAL</div>;
     case "APPOINTMENT_SELECTION":
