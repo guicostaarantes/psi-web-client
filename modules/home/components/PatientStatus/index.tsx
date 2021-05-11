@@ -3,6 +3,7 @@ import { useState } from "@hookstate/core";
 import { useEffect } from "react";
 
 import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
+import AppointmentSelection from "@psi/home/components/PatientStatus/components/AppointmentSelection";
 import AwaitingProfile from "@psi/home/components/PatientStatus/components/AwaitingProfile";
 import TreatmentSelection from "@psi/home/components/PatientStatus/components/TreatmentSelection";
 import {
@@ -107,7 +108,7 @@ const PatientStatus = () => {
     case "TREATMENT_SELECTION":
       return <TreatmentSelection />;
     case "APPOINTMENT_SELECTION":
-      return <div>APPOINTMENT_SELECTION</div>;
+      return <AppointmentSelection />;
     case "APPOINTMENT_APPROVAL":
       return <div>APPOINTMENT_APPROVAL</div>;
     case "APPOINTMENT_READY":

@@ -215,9 +215,29 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but no
   );
 
   await waitFor(() => {
-    const text = screen.getByText("APPOINTMENT_SELECTION");
+    const button = screen.getByText(
+      "Marcar próxima consulta",
+    ) as HTMLButtonElement;
 
-    expect(text).toBeInTheDocument();
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(1);
+    expect(mockPushRoute).toBeCalledWith("/consulta");
+  });
+
+  await waitFor(() => {
+    const button = screen.getByText(
+      "Interromper tratamento",
+    ) as HTMLButtonElement;
+
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(2);
+    expect(mockPushRoute).toBeCalledWith("/interromper");
   });
 });
 
@@ -296,9 +316,29 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but al
   );
 
   await waitFor(() => {
-    const text = screen.getByText("APPOINTMENT_SELECTION");
+    const button = screen.getByText(
+      "Marcar próxima consulta",
+    ) as HTMLButtonElement;
 
-    expect(text).toBeInTheDocument();
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(1);
+    expect(mockPushRoute).toBeCalledWith("/consulta");
+  });
+
+  await waitFor(() => {
+    const button = screen.getByText(
+      "Interromper tratamento",
+    ) as HTMLButtonElement;
+
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(2);
+    expect(mockPushRoute).toBeCalledWith("/interromper");
   });
 });
 
