@@ -1,15 +1,13 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import MockDate from "mockdate";
 
 import { GetOwnUserResponseData } from "@psi/auth/hooks/useCurrentUser/graphql";
 import PatientStatus from "@psi/home/components/PatientStatus";
 import { GetTreatmentsAppointments } from "@psi/home/components/PatientStatus/graphql";
 
 const now = 1612345678;
-const past = now - 86400;
-const future = now + 86400;
-MockDate.set(1000 * now);
+const yesterday = now - 86400;
+const tomorrow = now + 86400;
 
 let mockUser: GetOwnUserResponseData;
 
@@ -61,6 +59,7 @@ test("should render AWAITING_PROFILE if user has no likeName", async () => {
       },
       result: {
         data: {
+          time: now,
           getOwnPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "",
@@ -106,6 +105,7 @@ test("should render TREATMENT_SELECTION if user has no active or pending treatme
       },
       result: {
         data: {
+          time: now,
           getOwnPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
@@ -164,6 +164,7 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but no
       },
       result: {
         data: {
+          time: now,
           getOwnPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
@@ -188,17 +189,17 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but no
             appointments: [
               {
                 id: "c9b57db7-031f-42bc-b7cc-006c646eca3c",
-                end: past,
+                end: yesterday,
                 status: "DENIED",
               },
               {
                 id: "1312ae55-9e16-4f68-b457-d13f5f1c3724",
-                end: past,
+                end: yesterday,
                 status: "CANCELED_BY_PSYCHOLOGIST",
               },
               {
                 id: "8fb17b4c-7394-4605-977e-476ee16a071b",
-                end: past,
+                end: yesterday,
                 status: "CANCELED_BY_PATIENT",
               },
             ],
@@ -255,6 +256,7 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but al
       },
       result: {
         data: {
+          time: now,
           getOwnPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
@@ -279,27 +281,27 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but al
             appointments: [
               {
                 id: "c9b57db7-031f-42bc-b7cc-006c646eca3c",
-                end: past,
+                end: yesterday,
                 status: "DENIED",
               },
               {
                 id: "1312ae55-9e16-4f68-b457-d13f5f1c3724",
-                end: past,
+                end: yesterday,
                 status: "CANCELED_BY_PSYCHOLOGIST",
               },
               {
                 id: "8fb17b4c-7394-4605-977e-476ee16a071b",
-                end: past,
+                end: yesterday,
                 status: "CANCELED_BY_PATIENT",
               },
               {
                 id: "63fad2b4-9b4f-40ee-bf60-b3337f16e2b3",
-                end: past,
+                end: yesterday,
                 status: "CONFIRMED",
               },
               {
                 id: "3832b858-3de9-4f24-945a-ed2fafd1bb01",
-                end: past,
+                end: yesterday,
                 status: "PROPOSED",
               },
             ],
@@ -356,6 +358,7 @@ test("should render APPOINTMENT_APPROVAL if user has an active treatment and a p
       },
       result: {
         data: {
+          time: now,
           getOwnPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
@@ -380,27 +383,27 @@ test("should render APPOINTMENT_APPROVAL if user has an active treatment and a p
             appointments: [
               {
                 id: "c9b57db7-031f-42bc-b7cc-006c646eca3c",
-                end: past,
+                end: yesterday,
                 status: "DENIED",
               },
               {
                 id: "1312ae55-9e16-4f68-b457-d13f5f1c3724",
-                end: past,
+                end: yesterday,
                 status: "CANCELED_BY_PSYCHOLOGIST",
               },
               {
                 id: "8fb17b4c-7394-4605-977e-476ee16a071b",
-                end: past,
+                end: yesterday,
                 status: "CANCELED_BY_PATIENT",
               },
               {
                 id: "63fad2b4-9b4f-40ee-bf60-b3337f16e2b3",
-                end: past,
+                end: yesterday,
                 status: "CONFIRMED",
               },
               {
                 id: "3832b858-3de9-4f24-945a-ed2fafd1bb01",
-                end: future,
+                end: tomorrow,
                 status: "PROPOSED",
               },
             ],
@@ -437,6 +440,7 @@ test("should render APPOINTMENT_READY if user has an active treatment and a conf
       },
       result: {
         data: {
+          time: now,
           getOwnPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
@@ -461,27 +465,27 @@ test("should render APPOINTMENT_READY if user has an active treatment and a conf
             appointments: [
               {
                 id: "c9b57db7-031f-42bc-b7cc-006c646eca3c",
-                end: past,
+                end: yesterday,
                 status: "DENIED",
               },
               {
                 id: "1312ae55-9e16-4f68-b457-d13f5f1c3724",
-                end: past,
+                end: yesterday,
                 status: "CANCELED_BY_PSYCHOLOGIST",
               },
               {
                 id: "8fb17b4c-7394-4605-977e-476ee16a071b",
-                end: past,
+                end: yesterday,
                 status: "CANCELED_BY_PATIENT",
               },
               {
                 id: "63fad2b4-9b4f-40ee-bf60-b3337f16e2b3",
-                end: future,
+                end: tomorrow,
                 status: "CONFIRMED",
               },
               {
                 id: "3832b858-3de9-4f24-945a-ed2fafd1bb01",
-                end: past,
+                end: yesterday,
                 status: "PROPOSED",
               },
             ],

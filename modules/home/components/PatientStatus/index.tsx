@@ -63,19 +63,15 @@ const PatientStatus = () => {
       return;
     }
 
-    // TODO: this check trusts in the client system clock. It would be better if
-    // the server could provide a expired flag based on its own time
-    //
     // Checks for at least one appointment with proposed or confirmed status
     // whose end is in the future
     let appointmentStatus: "MISSING" | "PROPOSED" | "CONFIRMED" = "MISSING";
-    const currentTimestamp = (Date.now() / 1000) >> 0;
     for (const a of appointments) {
-      if (a.status === "PROPOSED" && a.end > currentTimestamp) {
+      if (a.status === "PROPOSED" && a.end > data.time) {
         appointmentStatus = "PROPOSED";
         break;
       }
-      if (a.status === "CONFIRMED" && a.end > currentTimestamp) {
+      if (a.status === "CONFIRMED" && a.end > data.time) {
         appointmentStatus = "CONFIRMED";
         break;
       }

@@ -15,6 +15,7 @@ export type TreatmentStatus =
   | "INTERRUPTED_BY_PSYCHOLOGIST";
 
 export interface GetTreatmentsAppointmentsResponse {
+  time: number;
   getOwnPatientProfile: {
     id: string;
     likeName: string;
@@ -32,6 +33,7 @@ export interface GetTreatmentsAppointmentsResponse {
 
 export const GetTreatmentsAppointments = gql`
   query GetTreatmentsAppointments {
+    time
     getOwnPatientProfile {
       id
       likeName
