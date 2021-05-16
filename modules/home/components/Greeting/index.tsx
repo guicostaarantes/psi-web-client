@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import {
-  GetOwnLikeName,
-  GetOwnLikeNameResponse,
+  MyLikeName,
+  MyLikeNameResponse,
 } from "@psi/home/components/Greeting/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
@@ -15,13 +15,13 @@ import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 const Greeting = () => {
   const router = useRouter();
 
-  const { data } = useQuery<GetOwnLikeNameResponse>(GetOwnLikeName);
+  const { data } = useQuery<MyLikeNameResponse>(MyLikeName);
 
   const likeName = useState("");
 
   useEffect(() => {
-    if (data?.getOwnPatientProfile?.likeName) {
-      likeName.set(data.getOwnPatientProfile.likeName);
+    if (data?.myPatientProfile?.likeName) {
+      likeName.set(data.myPatientProfile.likeName);
     }
   }, [data]);
 

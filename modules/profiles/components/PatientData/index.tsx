@@ -7,18 +7,18 @@ import { useEffect, useRef } from "react";
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import {
   CharacteristicType,
+  CreateMyPatientProfile,
   CreateOrUpdatePatientProfileInput,
-  CreateOwnPatientProfile,
   GetCharacteristicMessages,
   GetCharacteristicMessagesInput,
   GetCharacteristicMessagesResponse,
   GetCharacteristics,
   GetCharacteristicsResponse,
-  GetOwnPatientProfile,
-  GetOwnPatientProfileResponse,
-  SetOwnPatientCharacteristicChoicesAndPreferences,
-  SetOwnPatientCharacteristicChoicesAndPreferencesInput,
-  UpdateOwnPatientProfile,
+  MyPatientProfile,
+  MyPatientProfileResponse,
+  SetMyPatientCharacteristicChoicesAndPreferences,
+  SetMyPatientCharacteristicChoicesAndPreferencesInput,
+  UpdateMyPatientProfile,
 } from "@psi/profiles/components/PatientData/graphql";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
@@ -45,7 +45,7 @@ const PatientDataComponent = () => {
   const {
     data: profileData,
     error: profileError,
-  } = useQuery<GetOwnPatientProfileResponse>(GetOwnPatientProfile);
+  } = useQuery<MyPatientProfileResponse>(MyPatientProfile);
 
   const [
     getCharacteristicMessages,
@@ -113,18 +113,16 @@ const PatientDataComponent = () => {
   // Load current values and fill the fields
   useEffect(() => {
     if (profileData) {
-      fullNameRef.current.value =
-        profileData.getOwnPatientProfile?.fullName || "";
-      likeNameRef.current.value =
-        profileData.getOwnPatientProfile?.likeName || "";
+      fullNameRef.current.value = profileData.myPatientProfile?.fullName || "";
+      likeNameRef.current.value = profileData.myPatientProfile?.likeName || "";
       // birthDateRef.current.value =
-      //   dayjs(profileData.getOwnPatientProfile?.birthDate).format(
+      //   dayjs(profileData.myPatientProfile?.birthDate).format(
       //     DATE_FORMAT,
       //   ) || "";
-      cityRef.current.value = profileData.getOwnPatientProfile?.city || "";
+      cityRef.current.value = profileData.myPatientProfile?.city || "";
 
-      const birthDate = Number(profileData.getOwnPatientProfile?.birthDate)
-        ? new Date(1000 * Number(profileData.getOwnPatientProfile.birthDate))
+      const birthDate = Number(profileData.myPatientProfile?.birthDate)
+        ? new Date(1000 * Number(profileData.myPatientProfile.birthDate))
         : undefined;
 
       if (birthDate) {
@@ -136,8 +134,8 @@ const PatientDataComponent = () => {
   // Load all characteristics and all preferences
   useEffect(() => {
     if (characteristicData) {
-      characteristics.set(characteristicData.getPatientCharacteristics);
-      preferences.set(characteristicData.getPsychologistCharacteristics);
+      characteristics.set(characteristicData.patientCharacteristics);
+      preferences.set(characteristicData.psychologistCharacteristics);
     }
   }, [characteristicData]);
 
@@ -146,7 +144,7 @@ const PatientDataComponent = () => {
     if (characteristicData) {
       let keys = [];
 
-      for (const i of characteristicData.getPatientCharacteristics) {
+      for (const i of characteristicData.patientCharacteristics) {
         keys.push(`pat-char:${i.name}`);
         for (const j of i.possibleValues) {
           keys.push(`pat-char:${i.name}:${j}`);
@@ -156,7 +154,7 @@ const PatientDataComponent = () => {
 
       keys = [];
 
-      for (const i of characteristicData.getPsychologistCharacteristics) {
+      for (const i of characteristicData.psychologistCharacteristics) {
         for (const j of i.possibleValues) {
           keys.push(`psy-pref:${i.name}:${j}`);
         }
@@ -170,7 +168,7 @@ const PatientDataComponent = () => {
   useEffect(() => {
     if (characteristicMessagesData) {
       characteristicMessages.set(
-        characteristicMessagesData?.getMessages.reduce(
+        characteristicMessagesData?.translations.reduce(
           (final, current) => ({
             ...final,
             [current.key]: current.value,
@@ -185,7 +183,7 @@ const PatientDataComponent = () => {
   useEffect(() => {
     if (preferenceMessagesData) {
       preferenceMessages.set(
-        preferenceMessagesData?.getMessages.reduce(
+        preferenceMessagesData?.translations.reduce(
           (final, current) => ({
             ...final,
             [current.key]: current.value,
@@ -200,7 +198,7 @@ const PatientDataComponent = () => {
   useEffect(() => {
     if (profileData && characteristics.value.length) {
       const initialChoices = {};
-      for (const char of profileData.getOwnPatientProfile.characteristics) {
+      for (const char of profileData.myPatientProfile.characteristics) {
         if (char.selectedValues.length) {
           const possibleValues = characteristics.value.find(
             (ch) => ch.name === char.name,
@@ -230,7 +228,7 @@ const PatientDataComponent = () => {
 
       const possibleWeights = HAPPINESS_OPTIONS.map((ho) => ho.value);
 
-      for (const pref of profileData?.getOwnPatientProfile?.preferences) {
+      for (const pref of profileData?.myPatientProfile?.preferences) {
         if (!initialWeights[pref.characteristicName]) {
           initialWeights[pref.characteristicName] = {};
         }
@@ -243,24 +241,24 @@ const PatientDataComponent = () => {
     }
   }, [profileData, preferences.value]);
 
-  const [createOwnPatientProfile] = useMutation<
+  const [createMyPatientProfile] = useMutation<
     null,
     CreateOrUpdatePatientProfileInput
-  >(CreateOwnPatientProfile, {
-    refetchQueries: [{ query: GetOwnPatientProfile }],
+  >(CreateMyPatientProfile, {
+    refetchQueries: [{ query: MyPatientProfile }],
   });
 
-  const [updateOwnPatientProfile] = useMutation<
+  const [updateMyPatientProfile] = useMutation<
     null,
     CreateOrUpdatePatientProfileInput
-  >(UpdateOwnPatientProfile, {
-    refetchQueries: [{ query: GetOwnPatientProfile }],
+  >(UpdateMyPatientProfile, {
+    refetchQueries: [{ query: MyPatientProfile }],
   });
 
-  const [setOwnPatientCharacteristicChoicesAndPreferences] = useMutation<
+  const [setMyPatientCharacteristicChoicesAndPreferences] = useMutation<
     null,
-    SetOwnPatientCharacteristicChoicesAndPreferencesInput
-  >(SetOwnPatientCharacteristicChoicesAndPreferences, {
+    SetMyPatientCharacteristicChoicesAndPreferencesInput
+  >(SetMyPatientCharacteristicChoicesAndPreferences, {
     refetchQueries: [{ query: GetCharacteristics }],
   });
 
@@ -349,20 +347,20 @@ const PatientDataComponent = () => {
       const profileExists = !(profileError?.message === "resource not found");
 
       if (profileExists) {
-        await updateOwnPatientProfile({
+        await updateMyPatientProfile({
           variables: {
             profileInput,
           },
         });
       } else {
-        await createOwnPatientProfile({
+        await createMyPatientProfile({
           variables: {
             profileInput,
           },
         });
       }
 
-      await setOwnPatientCharacteristicChoicesAndPreferences({
+      await setMyPatientCharacteristicChoicesAndPreferences({
         variables: {
           choiceInput,
           weightInput,

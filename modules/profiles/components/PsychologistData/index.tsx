@@ -8,18 +8,18 @@ import CharacteristicChooserComponent from "@psi/profiles/components/Characteris
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 import {
   CharacteristicType,
+  CreateMyPsychologistProfile,
   CreateOrUpdatePsychologistProfileInput,
-  CreateOwnPsychologistProfile,
   GetCharacteristicMessages,
   GetCharacteristicMessagesInput,
   GetCharacteristicMessagesResponse,
   GetCharacteristics,
   GetCharacteristicsResponse,
-  GetOwnPsychologistProfile,
-  GetOwnPsychologistProfileResponse,
-  SetOwnPsychologistCharacteristicChoicesAndPreferences,
-  SetOwnPsychologistCharacteristicChoicesAndPreferencesInput,
-  UpdateOwnPsychologistProfile,
+  MyPsychologistProfile,
+  MyPsychologistProfileResponse,
+  SetMyPsychologistCharacteristicChoicesAndPreferences,
+  SetMyPsychologistCharacteristicChoicesAndPreferencesInput,
+  UpdateMyPsychologistProfile,
 } from "@psi/profiles/components/PsychologistData/graphql";
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
 import Button from "@psi/styleguide/components/Button";
@@ -45,7 +45,7 @@ const PsychologistDataComponent = () => {
   const {
     data: profileData,
     error: profileError,
-  } = useQuery<GetOwnPsychologistProfileResponse>(GetOwnPsychologistProfile);
+  } = useQuery<MyPsychologistProfileResponse>(MyPsychologistProfile);
 
   const [
     getCharacteristicMessages,
@@ -114,15 +114,13 @@ const PsychologistDataComponent = () => {
   useEffect(() => {
     if (profileData) {
       fullNameRef.current.value =
-        profileData.getOwnPsychologistProfile?.fullName || "";
+        profileData.myPsychologistProfile?.fullName || "";
       likeNameRef.current.value =
-        profileData.getOwnPsychologistProfile?.likeName || "";
-      cityRef.current.value = profileData.getOwnPsychologistProfile?.city || "";
+        profileData.myPsychologistProfile?.likeName || "";
+      cityRef.current.value = profileData.myPsychologistProfile?.city || "";
 
-      const birthDate = Number(profileData.getOwnPsychologistProfile?.birthDate)
-        ? new Date(
-            1000 * Number(profileData.getOwnPsychologistProfile.birthDate),
-          )
+      const birthDate = Number(profileData.myPsychologistProfile?.birthDate)
+        ? new Date(1000 * Number(profileData.myPsychologistProfile.birthDate))
         : undefined;
 
       if (birthDate) {
@@ -134,8 +132,8 @@ const PsychologistDataComponent = () => {
   // Load all characteristics and all preferences
   useEffect(() => {
     if (characteristicData) {
-      characteristics.set(characteristicData.getPsychologistCharacteristics);
-      preferences.set(characteristicData.getPatientCharacteristics);
+      characteristics.set(characteristicData.psychologistCharacteristics);
+      preferences.set(characteristicData.patientCharacteristics);
     }
   }, [characteristicData]);
 
@@ -144,7 +142,7 @@ const PsychologistDataComponent = () => {
     if (characteristicData) {
       let keys = [];
 
-      for (const i of characteristicData.getPsychologistCharacteristics) {
+      for (const i of characteristicData.psychologistCharacteristics) {
         keys.push(`psy-char:${i.name}`);
         for (const j of i.possibleValues) {
           keys.push(`psy-char:${i.name}:${j}`);
@@ -154,7 +152,7 @@ const PsychologistDataComponent = () => {
 
       keys = [];
 
-      for (const i of characteristicData.getPatientCharacteristics) {
+      for (const i of characteristicData.patientCharacteristics) {
         for (const j of i.possibleValues) {
           keys.push(`pat-pref:${i.name}:${j}`);
         }
@@ -168,7 +166,7 @@ const PsychologistDataComponent = () => {
   useEffect(() => {
     if (characteristicMessagesData) {
       characteristicMessages.set(
-        characteristicMessagesData?.getMessages.reduce(
+        characteristicMessagesData?.translations.reduce(
           (final, current) => ({
             ...final,
             [current.key]: current.value,
@@ -183,7 +181,7 @@ const PsychologistDataComponent = () => {
   useEffect(() => {
     if (preferenceMessagesData) {
       preferenceMessages.set(
-        preferenceMessagesData?.getMessages.reduce(
+        preferenceMessagesData?.translations.reduce(
           (final, current) => ({
             ...final,
             [current.key]: current.value,
@@ -198,8 +196,7 @@ const PsychologistDataComponent = () => {
   useEffect(() => {
     if (profileData && characteristics.value.length) {
       const initialChoices = {};
-      for (const char of profileData.getOwnPsychologistProfile
-        .characteristics) {
+      for (const char of profileData.myPsychologistProfile.characteristics) {
         if (char.selectedValues.length) {
           const possibleValues = characteristics.value.find(
             (ch) => ch.name === char.name,
@@ -229,7 +226,7 @@ const PsychologistDataComponent = () => {
 
       const possibleWeights = HAPPINESS_OPTIONS.map((ho) => ho.value);
 
-      for (const pref of profileData?.getOwnPsychologistProfile?.preferences) {
+      for (const pref of profileData?.myPsychologistProfile?.preferences) {
         if (!initialWeights[pref.characteristicName]) {
           initialWeights[pref.characteristicName] = {};
         }
@@ -242,24 +239,24 @@ const PsychologistDataComponent = () => {
     }
   }, [profileData, preferences.value]);
 
-  const [createOwnPsychologistProfile] = useMutation<
+  const [createMyPsychologistProfile] = useMutation<
     null,
     CreateOrUpdatePsychologistProfileInput
-  >(CreateOwnPsychologistProfile, {
-    refetchQueries: [{ query: GetOwnPsychologistProfile }],
+  >(CreateMyPsychologistProfile, {
+    refetchQueries: [{ query: MyPsychologistProfile }],
   });
 
-  const [updateOwnPsychologistProfile] = useMutation<
+  const [updateMyPsychologistProfile] = useMutation<
     null,
     CreateOrUpdatePsychologistProfileInput
-  >(UpdateOwnPsychologistProfile, {
-    refetchQueries: [{ query: GetOwnPsychologistProfile }],
+  >(UpdateMyPsychologistProfile, {
+    refetchQueries: [{ query: MyPsychologistProfile }],
   });
 
-  const [setOwnPsychologistCharacteristicChoicesAndPreferences] = useMutation<
+  const [setMyPsychologistCharacteristicChoicesAndPreferences] = useMutation<
     null,
-    SetOwnPsychologistCharacteristicChoicesAndPreferencesInput
-  >(SetOwnPsychologistCharacteristicChoicesAndPreferences, {
+    SetMyPsychologistCharacteristicChoicesAndPreferencesInput
+  >(SetMyPsychologistCharacteristicChoicesAndPreferences, {
     refetchQueries: [{ query: GetCharacteristics }],
   });
 
@@ -348,20 +345,20 @@ const PsychologistDataComponent = () => {
       const profileExists = !(profileError?.message === "resource not found");
 
       if (profileExists) {
-        await updateOwnPsychologistProfile({
+        await updateMyPsychologistProfile({
           variables: {
             profileInput,
           },
         });
       } else {
-        await createOwnPsychologistProfile({
+        await createMyPsychologistProfile({
           variables: {
             profileInput,
           },
         });
       }
 
-      await setOwnPsychologistCharacteristicChoicesAndPreferences({
+      await setMyPsychologistCharacteristicChoicesAndPreferences({
         variables: {
           choiceInput,
           weightInput,
