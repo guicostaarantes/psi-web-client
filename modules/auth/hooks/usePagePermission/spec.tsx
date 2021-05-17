@@ -3,7 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { GraphQLError } from "graphql";
 
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
-import { GetOwnUser } from "@psi/auth/hooks/usePagePermission/graphql";
+import { MyUser } from "@psi/auth/hooks/usePagePermission/graphql";
 
 const mockPushRoute = jest
   .fn()
@@ -21,10 +21,10 @@ beforeEach(() => {
 
 const successMock = [
   {
-    request: { query: GetOwnUser },
+    request: { query: MyUser },
     result: {
       data: {
-        getOwnUser: {
+        myUser: {
           id: "6c82b9eb-722a-48f5-9418-0fcd3fbbca47",
           role: "PSYCHOLOGIST",
         },
@@ -35,7 +35,7 @@ const successMock = [
 
 const notAuthenticatedMock = [
   {
-    request: { query: GetOwnUser },
+    request: { query: MyUser },
     result: {
       errors: [new GraphQLError("forbidden")],
     },
@@ -44,10 +44,10 @@ const notAuthenticatedMock = [
 
 const userWithoutPatientProfileMock = [
   {
-    request: { query: GetOwnUser },
+    request: { query: MyUser },
     result: {
       data: {
-        getOwnUser: {
+        myUser: {
           id: "6c82b9eb-722a-48f5-9418-0fcd3fbbca47",
           role: "PATIENT",
         },

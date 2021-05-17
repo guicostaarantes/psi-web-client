@@ -4,18 +4,17 @@ import { render, screen, waitFor } from "@testing-library/react";
 import PatientDataComponent from "@psi/profiles/components/PatientData";
 import {
   GetCharacteristics,
-  GetOwnPatientProfile,
+  MyPatientProfile,
 } from "@psi/profiles/components/PatientData/graphql";
 
 const mocks = [
   {
     request: {
-      query: GetOwnPatientProfile,
+      query: MyPatientProfile,
     },
     result: {
       data: {
-        getOwnPatientProfile: {
-          id: "123",
+        myPatientProfile: {
           fullName: "Thomas Edward Patrick Brady, Jr.",
           likeName: "Tom Brady",
           birthDate: 239414400,
@@ -59,7 +58,7 @@ const mocks = [
     },
     result: {
       data: {
-        getPatientCharacteristics: [
+        patientCharacteristics: [
           {
             name: "has-consulted-before",
             type: "BOOLEAN",
@@ -76,7 +75,7 @@ const mocks = [
             possibleValues: ["vision", "hearing", "locomotion"],
           },
         ],
-        getPsychologistCharacteristics: [
+        psychologistCharacteristics: [
           {
             name: "black",
             type: "BOOLEAN",

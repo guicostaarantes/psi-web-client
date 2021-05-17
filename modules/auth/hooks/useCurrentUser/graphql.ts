@@ -2,19 +2,19 @@ import { gql } from "@apollo/client";
 
 import { Role } from "@psi/auth/constants/roles";
 
-export interface GetOwnUserResponseData {
+export interface MyUserResponseData {
   id: string;
   email: string;
   role: Role;
 }
 
-export interface GetOwnUserResponse {
-  getOwnUser: GetOwnUserResponseData;
+export interface MyUserResponse {
+  myUser: MyUserResponseData;
 }
 
-const GetOwnUser = gql`
-  query GetOwnUser {
-    getOwnUser {
+const MyUser = gql`
+  query MyUser {
+    myUser {
       id
       email
       role
@@ -22,4 +22,4 @@ const GetOwnUser = gql`
   }
 `;
 
-export default GetOwnUser;
+export default MyUser;

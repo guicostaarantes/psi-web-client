@@ -3,14 +3,14 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { GraphQLError } from "graphql";
 
 import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
-import GetOwnUser from "@psi/auth/hooks/useCurrentUser/graphql";
+import MyUser from "@psi/auth/hooks/useCurrentUser/graphql";
 
 const successMock = [
   {
-    request: { query: GetOwnUser },
+    request: { query: MyUser },
     result: {
       data: {
-        getOwnUser: {
+        myUser: {
           id: "6c82b9eb-722a-48f5-9418-0fcd3fbbca47",
           email: "tom.brady@psi.com.br",
           role: "PSYCHOLOGIST",
@@ -22,7 +22,7 @@ const successMock = [
 
 const errorMock = [
   {
-    request: { query: GetOwnUser },
+    request: { query: MyUser },
     result: {
       errors: [new GraphQLError("forbidden")],
     },

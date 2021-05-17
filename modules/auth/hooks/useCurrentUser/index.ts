@@ -1,16 +1,14 @@
 import { useQuery } from "@apollo/client";
 
-import GetOwnUser, {
-  GetOwnUserResponse,
-  GetOwnUserResponseData,
+import MyUser, {
+  MyUserResponse,
+  MyUserResponseData,
 } from "@psi/auth/hooks/useCurrentUser/graphql";
 
-const useCurrentUser = (): GetOwnUserResponseData => {
-  const { data } = useQuery<GetOwnUserResponse>(GetOwnUser, {
-    fetchPolicy: "no-cache",
-  });
+const useCurrentUser = (): MyUserResponseData => {
+  const { data } = useQuery<MyUserResponse>(MyUser);
 
-  return data?.getOwnUser || ({} as GetOwnUserResponseData);
+  return data?.myUser || ({} as MyUserResponseData);
 };
 
 export default useCurrentUser;

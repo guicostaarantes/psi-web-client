@@ -1,15 +1,14 @@
 import { gql } from "@apollo/client";
 
-export interface GetOwnLikeNameResponse {
-  getOwnPatientProfile: {
+export interface MyLikeNameResponse {
+  myPatientProfile: {
     likeName: string;
   };
 }
 
-export const GetOwnLikeName = gql`
-  query GetOwnLikeName {
-    getOwnPatientProfile {
-      id
+export const MyLikeName = gql`
+  query MyLikeName {
+    myPatientProfile {
       likeName
     }
   }
