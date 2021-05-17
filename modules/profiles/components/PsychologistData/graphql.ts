@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 
 export type CharacteristicType = "BOOLEAN" | "SINGLE" | "MULTIPLE";
 
-export interface GetOwnPsychologistProfileResponse {
-  getOwnPsychologistProfile: {
+export interface MyPsychologistProfileResponse {
+  myPsychologistProfile: {
     fullName: string;
     likeName: string;
     birthDate: string;
@@ -21,9 +21,9 @@ export interface GetOwnPsychologistProfileResponse {
   };
 }
 
-export const GetOwnPsychologistProfile = gql`
-  query GetOwnPsychologistProfile {
-    getOwnPsychologistProfile {
+export const MyPsychologistProfile = gql`
+  query MyPsychologistProfile {
+    myPsychologistProfile {
       fullName
       likeName
       birthDate
@@ -43,12 +43,12 @@ export const GetOwnPsychologistProfile = gql`
 `;
 
 export interface GetCharacteristicsResponse {
-  getPatientCharacteristics: {
+  patientCharacteristics: {
     name: string;
     type: CharacteristicType;
     possibleValues: string[];
   }[];
-  getPsychologistCharacteristics: {
+  psychologistCharacteristics: {
     name: string;
     type: CharacteristicType;
     possibleValues: string[];
@@ -57,12 +57,12 @@ export interface GetCharacteristicsResponse {
 
 export const GetCharacteristics = gql`
   query GetCharacteristics {
-    getPatientCharacteristics {
+    patientCharacteristics {
       name
       type
       possibleValues
     }
-    getPsychologistCharacteristics {
+    psychologistCharacteristics {
       name
       type
       possibleValues
@@ -76,7 +76,7 @@ export interface GetCharacteristicMessagesInput {
 }
 
 export interface GetCharacteristicMessagesResponse {
-  getMessages: {
+  translations: {
     lang: string;
     key: string;
     value: string;
@@ -85,7 +85,7 @@ export interface GetCharacteristicMessagesResponse {
 
 export const GetCharacteristicMessages = gql`
   query GetCharacteristicMessages($lang: String!, $keys: [String!]!) {
-    getMessages(lang: $lang, keys: $keys) {
+    translations(lang: $lang, keys: $keys) {
       lang
       key
       value
@@ -93,7 +93,7 @@ export const GetCharacteristicMessages = gql`
   }
 `;
 
-export interface CreateOrUpdatePsychologistProfileInput {
+export interface UpsertMyPsychologistProfileInput {
   profileInput: {
     fullName: string;
     likeName: string;
@@ -102,23 +102,15 @@ export interface CreateOrUpdatePsychologistProfileInput {
   };
 }
 
-export const CreateOwnPsychologistProfile = gql`
-  mutation CreateOwnPsychologistProfile(
-    $profileInput: CreateOwnPsychologistProfileInput!
+export const UpsertMyPsychologistProfile = gql`
+  mutation UpsertMyPsychologistProfile(
+    $profileInput: UpsertMyPsychologistProfileInput!
   ) {
-    createOwnPsychologistProfile(input: $profileInput)
+    upsertMyPsychologistProfile(input: $profileInput)
   }
 `;
 
-export const UpdateOwnPsychologistProfile = gql`
-  mutation UpdateOwnPsychologistProfile(
-    $profileInput: UpdateOwnPsychologistProfileInput!
-  ) {
-    updateOwnPsychologistProfile(input: $profileInput)
-  }
-`;
-
-export interface SetOwnPsychologistCharacteristicChoicesAndPreferencesInput {
+export interface SetMyPsychologistCharacteristicChoicesAndPreferencesInput {
   choiceInput: {
     characteristicName: string;
     selectedValues: string[];
@@ -130,12 +122,12 @@ export interface SetOwnPsychologistCharacteristicChoicesAndPreferencesInput {
   }[];
 }
 
-export const SetOwnPsychologistCharacteristicChoicesAndPreferences = gql`
-  mutation SetOwnPsychologistCharacteristicChoicesAndPreferences(
-    $choiceInput: [SetOwnProfileCharacteristicChoiceInput!]!
-    $weightInput: [SetOwnProfilePreferenceInput!]!
+export const SetMyPsychologistCharacteristicChoicesAndPreferences = gql`
+  mutation SetMyPsychologistCharacteristicChoicesAndPreferences(
+    $choiceInput: [SetMyProfileCharacteristicChoiceInput!]!
+    $weightInput: [SetMyProfilePreferenceInput!]!
   ) {
-    setOwnPsychologistCharacteristicChoices(input: $choiceInput)
-    setOwnPsychologistPreferences(input: $weightInput)
+    setMyPsychologistCharacteristicChoices(input: $choiceInput)
+    setMyPsychologistPreferences(input: $weightInput)
   }
 `;

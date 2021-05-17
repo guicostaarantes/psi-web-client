@@ -5,8 +5,8 @@ import { useEffect } from "react";
 
 import { Role } from "@psi/auth/constants/roles";
 import {
-  GetOwnUser,
-  GetOwnUserResponse,
+  MyUser,
+  MyUserResponse,
 } from "@psi/auth/hooks/usePagePermission/graphql";
 
 interface usePagePermissionArgs {
@@ -26,28 +26,28 @@ const usePagePermission = ({
 
   const pageStatus = useState("loading");
 
-  const { client, data, error } = useQuery<GetOwnUserResponse>(GetOwnUser, {
+  const { client, data, error } = useQuery<MyUserResponse>(MyUser, {
     fetchPolicy: "no-cache",
   });
 
   useEffect(() => {
     if (error) {
-      // If GetOwnUser returns error, clear token and apollo cache
+      // If MyUser returns error, clear token and apollo cache
       localStorage.removeItem("token");
       client.cache.reset();
       if (requiresAuth) {
-        // If GetOwnUser returns error and page requires auth, send to login page
+        // If MyUser returns error and page requires auth, send to login page
         router
           .push("/login")
           .then(() => pageStatus.set("ready"))
           .catch((err) => console.error(err));
       } else {
-        // If GetOwnUser returns error but no auth is required, show page
+        // If MyUser returns error but no auth is required, show page
         pageStatus.set("ready");
       }
     } else if (data) {
-      if (!requiresRole.includes(data.getOwnUser.role)) {
-        // If GetOwnUser returns user but with forbidden role, shows 404
+      if (!requiresRole.includes(data.myUser.role)) {
+        // If MyUser returns user but with forbidden role, shows 404
         pageStatus.set("notFound");
       } else {
         // If user and role checks passed and no additional check is needed, show the page

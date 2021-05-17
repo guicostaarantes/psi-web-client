@@ -2,16 +2,16 @@ import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import Greeting from "@psi/home/components/Greeting";
-import { GetOwnLikeName } from "@psi/home/components/Greeting/graphql";
+import { MyLikeName } from "@psi/home/components/Greeting/graphql";
 
 const mocks = [
   {
     request: {
-      query: GetOwnLikeName,
+      query: MyLikeName,
     },
     result: {
       data: {
-        getOwnPatientProfile: {
+        myPatientProfile: {
           likeName: "Tom Brady",
         },
       },

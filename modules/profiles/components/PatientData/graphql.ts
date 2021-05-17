@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 
 export type CharacteristicType = "BOOLEAN" | "SINGLE" | "MULTIPLE";
 
-export interface GetOwnPatientProfileResponse {
-  getOwnPatientProfile: {
+export interface MyPatientProfileResponse {
+  myPatientProfile: {
     fullName: string;
     likeName: string;
     birthDate: string;
@@ -21,9 +21,9 @@ export interface GetOwnPatientProfileResponse {
   };
 }
 
-export const GetOwnPatientProfile = gql`
-  query GetOwnPatientProfile {
-    getOwnPatientProfile {
+export const MyPatientProfile = gql`
+  query MyPatientProfile {
+    myPatientProfile {
       fullName
       likeName
       birthDate
@@ -43,12 +43,12 @@ export const GetOwnPatientProfile = gql`
 `;
 
 export interface GetCharacteristicsResponse {
-  getPatientCharacteristics: {
+  patientCharacteristics: {
     name: string;
     type: CharacteristicType;
     possibleValues: string[];
   }[];
-  getPsychologistCharacteristics: {
+  psychologistCharacteristics: {
     name: string;
     type: CharacteristicType;
     possibleValues: string[];
@@ -57,12 +57,12 @@ export interface GetCharacteristicsResponse {
 
 export const GetCharacteristics = gql`
   query GetCharacteristics {
-    getPatientCharacteristics {
+    patientCharacteristics {
       name
       type
       possibleValues
     }
-    getPsychologistCharacteristics {
+    psychologistCharacteristics {
       name
       type
       possibleValues
@@ -76,7 +76,7 @@ export interface GetCharacteristicMessagesInput {
 }
 
 export interface GetCharacteristicMessagesResponse {
-  getMessages: {
+  translations: {
     lang: string;
     key: string;
     value: string;
@@ -85,7 +85,7 @@ export interface GetCharacteristicMessagesResponse {
 
 export const GetCharacteristicMessages = gql`
   query GetCharacteristicMessages($lang: String!, $keys: [String!]!) {
-    getMessages(lang: $lang, keys: $keys) {
+    translations(lang: $lang, keys: $keys) {
       lang
       key
       value
@@ -93,7 +93,7 @@ export const GetCharacteristicMessages = gql`
   }
 `;
 
-export interface CreateOrUpdatePatientProfileInput {
+export interface UpsertMyPatientProfileInput {
   profileInput: {
     fullName: string;
     likeName: string;
@@ -102,23 +102,13 @@ export interface CreateOrUpdatePatientProfileInput {
   };
 }
 
-export const CreateOwnPatientProfile = gql`
-  mutation CreateOwnPatientProfile(
-    $profileInput: CreateOwnPatientProfileInput!
-  ) {
-    createOwnPatientProfile(input: $profileInput)
+export const UpsertMyPatientProfile = gql`
+  mutation UpsertMyPatientProfile($profileInput: UpsertMyPatientProfileInput!) {
+    upsertMyPatientProfile(input: $profileInput)
   }
 `;
 
-export const UpdateOwnPatientProfile = gql`
-  mutation UpdateOwnPatientProfile(
-    $profileInput: UpdateOwnPatientProfileInput!
-  ) {
-    updateOwnPatientProfile(input: $profileInput)
-  }
-`;
-
-export interface SetOwnPatientCharacteristicChoicesAndPreferencesInput {
+export interface SetMyPatientCharacteristicChoicesAndPreferencesInput {
   choiceInput: {
     characteristicName: string;
     selectedValues: string[];
@@ -130,12 +120,12 @@ export interface SetOwnPatientCharacteristicChoicesAndPreferencesInput {
   }[];
 }
 
-export const SetOwnPatientCharacteristicChoicesAndPreferences = gql`
-  mutation SetOwnPatientCharacteristicChoicesAndPreferences(
-    $choiceInput: [SetOwnProfileCharacteristicChoiceInput!]!
-    $weightInput: [SetOwnProfilePreferenceInput!]!
+export const SetMyPatientCharacteristicChoicesAndPreferences = gql`
+  mutation SetMyPatientCharacteristicChoicesAndPreferences(
+    $choiceInput: [SetMyProfileCharacteristicChoiceInput!]!
+    $weightInput: [SetMyProfilePreferenceInput!]!
   ) {
-    setOwnPatientCharacteristicChoices(input: $choiceInput)
-    setOwnPatientPreferences(input: $weightInput)
+    setMyPatientCharacteristicChoices(input: $choiceInput)
+    setMyPatientPreferences(input: $weightInput)
   }
 `;
