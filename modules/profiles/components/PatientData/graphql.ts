@@ -93,7 +93,7 @@ export const GetCharacteristicMessages = gql`
   }
 `;
 
-export interface CreateOrUpdatePatientProfileInput {
+export interface UpsertMyPatientProfileInput {
   profileInput: {
     fullName: string;
     likeName: string;
@@ -102,15 +102,9 @@ export interface CreateOrUpdatePatientProfileInput {
   };
 }
 
-export const CreateMyPatientProfile = gql`
-  mutation CreateMyPatientProfile($profileInput: CreateMyPatientProfileInput!) {
-    createMyPatientProfile(input: $profileInput)
-  }
-`;
-
-export const UpdateMyPatientProfile = gql`
-  mutation UpdateMyPatientProfile($profileInput: UpdateMyPatientProfileInput!) {
-    updateMyPatientProfile(input: $profileInput)
+export const UpsertMyPatientProfile = gql`
+  mutation UpsertMyPatientProfile($profileInput: UpsertMyPatientProfileInput!) {
+    upsertMyPatientProfile(input: $profileInput)
   }
 `;
 

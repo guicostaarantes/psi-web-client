@@ -93,7 +93,7 @@ export const GetCharacteristicMessages = gql`
   }
 `;
 
-export interface CreateOrUpdatePsychologistProfileInput {
+export interface UpsertMyPsychologistProfileInput {
   profileInput: {
     fullName: string;
     likeName: string;
@@ -102,19 +102,11 @@ export interface CreateOrUpdatePsychologistProfileInput {
   };
 }
 
-export const CreateMyPsychologistProfile = gql`
-  mutation CreateMyPsychologistProfile(
-    $profileInput: CreateMyPsychologistProfileInput!
+export const UpsertMyPsychologistProfile = gql`
+  mutation UpsertMyPsychologistProfile(
+    $profileInput: UpsertMyPsychologistProfileInput!
   ) {
-    createMyPsychologistProfile(input: $profileInput)
-  }
-`;
-
-export const UpdateMyPsychologistProfile = gql`
-  mutation UpdateMyPsychologistProfile(
-    $profileInput: UpdateMyPsychologistProfileInput!
-  ) {
-    updateMyPsychologistProfile(input: $profileInput)
+    upsertMyPsychologistProfile(input: $profileInput)
   }
 `;
 

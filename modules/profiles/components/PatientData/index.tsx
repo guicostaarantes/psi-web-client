@@ -7,8 +7,6 @@ import { useEffect, useRef } from "react";
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import {
   CharacteristicType,
-  CreateMyPatientProfile,
-  CreateOrUpdatePatientProfileInput,
   GetCharacteristicMessages,
   GetCharacteristicMessagesInput,
   GetCharacteristicMessagesResponse,
@@ -18,7 +16,8 @@ import {
   MyPatientProfileResponse,
   SetMyPatientCharacteristicChoicesAndPreferences,
   SetMyPatientCharacteristicChoicesAndPreferencesInput,
-  UpdateMyPatientProfile,
+  UpsertMyPatientProfile,
+  UpsertMyPatientProfileInput,
 } from "@psi/profiles/components/PatientData/graphql";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
@@ -45,6 +44,7 @@ const PatientDataComponent = () => {
   const {
     data: profileData,
     error: profileError,
+    loading: profileLoading,
   } = useQuery<MyPatientProfileResponse>(MyPatientProfile);
 
   const [
@@ -93,13 +93,8 @@ const PatientDataComponent = () => {
 
   const preferenceMessages = useState<Record<string, string>>({});
 
-  // If profileError is different than "resource not found", something is wrong
   useEffect(() => {
-    if (
-      profileError?.message &&
-      profileError.message !== "resource not found" &&
-      profileError.message !== "forbidden"
-    ) {
+    if (profileError?.message && profileError.message !== "forbidden") {
       addToast({
         header: "Erro ao carregar informações",
         message:
@@ -115,10 +110,6 @@ const PatientDataComponent = () => {
     if (profileData) {
       fullNameRef.current.value = profileData.myPatientProfile?.fullName || "";
       likeNameRef.current.value = profileData.myPatientProfile?.likeName || "";
-      // birthDateRef.current.value =
-      //   dayjs(profileData.myPatientProfile?.birthDate).format(
-      //     DATE_FORMAT,
-      //   ) || "";
       cityRef.current.value = profileData.myPatientProfile?.city || "";
 
       const birthDate = Number(profileData.myPatientProfile?.birthDate)
@@ -196,70 +187,61 @@ const PatientDataComponent = () => {
 
   // Load current characteristic choices and fill the fields
   useEffect(() => {
-    if (profileData && characteristics.value.length) {
+    if (!profileLoading && characteristics.value) {
       const initialChoices = {};
-      for (const char of profileData.myPatientProfile.characteristics) {
-        if (char.selectedValues.length) {
-          const possibleValues = characteristics.value.find(
-            (ch) => ch.name === char.name,
-          ).possibleValues;
-          if (char.type === "BOOLEAN" || char.type === "SINGLE") {
-            if (possibleValues.includes(char.selectedValues[0])) {
-              initialChoices[char.name] = char.selectedValues[0];
-            }
-          } else if (char.type === "MULTIPLE") {
-            initialChoices[char.name] = {};
-            for (const val of char.selectedValues) {
-              if (possibleValues.includes(val)) {
-                initialChoices[char.name][val] = true;
-              }
-            }
-          }
+      for (const char of characteristics.value) {
+        if (char.type === "BOOLEAN" || char.type === "SINGLE") {
+          initialChoices[
+            char.name
+          ] = profileData.myPatientProfile?.characteristics?.find(
+            (profileChar) => profileChar.name === char.name,
+          ).selectedValues[0];
+        } else if (char.type === "MULTIPLE") {
+          initialChoices[char.name] = {};
+          profileData.myPatientProfile?.characteristics
+            ?.find((profileChar) => profileChar.name === char.name)
+            .selectedValues.forEach(
+              (sv) => (initialChoices[char.name][sv] = true),
+            );
         }
       }
       choices.set(initialChoices);
     }
-  }, [profileData, characteristics.value]);
+  }, [profileLoading, characteristics.value]);
 
   // Load current preference weights and fill the fields
   useEffect(() => {
-    if (profileData && preferences.value) {
+    if (!profileLoading && preferences.value) {
       const initialWeights = {};
-
       const possibleWeights = HAPPINESS_OPTIONS.map((ho) => ho.value);
-
-      for (const pref of profileData?.myPatientProfile?.preferences) {
-        if (!initialWeights[pref.characteristicName]) {
-          initialWeights[pref.characteristicName] = {};
-        }
-        if (possibleWeights.includes(pref.weight)) {
-          initialWeights[pref.characteristicName][pref.selectedValue] =
-            pref.weight;
+      for (const pref of preferences.value) {
+        initialWeights[pref.name] = {};
+        for (const pv of pref.possibleValues) {
+          const weight = profileData.myPatientProfile?.preferences?.find(
+            (profilePref) =>
+              profilePref.characteristicName === pref.name &&
+              profilePref.selectedValue === pv,
+          )?.weight;
+          initialWeights[pref.name][pv] =
+            weight !== undefined && possibleWeights.includes(weight)
+              ? weight
+              : undefined;
         }
       }
       weights.set(initialWeights);
     }
-  }, [profileData, preferences.value]);
+  }, [profileLoading, preferences.value]);
 
-  const [createMyPatientProfile] = useMutation<
+  const [upsertMyPatientProfile] = useMutation<
     null,
-    CreateOrUpdatePatientProfileInput
-  >(CreateMyPatientProfile, {
-    refetchQueries: [{ query: MyPatientProfile }],
-  });
-
-  const [updateMyPatientProfile] = useMutation<
-    null,
-    CreateOrUpdatePatientProfileInput
-  >(UpdateMyPatientProfile, {
-    refetchQueries: [{ query: MyPatientProfile }],
-  });
+    UpsertMyPatientProfileInput
+  >(UpsertMyPatientProfile);
 
   const [setMyPatientCharacteristicChoicesAndPreferences] = useMutation<
     null,
     SetMyPatientCharacteristicChoicesAndPreferencesInput
   >(SetMyPatientCharacteristicChoicesAndPreferences, {
-    refetchQueries: [{ query: GetCharacteristics }],
+    refetchQueries: [{ query: MyPatientProfile }],
   });
 
   const handleSave = async () => {
@@ -299,7 +281,9 @@ const PatientDataComponent = () => {
       } else {
         return {
           characteristicName: cho,
-          selectedValues: Object.keys(choices.value[cho]),
+          selectedValues: Object.keys(choices.value[cho]).filter(
+            (key) => choices.value[cho][key],
+          ),
         };
       }
     });
@@ -344,21 +328,11 @@ const PatientDataComponent = () => {
 
     // Sending new information to server
     try {
-      const profileExists = !(profileError?.message === "resource not found");
-
-      if (profileExists) {
-        await updateMyPatientProfile({
-          variables: {
-            profileInput,
-          },
-        });
-      } else {
-        await createMyPatientProfile({
-          variables: {
-            profileInput,
-          },
-        });
-      }
+      await upsertMyPatientProfile({
+        variables: {
+          profileInput,
+        },
+      });
 
       await setMyPatientCharacteristicChoicesAndPreferences({
         variables: {
@@ -369,9 +343,7 @@ const PatientDataComponent = () => {
 
       addToast({
         header: "Tudo certo",
-        message: `Perfil ${
-          profileExists ? "atualizado" : "criado"
-        } com sucesso.`,
+        message: "Perfil atualizado com sucesso.",
       });
       router.push("/");
     } catch (err) {
