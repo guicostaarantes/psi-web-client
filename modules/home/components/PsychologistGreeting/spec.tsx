@@ -2,8 +2,8 @@ import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import { MyUserResponseData } from "@psi/auth/hooks/useCurrentUser/graphql";
-import PatientGreeting from "@psi/home/components/PatientGreeting";
-import { MyLikeName } from "@psi/home/components/PatientGreeting/graphql";
+import PsychologistGreeting from "@psi/home/components/PsychologistGreeting";
+import { MyLikeName } from "@psi/home/components/PsychologistGreeting/graphql";
 
 let mockUser: MyUserResponseData;
 
@@ -18,9 +18,9 @@ const mocks = [
     },
     result: {
       data: {
-        myPatientProfile: {
+        myPsychologistProfile: {
           id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
-          likeName: "Tom Brady",
+          likeName: "Peyton Manning",
         },
       },
     },
@@ -30,18 +30,18 @@ const mocks = [
 test("should render", async () => {
   mockUser = {
     id: "123",
-    email: "tom.brady@psi.com.br",
-    role: "PATIENT",
+    email: "peyton.manning@psi.com.br",
+    role: "PSYCHOLOGIST",
   };
 
   render(
     <MockedProvider mocks={mocks}>
-      <PatientGreeting />
+      <PsychologistGreeting />
     </MockedProvider>,
   );
 
   await waitFor(() => {
-    const greetingText = screen.getByText("Oi Tom Brady");
+    const greetingText = screen.getByText("Oi Peyton Manning");
 
     expect(greetingText).toBeInTheDocument();
   });
@@ -50,13 +50,13 @@ test("should render", async () => {
 test("should not render if user is patient", async () => {
   mockUser = {
     id: "123",
-    email: "peyton.manning@psi.com.br",
-    role: "PSYCHOLOGIST",
+    email: "tom.brady@psi.com.br",
+    role: "PATIENT",
   };
 
   const { container } = render(
     <MockedProvider mocks={mocks}>
-      <PatientGreeting />
+      <PsychologistGreeting />
     </MockedProvider>,
   );
 

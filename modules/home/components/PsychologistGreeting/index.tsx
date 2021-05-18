@@ -5,28 +5,28 @@ import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
 import {
   MyLikeName,
   MyLikeNameResponse,
-} from "@psi/home/components/PatientGreeting/graphql";
+} from "@psi/home/components/PsychologistGreeting/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Image from "@psi/styleguide/components/Image";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 
-const PatientGreeting = () => {
+const PsychologistGreeting = () => {
   const user = useCurrentUser();
 
   const router = useRouter();
 
   const { data } = useQuery<MyLikeNameResponse>(MyLikeName);
 
-  const likeName = data?.myPatientProfile?.likeName;
+  const likeName = data?.myPsychologistProfile?.likeName;
 
-  // If logged user is not a patient, do not render this component
-  if (user.role !== "PATIENT") {
+  // If logged user is not a psychologist, do not render this component
+  if (user.role !== "PSYCHOLOGIST") {
     return null;
   }
 
   const handleMyProfileClick = () => {
-    router.push("/paciente");
+    router.push("/psicologo");
   };
 
   const handleLogoutClick = () => {
@@ -75,4 +75,4 @@ const PatientGreeting = () => {
   );
 };
 
-export default PatientGreeting;
+export default PsychologistGreeting;
