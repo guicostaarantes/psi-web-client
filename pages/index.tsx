@@ -2,6 +2,7 @@ import Head from "next/head";
 
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
 import Greeting from "@psi/home/components/Greeting";
+import PatientStatus from "@psi/home/components/PatientStatus";
 import LoadingPage from "@psi/shared/components/LoadingPage";
 import Container from "@psi/styleguide/components/Layout/Container";
 
@@ -23,6 +24,7 @@ const Index = () => {
         </Head>
         <Container>
           <Greeting />
+          <PatientStatus />
         </Container>
       </>
     );

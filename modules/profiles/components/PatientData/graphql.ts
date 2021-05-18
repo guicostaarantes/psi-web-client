@@ -4,6 +4,7 @@ export type CharacteristicType = "BOOLEAN" | "SINGLE" | "MULTIPLE";
 
 export interface MyPatientProfileResponse {
   myPatientProfile: {
+    id: string;
     fullName: string;
     likeName: string;
     birthDate: string;
@@ -24,6 +25,7 @@ export interface MyPatientProfileResponse {
 export const MyPatientProfile = gql`
   query MyPatientProfile {
     myPatientProfile {
+      id
       fullName
       likeName
       birthDate

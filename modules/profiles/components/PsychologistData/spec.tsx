@@ -1,29 +1,30 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 
-import PatientDataComponent from "@psi/profiles/components/PatientData";
+import PsychologistDataComponent from "@psi/profiles/components/PsychologistData";
 import {
   GetCharacteristics,
-  MyPatientProfile,
-} from "@psi/profiles/components/PatientData/graphql";
+  MyPsychologistProfile,
+} from "@psi/profiles/components/PsychologistData/graphql";
 
 const mocks = [
   {
     request: {
-      query: MyPatientProfile,
+      query: MyPsychologistProfile,
     },
     result: {
       data: {
-        myPatientProfile: {
-          fullName: "Thomas Edward Patrick Brady, Jr.",
-          likeName: "Tom Brady",
-          birthDate: 239414400,
-          city: "Boston - MA",
+        myPsychologistProfile: {
+          id: "7289bb4f-eb82-4f6e-8cde-d02d52eeed1c",
+          fullName: "Peyton Williams Manning",
+          likeName: "Peyton Manning",
+          birthDate: 196484400,
+          city: "Indianapolis - IN",
           characteristics: [
             {
-              name: "has-consulted-before",
+              name: "black",
               type: "BOOLEAN",
-              selectedValues: [],
+              selectedValues: ["false"],
             },
             {
               name: "gender",
@@ -38,12 +39,12 @@ const mocks = [
           ],
           preferences: [
             {
-              characteristicName: "black",
+              characteristicName: "has-consulted-before",
               selectedValue: "true",
               weight: 3,
             },
             {
-              characteristicName: "black",
+              characteristicName: "has-consulted-before",
               selectedValue: "false",
               weight: -3,
             },
@@ -100,7 +101,7 @@ const mocks = [
 test("PatientDataComponent renders with data from database", async () => {
   render(
     <MockedProvider mocks={mocks}>
-      <PatientDataComponent />
+      <PsychologistDataComponent />
     </MockedProvider>,
   );
 
@@ -121,9 +122,9 @@ test("PatientDataComponent renders with data from database", async () => {
   expect(city).toBeInTheDocument();
 
   await waitFor(() => {
-    expect(fullName.value).toBe("Thomas Edward Patrick Brady, Jr.");
-    expect(likeName.value).toBe("Tom Brady");
-    expect(birthDate.value).toBe("02/08/1977");
-    expect(city.value).toBe("Boston - MA");
+    expect(fullName.value).toBe("Peyton Williams Manning");
+    expect(likeName.value).toBe("Peyton Manning");
+    expect(birthDate.value).toBe("24/03/1976");
+    expect(city.value).toBe("Indianapolis - IN");
   });
 });
