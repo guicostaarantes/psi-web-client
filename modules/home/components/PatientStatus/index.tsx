@@ -3,6 +3,8 @@ import { useState } from "@hookstate/core";
 import { useEffect } from "react";
 
 import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
+import AppointmentApproval from "@psi/home/components/PatientStatus/components/AppointmentApproval";
+import AppointmentReady from "@psi/home/components/PatientStatus/components/AppointmentReady";
 import AppointmentSelection from "@psi/home/components/PatientStatus/components/AppointmentSelection";
 import AwaitingProfile from "@psi/home/components/PatientStatus/components/AwaitingProfile";
 import TreatmentSelection from "@psi/home/components/PatientStatus/components/TreatmentSelection";
@@ -106,9 +108,9 @@ const PatientStatus = () => {
     case "APPOINTMENT_SELECTION":
       return <AppointmentSelection />;
     case "APPOINTMENT_APPROVAL":
-      return <div>APPOINTMENT_APPROVAL</div>;
+      return <AppointmentApproval />;
     case "APPOINTMENT_READY":
-      return <div>APPOINTMENT_READY</div>;
+      return <AppointmentReady />;
     default:
       assertUnreachable(status.value);
   }

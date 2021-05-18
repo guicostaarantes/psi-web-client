@@ -29,6 +29,7 @@ export interface GetTreatmentsAppointmentsResponse {
     }[];
     appointments: {
       id: string;
+      start: number;
       end: number;
       status: AppointmentStatus;
     }[];
@@ -51,6 +52,7 @@ export const GetTreatmentsAppointments = gql`
       }
       appointments {
         id
+        start
         end
         status
       }

@@ -7,7 +7,9 @@ import { GetTreatmentsAppointments } from "@psi/home/components/PatientStatus/gr
 
 const now = 1612345678;
 const yesterday = now - 86400;
+const laterYesterday = now - 86400 + 3600;
 const tomorrow = now + 86400;
+const laterTomorrow = now + 86400 + 3600;
 
 let mockUser: MyUserResponseData;
 
@@ -217,17 +219,20 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but no
             appointments: [
               {
                 id: "c9b57db7-031f-42bc-b7cc-006c646eca3c",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "DENIED",
               },
               {
                 id: "1312ae55-9e16-4f68-b457-d13f5f1c3724",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CANCELED_BY_PSYCHOLOGIST",
               },
               {
                 id: "8fb17b4c-7394-4605-977e-476ee16a071b",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CANCELED_BY_PATIENT",
               },
             ],
@@ -325,27 +330,32 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but al
             appointments: [
               {
                 id: "c9b57db7-031f-42bc-b7cc-006c646eca3c",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "DENIED",
               },
               {
                 id: "1312ae55-9e16-4f68-b457-d13f5f1c3724",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CANCELED_BY_PSYCHOLOGIST",
               },
               {
                 id: "8fb17b4c-7394-4605-977e-476ee16a071b",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CANCELED_BY_PATIENT",
               },
               {
                 id: "63fad2b4-9b4f-40ee-bf60-b3337f16e2b3",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CONFIRMED",
               },
               {
                 id: "3832b858-3de9-4f24-945a-ed2fafd1bb01",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "PROPOSED",
               },
             ],
@@ -443,27 +453,32 @@ test("should render APPOINTMENT_APPROVAL if user has an active treatment and a p
             appointments: [
               {
                 id: "c9b57db7-031f-42bc-b7cc-006c646eca3c",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "DENIED",
               },
               {
                 id: "1312ae55-9e16-4f68-b457-d13f5f1c3724",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CANCELED_BY_PSYCHOLOGIST",
               },
               {
                 id: "8fb17b4c-7394-4605-977e-476ee16a071b",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CANCELED_BY_PATIENT",
               },
               {
                 id: "63fad2b4-9b4f-40ee-bf60-b3337f16e2b3",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CONFIRMED",
               },
               {
                 id: "3832b858-3de9-4f24-945a-ed2fafd1bb01",
-                end: tomorrow,
+                start: tomorrow,
+                end: laterTomorrow,
                 status: "PROPOSED",
               },
             ],
@@ -480,9 +495,29 @@ test("should render APPOINTMENT_APPROVAL if user has an active treatment and a p
   );
 
   await waitFor(() => {
-    const text = screen.getByText("APPOINTMENT_APPROVAL");
+    const button = screen.getByText(
+      "Escolher novo horário",
+    ) as HTMLButtonElement;
 
-    expect(text).toBeInTheDocument();
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(1);
+    expect(mockPushRoute).toBeCalledWith("/consulta");
+  });
+
+  await waitFor(() => {
+    const button = screen.getByText(
+      "Interromper tratamento",
+    ) as HTMLButtonElement;
+
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(2);
+    expect(mockPushRoute).toBeCalledWith("/interromper");
   });
 });
 
@@ -541,27 +576,32 @@ test("should render APPOINTMENT_READY if user has an active treatment and a conf
             appointments: [
               {
                 id: "c9b57db7-031f-42bc-b7cc-006c646eca3c",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "DENIED",
               },
               {
                 id: "1312ae55-9e16-4f68-b457-d13f5f1c3724",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CANCELED_BY_PSYCHOLOGIST",
               },
               {
                 id: "8fb17b4c-7394-4605-977e-476ee16a071b",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "CANCELED_BY_PATIENT",
               },
               {
                 id: "63fad2b4-9b4f-40ee-bf60-b3337f16e2b3",
-                end: tomorrow,
+                start: tomorrow,
+                end: laterTomorrow,
                 status: "CONFIRMED",
               },
               {
                 id: "3832b858-3de9-4f24-945a-ed2fafd1bb01",
-                end: yesterday,
+                start: yesterday,
+                end: laterYesterday,
                 status: "PROPOSED",
               },
             ],
@@ -578,8 +618,41 @@ test("should render APPOINTMENT_READY if user has an active treatment and a conf
   );
 
   await waitFor(() => {
-    const text = screen.getByText("APPOINTMENT_READY");
+    const button = screen.getByText("Entrar na sala") as HTMLButtonElement;
 
-    expect(text).toBeInTheDocument();
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(1);
+    expect(mockPushRoute).toBeCalledWith(
+      `/sala-63fad2b4-9b4f-40ee-bf60-b3337f16e2b3`,
+    );
+  });
+
+  await waitFor(() => {
+    const button = screen.getByText(
+      "Escolher novo horário",
+    ) as HTMLButtonElement;
+
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(2);
+    expect(mockPushRoute).toBeCalledWith("/consulta");
+  });
+
+  await waitFor(() => {
+    const button = screen.getByText(
+      "Interromper tratamento",
+    ) as HTMLButtonElement;
+
+    fireEvent.click(button);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(3);
+    expect(mockPushRoute).toBeCalledWith("/interromper");
   });
 });
