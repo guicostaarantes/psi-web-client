@@ -22,6 +22,9 @@ export interface GetTreatmentsAppointmentsResponse {
     treatments: {
       id: string;
       status: TreatmentStatus;
+      psychologist: {
+        likeName: string;
+      };
     }[];
     appointments: {
       id: string;
@@ -40,6 +43,9 @@ export const GetTreatmentsAppointments = gql`
       treatments {
         id
         status
+        psychologist {
+          likeName
+        }
       }
       appointments {
         id

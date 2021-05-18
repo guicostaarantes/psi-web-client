@@ -113,14 +113,23 @@ test("should render TREATMENT_SELECTION if user has no active or pending treatme
               {
                 id: "0a8460a8-1bd2-4243-86bf-884f7a13ee8a",
                 status: "FINALIZED",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "7ed839b0-a0d1-468d-8f6a-300c5375eae3",
                 status: "INTERRUPTED_BY_PSYCHOLOGIST",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "ca54685f-967d-463f-84c2-792c8a75fd77",
                 status: "INTERRUPTED_BY_PATIENT",
+                psychologist: {
+                  likeName: "John",
+                },
               },
             ],
             appointments: [],
@@ -172,18 +181,30 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but no
               {
                 id: "0a8460a8-1bd2-4243-86bf-884f7a13ee8a",
                 status: "FINALIZED",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "7ed839b0-a0d1-468d-8f6a-300c5375eae3",
                 status: "INTERRUPTED_BY_PSYCHOLOGIST",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "ca54685f-967d-463f-84c2-792c8a75fd77",
                 status: "INTERRUPTED_BY_PATIENT",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "b8c85fd4-47fa-41a1-a4b4-9e0941ae9254",
                 status: "ACTIVE",
+                psychologist: {
+                  likeName: "John",
+                },
               },
             ],
             appointments: [
@@ -264,18 +285,30 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but al
               {
                 id: "0a8460a8-1bd2-4243-86bf-884f7a13ee8a",
                 status: "FINALIZED",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "7ed839b0-a0d1-468d-8f6a-300c5375eae3",
                 status: "INTERRUPTED_BY_PSYCHOLOGIST",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "ca54685f-967d-463f-84c2-792c8a75fd77",
                 status: "INTERRUPTED_BY_PATIENT",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "b8c85fd4-47fa-41a1-a4b4-9e0941ae9254",
                 status: "ACTIVE",
+                psychologist: {
+                  likeName: "John",
+                },
               },
             ],
             appointments: [
@@ -366,18 +399,30 @@ test("should render APPOINTMENT_APPROVAL if user has an active treatment and a p
               {
                 id: "0a8460a8-1bd2-4243-86bf-884f7a13ee8a",
                 status: "FINALIZED",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "7ed839b0-a0d1-468d-8f6a-300c5375eae3",
                 status: "INTERRUPTED_BY_PSYCHOLOGIST",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "ca54685f-967d-463f-84c2-792c8a75fd77",
                 status: "INTERRUPTED_BY_PATIENT",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "b8c85fd4-47fa-41a1-a4b4-9e0941ae9254",
                 status: "ACTIVE",
+                psychologist: {
+                  likeName: "John",
+                },
               },
             ],
             appointments: [
@@ -448,18 +493,30 @@ test("should render APPOINTMENT_READY if user has an active treatment and a conf
               {
                 id: "0a8460a8-1bd2-4243-86bf-884f7a13ee8a",
                 status: "FINALIZED",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "7ed839b0-a0d1-468d-8f6a-300c5375eae3",
                 status: "INTERRUPTED_BY_PSYCHOLOGIST",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "ca54685f-967d-463f-84c2-792c8a75fd77",
                 status: "INTERRUPTED_BY_PATIENT",
+                psychologist: {
+                  likeName: "John",
+                },
               },
               {
                 id: "b8c85fd4-47fa-41a1-a4b4-9e0941ae9254",
                 status: "ACTIVE",
+                psychologist: {
+                  likeName: "John",
+                },
               },
             ],
             appointments: [

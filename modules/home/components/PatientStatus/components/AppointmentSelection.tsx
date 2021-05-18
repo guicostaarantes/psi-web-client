@@ -1,6 +1,10 @@
+import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useState } from "react";
 
+import {
+  GetTreatmentsAppointments,
+  GetTreatmentsAppointmentsResponse,
+} from "@psi/home/components/PatientStatus/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
@@ -8,7 +12,13 @@ import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 const AppointmentSelection = () => {
   const router = useRouter();
 
-  const name = useState("TODO");
+  const { data } = useQuery<GetTreatmentsAppointmentsResponse>(
+    GetTreatmentsAppointments,
+  );
+
+  const activeTreatment = data?.myPatientProfile?.treatments?.find(
+    (tr) => tr.status === "ACTIVE",
+  );
 
   const handleAppointmentClick = () => {
     router.push("/consulta");
@@ -18,10 +28,16 @@ const AppointmentSelection = () => {
     router.push("/interromper");
   };
 
+  if (!activeTreatment) {
+    return null;
+  }
+
   return (
     <>
       <Card>
-        <Paragraph>Você está em tratamento com {name}.</Paragraph>
+        <Paragraph>
+          Você está em tratamento com {activeTreatment.psychologist.likeName}.
+        </Paragraph>
         <Paragraph>
           Agora é necessário marcar sua próxima consulta. Clique no botão abaixo
           para ver a agenda com os horários disponíveis e escolher o mais
