@@ -16,7 +16,7 @@ export type TreatmentStatus =
 
 export interface GetTreatmentsAppointmentsResponse {
   time: number;
-  getOwnPatientProfile: {
+  myPatientProfile: {
     id: string;
     likeName: string;
     treatments: {
@@ -34,7 +34,7 @@ export interface GetTreatmentsAppointmentsResponse {
 export const GetTreatmentsAppointments = gql`
   query GetTreatmentsAppointments {
     time
-    getOwnPatientProfile {
+    myPatientProfile {
       id
       likeName
       treatments {

@@ -37,7 +37,7 @@ const PatientStatus = () => {
     }
 
     // Do not render this component while data is undefined (loading or errored)
-    if (!data?.getOwnPatientProfile) {
+    if (!data?.myPatientProfile) {
       status.set("HIDDEN");
       return;
     }
@@ -47,14 +47,14 @@ const PatientStatus = () => {
     // could have a dedicated endpoint to check if the profile is complete
     //
     // If profile is not completed, show message to redirect to profile completion
-    if (data.getOwnPatientProfile?.likeName === "") {
+    if (data.myPatientProfile?.likeName === "") {
       status.set("AWAITING_PROFILE");
       return;
     }
 
     // Shortcuts
-    const treatments = data.getOwnPatientProfile?.treatments;
-    const appointments = data.getOwnPatientProfile?.appointments;
+    const treatments = data.myPatientProfile?.treatments;
+    const appointments = data.myPatientProfile?.appointments;
 
     // If there's no active nor pending treatments, show message for user to
     // start matchmaking algorithm and get a treatment

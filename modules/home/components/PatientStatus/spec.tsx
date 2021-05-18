@@ -1,7 +1,7 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import { GetOwnUserResponseData } from "@psi/auth/hooks/useCurrentUser/graphql";
+import { MyUserResponseData } from "@psi/auth/hooks/useCurrentUser/graphql";
 import PatientStatus from "@psi/home/components/PatientStatus";
 import { GetTreatmentsAppointments } from "@psi/home/components/PatientStatus/graphql";
 
@@ -9,7 +9,7 @@ const now = 1612345678;
 const yesterday = now - 86400;
 const tomorrow = now + 86400;
 
-let mockUser: GetOwnUserResponseData;
+let mockUser: MyUserResponseData;
 
 jest.mock("@psi/auth/hooks/useCurrentUser", () => {
   return jest.fn(() => mockUser);
@@ -60,7 +60,7 @@ test("should render AWAITING_PROFILE if user has no likeName", async () => {
       result: {
         data: {
           time: now,
-          getOwnPatientProfile: {
+          myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "",
             treatments: [],
@@ -106,7 +106,7 @@ test("should render TREATMENT_SELECTION if user has no active or pending treatme
       result: {
         data: {
           time: now,
-          getOwnPatientProfile: {
+          myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
             treatments: [
@@ -165,7 +165,7 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but no
       result: {
         data: {
           time: now,
-          getOwnPatientProfile: {
+          myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
             treatments: [
@@ -257,7 +257,7 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but al
       result: {
         data: {
           time: now,
-          getOwnPatientProfile: {
+          myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
             treatments: [
@@ -359,7 +359,7 @@ test("should render APPOINTMENT_APPROVAL if user has an active treatment and a p
       result: {
         data: {
           time: now,
-          getOwnPatientProfile: {
+          myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
             treatments: [
@@ -441,7 +441,7 @@ test("should render APPOINTMENT_READY if user has an active treatment and a conf
       result: {
         data: {
           time: now,
-          getOwnPatientProfile: {
+          myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
             treatments: [
