@@ -1,8 +1,8 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 
-import Greeting from "@psi/home/components/Greeting";
-import { MyLikeName } from "@psi/home/components/Greeting/graphql";
+import PatientGreeting from "@psi/home/components/PatientGreeting";
+import { MyLikeName } from "@psi/home/components/PatientGreeting/graphql";
 
 const mocks = [
   {
@@ -23,7 +23,7 @@ const mocks = [
 test("should render", async () => {
   render(
     <MockedProvider mocks={mocks}>
-      <Greeting />
+      <PatientGreeting />
     </MockedProvider>,
   );
 

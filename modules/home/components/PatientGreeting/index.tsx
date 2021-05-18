@@ -6,13 +6,13 @@ import { useEffect } from "react";
 import {
   MyLikeName,
   MyLikeNameResponse,
-} from "@psi/home/components/Greeting/graphql";
+} from "@psi/home/components/PatientGreeting/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Image from "@psi/styleguide/components/Image";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 
-const Greeting = () => {
+const PatientGreeting = () => {
   const router = useRouter();
 
   const { data } = useQuery<MyLikeNameResponse>(MyLikeName);
@@ -79,4 +79,4 @@ const Greeting = () => {
   );
 };
 
-export default Greeting;
+export default PatientGreeting;
