@@ -1,14 +1,14 @@
 import { gql } from "@apollo/client";
 
-export interface MyLikeNameResponse {
+export interface MyPatientLikeNameResponse {
   myPatientProfile: {
     id: string;
     likeName: string;
   };
 }
 
-export const MyLikeName = gql`
-  query MyLikeName {
+export const MyPatientLikeName = gql`
+  query MyPatientLikeName {
     myPatientProfile {
       id
       likeName

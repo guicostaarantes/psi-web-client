@@ -1,10 +1,9 @@
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 
-import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
 import {
-  MyLikeName,
-  MyLikeNameResponse,
+  MyPatientLikeName,
+  MyPatientLikeNameResponse,
 } from "@psi/home/components/PatientGreeting/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
@@ -12,18 +11,11 @@ import Image from "@psi/styleguide/components/Image";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 
 const PatientGreeting = () => {
-  const user = useCurrentUser();
-
   const router = useRouter();
 
-  const { data } = useQuery<MyLikeNameResponse>(MyLikeName);
+  const { data } = useQuery<MyPatientLikeNameResponse>(MyPatientLikeName);
 
   const likeName = data?.myPatientProfile?.likeName;
-
-  // If logged user is not a patient, do not render this component
-  if (user.role !== "PATIENT") {
-    return null;
-  }
 
   const handleMyProfileClick = () => {
     router.push("/paciente");
