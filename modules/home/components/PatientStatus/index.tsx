@@ -44,45 +44,28 @@ const PatientStatus = () => {
       return;
     }
 
-    // TODO: this code is using the absence of likeName to assume that the
-    // patient profile hasn't been created yet. It would be better if the backend
-    // could have a dedicated endpoint to check if the profile is complete
-    //
-    // If profile is not completed, show message to redirect to profile completion
-    if (data.myPatientProfile?.likeName === "") {
-      status.set("AWAITING_PROFILE");
-      return;
-    }
-
     // Shortcuts
     const treatments = data.myPatientProfile?.treatments;
     const appointments = data.myPatientProfile?.appointments;
-
-    // If there's no active nor pending treatments, show message for user to
-    // start matchmaking algorithm and get a treatment
-    if (treatments.every((t) => t.status !== "ACTIVE")) {
-      status.set("TREATMENT_SELECTION");
-      return;
-    }
 
     // Checks for at least one appointment with proposed or confirmed status
     // whose end is in the future
     let appointmentStatus: "MISSING" | "PROPOSED" | "CONFIRMED" = "MISSING";
     for (const a of appointments) {
-      if (a.status === "PROPOSED" && a.end > data.time) {
-        appointmentStatus = "PROPOSED";
-        break;
-      }
       if (a.status === "CONFIRMED" && a.end > data.time) {
         appointmentStatus = "CONFIRMED";
         break;
       }
+      if (a.status === "PROPOSED" && a.end > data.time) {
+        appointmentStatus = "PROPOSED";
+        break;
+      }
     }
 
-    // If there's no active nor pending appointments, show message for user to
-    // look for psychologist calendar and schedule
-    if (appointmentStatus === "MISSING") {
-      status.set("APPOINTMENT_SELECTION");
+    // If there's no active nor pending appointments, show message with details
+    // about the next appointment
+    if (appointmentStatus === "CONFIRMED") {
+      status.set("APPOINTMENT_READY");
       return;
     }
 
@@ -93,9 +76,25 @@ const PatientStatus = () => {
       return;
     }
 
-    // If none above is true, it means that the user has an appointment ready
-    // so show message with details about the next appointment
-    status.set("APPOINTMENT_READY");
+    // TODO: this code is using the absence of likeName to assume that the
+    // patient profile hasn't been created yet. It would be better if the backend
+    // could have a dedicated endpoint to check if the profile is complete
+    //
+    // If profile is not completed, show message to redirect to profile completion
+    // before selecting a treatment
+    if (data.myPatientProfile?.likeName === "") {
+      status.set("AWAITING_PROFILE");
+      return;
+    }
+
+    // If user has an active treatment, show message to schedule a new appointment
+    if (treatments.some((t) => t.status === "ACTIVE")) {
+      status.set("APPOINTMENT_SELECTION");
+      return;
+    }
+
+    // If none of the above is true, show message to let user choose new treatment
+    status.set("TREATMENT_SELECTION");
   }, [data, user]);
 
   switch (status.value) {
