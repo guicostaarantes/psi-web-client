@@ -11,6 +11,10 @@ const laterYesterday = now - 86400 + 3600;
 const tomorrow = now + 86400;
 const laterTomorrow = now + 86400 + 3600;
 
+jest.mock("@psi/auth/hooks/useServerTime", () => {
+  return jest.fn(() => now);
+});
+
 let mockUser: MyUserResponseData;
 
 jest.mock("@psi/auth/hooks/useCurrentUser", () => {
@@ -61,7 +65,6 @@ test("should render AWAITING_PROFILE if user has no likeName", async () => {
       },
       result: {
         data: {
-          time: now,
           myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "",
@@ -107,7 +110,6 @@ test("should render TREATMENT_SELECTION if user has no active or pending treatme
       },
       result: {
         data: {
-          time: now,
           myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
@@ -178,7 +180,6 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but no
       },
       result: {
         data: {
-          time: now,
           myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
@@ -289,7 +290,6 @@ test("should render APPOINTMENT_SELECTION if user has an active treatment but al
       },
       result: {
         data: {
-          time: now,
           myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
@@ -412,7 +412,6 @@ test("should render APPOINTMENT_APPROVAL if user has an active treatment and a p
       },
       result: {
         data: {
-          time: now,
           myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",
@@ -535,7 +534,6 @@ test("should render APPOINTMENT_READY if user has an active treatment and a conf
       },
       result: {
         data: {
-          time: now,
           myPatientProfile: {
             id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
             likeName: "Tom Brady",

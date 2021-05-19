@@ -12,6 +12,7 @@ import {
   GetTreatmentsAppointments,
   GetTreatmentsAppointmentsResponse,
 } from "@psi/home/components/PatientStatus/graphql";
+import useServerTime from "@psi/shared/hooks/useServerTime";
 import assertUnreachable from "@psi/shared/utils/assertNeverType";
 
 type StatusType =
@@ -24,6 +25,8 @@ type StatusType =
 
 const PatientStatus = () => {
   const user = useCurrentUser();
+
+  const serverTime = useServerTime();
 
   const { data } = useQuery<GetTreatmentsAppointmentsResponse>(
     GetTreatmentsAppointments,
@@ -52,11 +55,11 @@ const PatientStatus = () => {
     // whose end is in the future
     let appointmentStatus: "MISSING" | "PROPOSED" | "CONFIRMED" = "MISSING";
     for (const a of appointments) {
-      if (a.status === "CONFIRMED" && a.end > data.time) {
+      if (a.status === "CONFIRMED" && a.end > serverTime) {
         appointmentStatus = "CONFIRMED";
         break;
       }
-      if (a.status === "PROPOSED" && a.end > data.time) {
+      if (a.status === "PROPOSED" && a.end > serverTime) {
         appointmentStatus = "PROPOSED";
         break;
       }

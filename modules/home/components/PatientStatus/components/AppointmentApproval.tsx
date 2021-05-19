@@ -6,12 +6,15 @@ import {
   GetTreatmentsAppointments,
   GetTreatmentsAppointmentsResponse,
 } from "@psi/home/components/PatientStatus/graphql";
+import useServerTime from "@psi/shared/hooks/useServerTime";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 const AppointmentApproval = () => {
   const router = useRouter();
+
+  const serverTime = useServerTime();
 
   const { data } = useQuery<GetTreatmentsAppointmentsResponse>(
     GetTreatmentsAppointments,
@@ -22,7 +25,7 @@ const AppointmentApproval = () => {
   );
 
   const proposedAppointment = data?.myPatientProfile?.appointments?.find(
-    (ap) => ap.status === "PROPOSED" && ap.end > data.time,
+    (ap) => ap.status === "PROPOSED" && ap.end > serverTime,
   );
 
   const handleAppointmentClick = () => {
