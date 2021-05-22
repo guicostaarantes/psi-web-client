@@ -11,7 +11,7 @@ const laterYesterday = now - 86400 + 3600;
 const tomorrow = now + 86400;
 const laterTomorrow = now + 86400 + 3600;
 
-jest.mock("@psi/auth/hooks/useServerTime", () => {
+jest.mock("@psi/shared/hooks/useServerTime", () => {
   return jest.fn(() => now);
 });
 
