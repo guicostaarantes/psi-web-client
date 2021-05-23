@@ -21,12 +21,13 @@ const PendingTreatment = ({
   price,
   interval,
 }: PendingTreatmentProps) => {
-  const [deleteTreatment] = useMutation<null, DeleteTreatmentInput>(
-    DeleteTreatment,
-    {
-      refetchQueries: [{ query: MyPsychologistTreatments }],
-    },
-  );
+  const [deleteTreatment, { loading }] = useMutation<
+    null,
+    DeleteTreatmentInput
+  >(DeleteTreatment, {
+    awaitRefetchQueries: true,
+    refetchQueries: [{ query: MyPsychologistTreatments }],
+  });
 
   const handleDeleteClick = () => {
     deleteTreatment({ variables: { id } });
@@ -52,7 +53,11 @@ const PendingTreatment = ({
             </div>
           </div>
           <div className="buttons">
-            <Button color="secondary" onClick={handleDeleteClick}>
+            <Button
+              color="secondary"
+              loading={loading}
+              onClick={handleDeleteClick}
+            >
               Excluir
             </Button>
           </div>

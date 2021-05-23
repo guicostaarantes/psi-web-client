@@ -1,12 +1,7 @@
-import { useMutation } from "@apollo/client";
+import { useState } from "@hookstate/core";
 
-import {
-  FinalizeTreatment,
-  FinalizeTreatmentInput,
-  InterruptTreatment,
-  InterruptTreatmentInput,
-  MyPsychologistTreatments,
-} from "@psi/home/components/PsychologistTreatments/graphql";
+import FinalizeTreatmentModal from "@psi/home/components/PsychologistTreatments/components/FinalizeTreatmentModal";
+import InterruptTreatmentModal from "@psi/home/components/PsychologistTreatments/components/InterruptTreatmentModal";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 
@@ -27,27 +22,9 @@ const ActiveTreatment = ({
   interval,
   patient,
 }: ActiveTreatmentProps) => {
-  const [finalizeTreatment] = useMutation<null, FinalizeTreatmentInput>(
-    FinalizeTreatment,
-    {
-      refetchQueries: [{ query: MyPsychologistTreatments }],
-    },
-  );
+  const finalizeModalOpen = useState(false);
 
-  const [interruptTreatment] = useMutation<null, InterruptTreatmentInput>(
-    InterruptTreatment,
-    {
-      refetchQueries: [{ query: MyPsychologistTreatments }],
-    },
-  );
-
-  const handleFinalizeClick = () => {
-    finalizeTreatment({ variables: { id } });
-  };
-
-  const handleInterruptClick = () => {
-    interruptTreatment({ variables: { id, reason: "" } });
-  };
+  const interruptModalOpen = useState(false);
 
   const durationInMinutes = Math.floor(duration / 60);
 
@@ -70,15 +47,30 @@ const ActiveTreatment = ({
             </div>
           </div>
           <div className="buttons">
-            <Button color="primary" onClick={handleFinalizeClick}>
+            <Button color="primary" onClick={() => finalizeModalOpen.set(true)}>
               Finalizar
             </Button>
-            <Button color="secondary" onClick={handleInterruptClick}>
+            <Button
+              color="secondary"
+              onClick={() => interruptModalOpen.set(true)}
+            >
               Interromper
             </Button>
           </div>
         </div>
       </Card>
+      <FinalizeTreatmentModal
+        onClose={() => finalizeModalOpen.set(false)}
+        open={finalizeModalOpen.value}
+        treatmentId={id}
+        patient={patient}
+      />
+      <InterruptTreatmentModal
+        onClose={() => interruptModalOpen.set(false)}
+        open={interruptModalOpen.value}
+        treatmentId={id}
+        patient={patient}
+      />
       <style jsx>{`
         .buttons {
           align-items: center;
