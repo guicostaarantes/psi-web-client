@@ -1,5 +1,5 @@
 import { MockedProvider } from "@apollo/client/testing";
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import PsychologistAppointments from "@psi/home/components/PsychologistAppointments";
 import { MyPsychologistAppointments } from "@psi/home/components/PsychologistAppointments/graphql";
@@ -10,6 +10,14 @@ const tomorrow = now + 86400;
 jest.mock("@psi/shared/hooks/useServerTime", () => {
   return jest.fn(() => now);
 });
+
+const mockPushRoute = jest.fn();
+
+jest.mock("next/router", () => ({
+  useRouter: () => ({
+    push: mockPushRoute,
+  }),
+}));
 
 const mocks = [
   {
@@ -36,6 +44,7 @@ const mocks = [
     },
   },
 ];
+
 test("should render", async () => {
   render(
     <MockedProvider mocks={mocks}>
@@ -46,8 +55,16 @@ test("should render", async () => {
   await waitFor(() => {
     const patientName = screen.getByText("Tom Brady");
     const appointmentDate = screen.getByText("04/02/2021, das 06:47 às 07:47");
+    const scheduleButton = screen.getByText("Visualizar minha agenda");
 
     expect(patientName).toBeInTheDocument();
     expect(appointmentDate).toBeInTheDocument();
+
+    fireEvent.click(scheduleButton);
+  });
+
+  await waitFor(() => {
+    expect(mockPushRoute).toBeCalledTimes(1);
+    expect(mockPushRoute).toBeCalledWith("/agenda");
   });
 });
