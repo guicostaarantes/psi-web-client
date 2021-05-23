@@ -3,10 +3,10 @@ import { BaseHTMLAttributes } from "react";
 import useTheme from "@psi/styleguide/hooks/useTheme";
 
 interface CardProps extends BaseHTMLAttributes<HTMLDivElement> {
-  loading?: boolean;
+  floating?: boolean;
 }
 
-const Card = ({ children, ...rest }: CardProps) => {
+const Card = ({ children, floating, ...rest }: CardProps) => {
   const { theme } = useTheme();
 
   return (
@@ -16,6 +16,7 @@ const Card = ({ children, ...rest }: CardProps) => {
         div {
           background-color: ${theme.focusBackgroundColor};
           border-radius: 0.5rem;
+          ${floating ? "box-shadow: 0 2px 8px -4px;" : ""}
           margin: 1rem;
           padding: 1rem;
           position: relative;

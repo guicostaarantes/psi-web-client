@@ -9,6 +9,7 @@ import {
   MyPsychologistAppointments,
 } from "@psi/home/components/PsychologistAppointments/graphql";
 import Button from "@psi/styleguide/components/Button";
+import Card from "@psi/styleguide/components/Card";
 
 interface ProposedAppointmentProps {
   id: string;
@@ -49,23 +50,25 @@ const ProposedAppointment = ({
 
   return (
     <>
-      <div className="wrapper">
-        <div>
-          <div className="text">{patient.fullName}</div>
-          <div className="text">
-            {dayjs(1000 * start).format("DD/MM/YYYY[, das ]HH:mm")}
-            {dayjs(1000 * end).format("[ às ]HH:mm")}
+      <Card floating>
+        <div className="wrapper">
+          <div>
+            <div className="text">{patient.fullName}</div>
+            <div className="text">
+              {dayjs(1000 * start).format("DD/MM/YYYY[, das ]HH:mm")}
+              {dayjs(1000 * end).format("[ às ]HH:mm")}
+            </div>
+          </div>
+          <div className="buttons">
+            <Button color="primary" onClick={handleConfirmClick}>
+              Confirmar
+            </Button>
+            <Button color="secondary" onClick={handleDenyClick}>
+              Declinar
+            </Button>
           </div>
         </div>
-        <div className="buttons">
-          <Button color="primary" onClick={handleConfirmClick}>
-            Confirmar
-          </Button>
-          <Button color="secondary" onClick={handleDenyClick}>
-            Declinar
-          </Button>
-        </div>
-      </div>
+      </Card>
       <style jsx>{`
         .buttons {
           align-items: center;
@@ -77,12 +80,9 @@ const ProposedAppointment = ({
           margin-top: 0.5rem;
         }
         .wrapper {
-          border: 1px solid black;
-          border-radius: 0.5rem;
+          align-items: center;
           display: flex;
           justify-content: space-between;
-          margin: 0.5rem;
-          padding: 0.5rem;
         }
       `}</style>
     </>
