@@ -39,6 +39,17 @@ export const MyPsychologistAppointments = gql`
   }
 `;
 
+export interface CancelAppointmentInput {
+  id: string;
+  reason: string;
+}
+
+export const CancelAppointment = gql`
+  mutation CancelAppointment($id: ID!, $reason: String!) {
+    cancelAppointmentByPsychologist(id: $id, reason: $reason)
+  }
+`;
+
 export interface ConfirmAppointmentInput {
   id: string;
 }

@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 
+import ConfirmedAppointment from "@psi/home/components/PsychologistAppointments/components/ConfirmedAppointment";
 import ProposedAppointment from "@psi/home/components/PsychologistAppointments/components/ProposedAppointment";
 import {
   MyPsychologistAppointments,
@@ -47,7 +48,17 @@ const PsychologistAppointments = () => {
         {confirmedAppointments?.length ? (
           <>
             <Paragraph>Essas são as suas próximas consultas:</Paragraph>
-            <div className="appointment-list"></div>
+            <div className="appointment-list">
+              {confirmedAppointments.map((ap) => (
+                <ConfirmedAppointment
+                  key={ap.id}
+                  id={ap.id}
+                  start={ap.start}
+                  end={ap.end}
+                  patient={ap.patient}
+                />
+              ))}
+            </div>
           </>
         ) : null}
         {!proposedAppointments?.length && !confirmedAppointments?.length ? (
