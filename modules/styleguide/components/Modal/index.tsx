@@ -72,6 +72,7 @@ const Modal = ({ children, onClose, open, title = "" }: ModalProps) => {
           z-index: 10;
         }
         .wrapper {
+          max-width: 80vw;
           margin: 1rem;
         }
       `}</style>
