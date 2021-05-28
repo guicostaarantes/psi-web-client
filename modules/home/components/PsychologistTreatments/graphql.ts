@@ -41,6 +41,20 @@ export const MyPsychologistTreatments = gql`
   }
 `;
 
+export interface CreateTreatmentInput {
+  duration: number;
+  price: number;
+  interval: number;
+}
+
+export const CreateTreatment = gql`
+  mutation CreateTreatment($duration: Int!, $price: Int!, $interval: Int!) {
+    createTreatment(
+      input: { duration: $duration, price: $price, interval: $interval }
+    )
+  }
+`;
+
 export interface DeleteTreatmentInput {
   id: string;
 }

@@ -1,20 +1,17 @@
 import { useQuery } from "@apollo/client";
-import { useRouter } from "next/router";
 import React from "react";
 
 import ActiveTreatment from "@psi/home/components/PsychologistTreatments/components/ActiveTreatment";
+import NewTreatmentButton from "@psi/home/components/PsychologistTreatments/components/NewTreatmentButton";
 import PendingTreatment from "@psi/home/components/PsychologistTreatments/components/PendingTreatment";
 import {
   MyPsychologistTreatments,
   MyPsychologistTreatmentsResponse,
 } from "@psi/home/components/PsychologistTreatments/graphql";
-import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 const PsychologistTreatments = () => {
-  const router = useRouter();
-
   const { data } = useQuery<MyPsychologistTreatmentsResponse>(
     MyPsychologistTreatments,
   );
@@ -26,10 +23,6 @@ const PsychologistTreatments = () => {
   const pendingTreatments = data?.myPsychologistProfile?.treatments.filter(
     (tr) => tr.status === "PENDING",
   );
-
-  const handleNewTreatmentClick = () => {
-    router.push("/novo-tratamento");
-  };
 
   return (
     <>
@@ -72,9 +65,7 @@ const PsychologistTreatments = () => {
           </Paragraph>
         ) : null}
         <div className="button-wrapper">
-          <Button color="primary" onClick={handleNewTreatmentClick}>
-            Quero tratar um paciente
-          </Button>
+          <NewTreatmentButton />
         </div>
       </Card>
       <style jsx>{`

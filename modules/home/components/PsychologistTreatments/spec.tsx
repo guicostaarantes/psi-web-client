@@ -4,14 +4,6 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import PsychologistTreatments from "@psi/home/components/PsychologistTreatments";
 import { MyPsychologistTreatments } from "@psi/home/components/PsychologistTreatments/graphql";
 
-const mockPushRoute = jest.fn();
-
-jest.mock("next/router", () => ({
-  useRouter: () => ({
-    push: mockPushRoute,
-  }),
-}));
-
 const mocks = [
   {
     request: {
@@ -69,10 +61,7 @@ test("should render", async () => {
     expect(pendingTreatmentInfo).toBeInTheDocument();
 
     fireEvent.click(newTreatmentButton);
-  });
-
-  await waitFor(() => {
-    expect(mockPushRoute).toBeCalledTimes(1);
-    expect(mockPushRoute).toBeCalledWith("/novo-tratamento");
+    const createTreatmentButton = screen.getAllByText("Criar tratamento");
+    expect(createTreatmentButton[1]).toBeInTheDocument();
   });
 });

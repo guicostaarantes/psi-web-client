@@ -77,7 +77,7 @@ const Modal = ({ children, onClose, open, title = "" }: ModalProps) => {
         }
       `}</style>
     </>,
-    document.getElementById("__next"),
+    document.body,
   );
 };
 
