@@ -15,12 +15,7 @@ interface PendingTreatmentProps {
   interval: number;
 }
 
-const PendingTreatment = ({
-  id,
-  duration,
-  price,
-  interval,
-}: PendingTreatmentProps) => {
+const PendingTreatment = ({ id, duration, price }: PendingTreatmentProps) => {
   const [deleteTreatment, { loading }] = useMutation<
     null,
     DeleteTreatmentInput
@@ -35,8 +30,6 @@ const PendingTreatment = ({
 
   const durationInMinutes = Math.floor(duration / 60);
 
-  const intervalInDays = Math.floor(interval / 86400);
-
   const priceInCurrency = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -48,8 +41,8 @@ const PendingTreatment = ({
         <div className="wrapper">
           <div>
             <div className="text">
-              {durationInMinutes} minutos por sessão | Sessões a cada{" "}
-              {intervalInDays} dias | {priceInCurrency} por sessão
+              {durationInMinutes} minutos por sessão | {priceInCurrency} por
+              sessão
             </div>
           </div>
           <div className="buttons">

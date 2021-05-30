@@ -19,7 +19,6 @@ const ActiveTreatment = ({
   id,
   duration,
   price,
-  interval,
   patient,
 }: ActiveTreatmentProps) => {
   const finalizeModalOpen = useState(false);
@@ -27,8 +26,6 @@ const ActiveTreatment = ({
   const interruptModalOpen = useState(false);
 
   const durationInMinutes = Math.floor(duration / 60);
-
-  const intervalInDays = Math.floor(interval / 86400);
 
   const priceInCurrency = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -42,8 +39,8 @@ const ActiveTreatment = ({
           <div>
             <div className="text">{patient.fullName}</div>
             <div className="text">
-              {durationInMinutes} minutos por sessão | Sessões a cada{" "}
-              {intervalInDays} dias | {priceInCurrency} por sessão
+              {durationInMinutes} minutos por sessão | {priceInCurrency} por
+              sessão
             </div>
           </div>
           <div className="buttons">
