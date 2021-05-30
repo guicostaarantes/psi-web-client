@@ -15,7 +15,6 @@ import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 const NewTreatmentButton = () => {
   const duration = useRef(null);
   const price = useRef(null);
-  const interval = useRef(null);
 
   const modalOpen = useState(false);
 
@@ -35,7 +34,7 @@ const NewTreatmentButton = () => {
       variables: {
         duration: 60 * Number(duration.current.value),
         price: Number(price.current.value),
-        interval: 86400 * Number(interval.current.value),
+        interval: 86400 * 7,
       },
     });
     modalOpen.set(false);
@@ -71,11 +70,6 @@ const NewTreatmentButton = () => {
             name="price"
             label="Preço da sessão (reais)"
             reference={price}
-          />
-          <Input
-            name="interval"
-            label="Intervalo entre sessões (dias)"
-            reference={interval}
           />
           <div className="buttons">
             <Button
