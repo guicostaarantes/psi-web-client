@@ -55,16 +55,8 @@ test("should render", async () => {
   await waitFor(() => {
     const patientName = screen.getByText("Tom Brady");
     const appointmentDate = screen.getByText("04/02/2021, das 06:47 às 07:47");
-    const scheduleButton = screen.getByText("Visualizar minha agenda");
 
     expect(patientName).toBeInTheDocument();
     expect(appointmentDate).toBeInTheDocument();
-
-    fireEvent.click(scheduleButton);
-  });
-
-  await waitFor(() => {
-    expect(mockPushRoute).toBeCalledTimes(1);
-    expect(mockPushRoute).toBeCalledWith("/agenda");
   });
 });
