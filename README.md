@@ -23,6 +23,7 @@ Feel free to open an issue or create a pull request. Please follow the rules:
 
 - This app consumes a GraphQL API available at [https://github.com/guicostaarantes/psi-server](https://github.com/guicostaarantes/psi-server).
 - It is recommended to clone this repo and run it with `docker-compose up --build` so that you can fully test the features on the web client.
+- You may run the dev server for this web client with `yarn dev` and it will be available at port 7000.
 
 ### Folder structure
 
