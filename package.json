@@ -5,7 +5,7 @@
   "scripts": {
     "build": "yarn install && next build",
     "export": "next export",
-    "dev": "yarn install && next dev",
+    "dev": "yarn install && next dev --port 7007",
     "lint": "eslint .",
     "new-component": "hygen component new",
     "new-page": "hygen page new",
