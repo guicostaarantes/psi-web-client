@@ -48,7 +48,7 @@ const PsychologistGreeting = () => {
         .actions-content {
           align-items: center;
           display: flex;
-          gap: 1rem;
+          gap: 0.5rem;
         }
         .content {
           align-items: center;

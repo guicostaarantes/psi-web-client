@@ -52,11 +52,11 @@ const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
       <style jsx>{`
         .wrapper {
           background-color: ${cardBackgroundColor};
-          border: ${cardTextColor} 1px solid;
           border-radius: 0.5rem;
+          box-shadow: 4px 4px 16px -2px;
           color: ${cardTextColor};
           margin: 0.5rem 1rem;
-          padding: 1rem;
+          padding: 0.5rem;
           position: relative;
           width: 300px;
           z-index: 1;

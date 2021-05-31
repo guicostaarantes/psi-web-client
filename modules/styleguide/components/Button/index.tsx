@@ -92,6 +92,7 @@ const Button = ({
           background-color: ${buttonBackgroundColor};
           color: ${buttonColor};
           border: none;
+          border-radius: 0.25rem;
           cursor: pointer;
           display: block;
           font-size: ${textSize};
