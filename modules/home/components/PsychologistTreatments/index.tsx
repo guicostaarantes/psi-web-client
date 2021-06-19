@@ -25,8 +25,6 @@ const PsychologistTreatments = () => {
     (tr) => tr.status === "PENDING",
   );
 
-  console.log(data);
-
   return (
     <>
       {activeTreatments?.length ? (
@@ -45,27 +43,30 @@ const PsychologistTreatments = () => {
         </Card>
       ) : null}
       <Card>
-        {pendingTreatments?.length ? (
-          <>
-            <MediumTitle center>Tratamentos aguardando paciente</MediumTitle>
-            {pendingTreatments.map((tr) => (
-              <PendingTreatment
-                key={tr.id}
-                id={tr.id}
-                weeklyStart={tr.weeklyStart}
-                duration={tr.duration}
-                price={tr.price}
-              />
-            ))}
-          </>
-        ) : (
-          <Paragraph center>
-            Sem tratamentos pendentes. Isso significa que os pacientes não
-            poderão te encontrar no buscador de tratamentos. Caso queira tratar
-            {activeTreatments?.length ? " mais pacientes" : " algum paciente"},
-            clique no botão abaixo.
-          </Paragraph>
-        )}
+        {pendingTreatments ? (
+          pendingTreatments.length ? (
+            <>
+              <MediumTitle center>Tratamentos aguardando paciente</MediumTitle>
+              {pendingTreatments.map((tr) => (
+                <PendingTreatment
+                  key={tr.id}
+                  id={tr.id}
+                  weeklyStart={tr.weeklyStart}
+                  duration={tr.duration}
+                  price={tr.price}
+                />
+              ))}
+            </>
+          ) : (
+            <Paragraph center>
+              Sem tratamentos pendentes. Isso significa que os pacientes não
+              poderão te encontrar no buscador de tratamentos. Caso queira
+              tratar
+              {activeTreatments?.length ? " mais pacientes" : " algum paciente"}
+              , clique no botão abaixo.
+            </Paragraph>
+          )
+        ) : null}
         <div className="button-wrapper">
           <NewTreatmentButton />
         </div>
