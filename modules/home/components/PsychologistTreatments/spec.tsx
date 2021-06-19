@@ -54,7 +54,9 @@ test("should render", async () => {
     screen.getByText("Horário das sessões: todo domingo às 08:00");
     screen.getByText("Duração de cada sessão: 60 minutos");
     screen.getByText("Valor cobrado por sessão: R$30.00");
-    const newTreatmentButton = screen.getByText("Quero tratar um paciente");
+    const newTreatmentButton = screen.getByText(
+      "Quero tratar um novo paciente",
+    );
 
     expect(patientName).toBeInTheDocument();
 

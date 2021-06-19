@@ -9,6 +9,7 @@ import {
   MyPsychologistTreatmentsResponse,
 } from "@psi/home/components/PsychologistTreatments/graphql";
 import Card from "@psi/styleguide/components/Card";
+import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 const PsychologistTreatments = () => {
@@ -24,30 +25,29 @@ const PsychologistTreatments = () => {
     (tr) => tr.status === "PENDING",
   );
 
+  console.log(data);
+
   return (
     <>
+      {activeTreatments?.length ? (
+        <Card>
+          <MediumTitle center>Tratamentos ativos</MediumTitle>
+          {activeTreatments.map((tr) => (
+            <ActiveTreatment
+              key={tr.id}
+              id={tr.id}
+              weeklyStart={tr.weeklyStart}
+              duration={tr.duration}
+              price={tr.price}
+              patient={tr.patient}
+            />
+          ))}
+        </Card>
+      ) : null}
       <Card>
-        {activeTreatments?.length ? (
-          <>
-            <Paragraph>Esses são os seus tratamentos ativos:</Paragraph>
-            {activeTreatments.map((tr) => (
-              <ActiveTreatment
-                key={tr.id}
-                id={tr.id}
-                weeklyStart={tr.weeklyStart}
-                duration={tr.duration}
-                price={tr.price}
-                patient={tr.patient}
-              />
-            ))}
-          </>
-        ) : null}
         {pendingTreatments?.length ? (
           <>
-            <Paragraph>
-              Esses são os tratamentos que você disponibilizou para futuros
-              pacientes:
-            </Paragraph>
+            <MediumTitle center>Tratamentos aguardando paciente</MediumTitle>
             {pendingTreatments.map((tr) => (
               <PendingTreatment
                 key={tr.id}
@@ -58,12 +58,14 @@ const PsychologistTreatments = () => {
               />
             ))}
           </>
-        ) : null}
-        {!activeTreatments?.length && !pendingTreatments?.length ? (
-          <Paragraph>
-            Você ainda não possui nenhum tratamento cadastrado.
+        ) : (
+          <Paragraph center>
+            Sem tratamentos pendentes. Isso significa que os pacientes não
+            poderão te encontrar no buscador de tratamentos. Caso queira tratar
+            {activeTreatments?.length ? " mais pacientes" : " algum paciente"},
+            clique no botão abaixo.
           </Paragraph>
-        ) : null}
+        )}
         <div className="button-wrapper">
           <NewTreatmentButton />
         </div>

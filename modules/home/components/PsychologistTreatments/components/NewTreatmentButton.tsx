@@ -48,7 +48,7 @@ const NewTreatmentButton = () => {
   return (
     <>
       <Button color="primary" onClick={handleCreateClick}>
-        Quero tratar um paciente
+        Quero tratar um novo paciente
       </Button>
       <Modal
         open={modalOpen.value}
