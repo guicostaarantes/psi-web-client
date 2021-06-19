@@ -9,6 +9,7 @@ import {
 } from "@psi/home/components/PsychologistTreatments/graphql";
 import weekdayOptions from "@psi/home/constants/weekdayOptions";
 import Button from "@psi/styleguide/components/Button";
+import DateInput from "@psi/styleguide/components/DateInput";
 import Input from "@psi/styleguide/components/Input";
 import Modal from "@psi/styleguide/components/Modal";
 import Select from "@psi/styleguide/components/Select";
@@ -100,7 +101,8 @@ const NewTreatmentButton = () => {
             options={weekdayOptions}
             reference={weekday}
           />
-          <Input
+          <DateInput
+            format="HH:mm"
             name="start"
             label="Hora de início da sessão (ex: 19:30)"
             reference={start}

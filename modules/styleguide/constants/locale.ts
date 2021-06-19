@@ -10,6 +10,8 @@ export type DATE_FORMATS =
   | "DD/MM"
   | "MM/DD"
   | "MM/YYYY"
-  | "YYYY/MM";
+  | "YYYY/MM"
+  | "HH:mm"
+  | "hh:mm";
 
 export const BIRTH_DATE_FORMAT: DATE_FORMATS = "DD/MM/YYYY";
