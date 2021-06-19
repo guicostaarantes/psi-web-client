@@ -1,5 +1,5 @@
 import { MockedProvider } from "@apollo/client/testing";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import PsychologistAppointments from "@psi/home/components/PsychologistAppointments";
 import { MyPsychologistAppointments } from "@psi/home/components/PsychologistAppointments/graphql";
@@ -54,7 +54,7 @@ test("should render", async () => {
 
   await waitFor(() => {
     const patientName = screen.getByText("Tom Brady");
-    const appointmentDate = screen.getByText("04/02/2021, das 06:47 às 07:47");
+    const appointmentDate = screen.getByText("04/02/2021, das 09:47 às 10:47");
 
     expect(patientName).toBeInTheDocument();
     expect(appointmentDate).toBeInTheDocument();
