@@ -43,7 +43,7 @@ const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
           <div className="header">
             <div className="header-message">{header}</div>
             <button className="close-btn" onClick={closeToast}>
-              <MdClose size="1rem" />
+              <MdClose size="1.5rem" />
             </button>
           </div>
           <div className="message">{message}</div>
@@ -77,7 +77,7 @@ const Toast = ({ header, id, message, state, ...rest }: ToastProps) => {
           border: 0;
           color: ${cardTextColor};
           cursor: pointer;
-          margin: 0.6rem;
+          margin: 0.3rem;
           outline: 0;
         }
 
