@@ -17,9 +17,9 @@ const mocks = [
             {
               id: "a10634a4-690d-44f8-b4ff-875979fee8d0",
               status: "ACTIVE",
+              weeklyStart: 1 * 86400 + 20 * 60 * 60,
               duration: 50 * 60,
               price: 25,
-              interval: 7 * 86400,
               patient: {
                 fullName: "Tom Brady",
               },
@@ -27,9 +27,9 @@ const mocks = [
             {
               id: "c274f2b8-85e8-40a2-ac28-5fe384eca6c0",
               status: "PENDING",
+              weeklyStart: 8 * 60 * 60,
               duration: 60 * 60,
               price: 30,
-              interval: 7 * 86400,
               patient: null,
             },
           ],
@@ -47,18 +47,16 @@ test("should render", async () => {
   );
 
   await waitFor(() => {
-    const patientName = screen.getByText("Tom Brady");
-    const activeTreatmentInfo = screen.getByText(
-      "50 minutos por sessão | R$25.00 por sessão",
-    );
-    const pendingTreatmentInfo = screen.getByText(
-      "60 minutos por sessão | R$30.00 por sessão",
-    );
+    const patientName = screen.getByText("Paciente: Tom Brady");
+    screen.getByText("Horário das sessões: toda segunda-feira às 20:00");
+    screen.getByText("Duração de cada sessão: 50 minutos");
+    screen.getByText("Valor cobrado por sessão: R$25.00");
+    screen.getByText("Horário das sessões: todo domingo às 08:00");
+    screen.getByText("Duração de cada sessão: 60 minutos");
+    screen.getByText("Valor cobrado por sessão: R$30.00");
     const newTreatmentButton = screen.getByText("Quero tratar um paciente");
 
     expect(patientName).toBeInTheDocument();
-    expect(activeTreatmentInfo).toBeInTheDocument();
-    expect(pendingTreatmentInfo).toBeInTheDocument();
 
     fireEvent.click(newTreatmentButton);
     const createTreatmentButton = screen.getAllByText("Criar tratamento");

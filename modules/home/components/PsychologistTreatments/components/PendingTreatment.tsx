@@ -5,17 +5,23 @@ import {
   DeleteTreatmentInput,
   MyPsychologistTreatments,
 } from "@psi/home/components/PsychologistTreatments/graphql";
+import formatWeeklyHour from "@psi/home/utils/formatWeeklyHour";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 
 interface PendingTreatmentProps {
   id: string;
+  weeklyStart: number;
   duration: number;
   price: number;
-  interval: number;
 }
 
-const PendingTreatment = ({ id, duration, price }: PendingTreatmentProps) => {
+const PendingTreatment = ({
+  id,
+  weeklyStart,
+  duration,
+  price,
+}: PendingTreatmentProps) => {
   const [deleteTreatment, { loading }] = useMutation<
     null,
     DeleteTreatmentInput
@@ -41,9 +47,12 @@ const PendingTreatment = ({ id, duration, price }: PendingTreatmentProps) => {
         <div className="wrapper">
           <div>
             <div className="text">
-              {durationInMinutes} minutos por sessão | {priceInCurrency} por
-              sessão
+              Horário das sessões: {formatWeeklyHour(weeklyStart)}
             </div>
+            <div className="text">
+              Duração de cada sessão: {durationInMinutes} minutos
+            </div>
+            <div>Valor cobrado por sessão: {priceInCurrency}</div>
           </div>
           <div className="buttons">
             <Button

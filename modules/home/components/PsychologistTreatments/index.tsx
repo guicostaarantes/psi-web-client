@@ -34,9 +34,9 @@ const PsychologistTreatments = () => {
               <ActiveTreatment
                 key={tr.id}
                 id={tr.id}
+                weeklyStart={tr.weeklyStart}
                 duration={tr.duration}
                 price={tr.price}
-                interval={tr.interval}
                 patient={tr.patient}
               />
             ))}
@@ -52,9 +52,9 @@ const PsychologistTreatments = () => {
               <PendingTreatment
                 key={tr.id}
                 id={tr.id}
+                weeklyStart={tr.weeklyStart}
                 duration={tr.duration}
                 price={tr.price}
-                interval={tr.interval}
               />
             ))}
           </>

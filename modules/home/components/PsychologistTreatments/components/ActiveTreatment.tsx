@@ -2,14 +2,15 @@ import { useState } from "@hookstate/core";
 
 import FinalizeTreatmentModal from "@psi/home/components/PsychologistTreatments/components/FinalizeTreatmentModal";
 import InterruptTreatmentModal from "@psi/home/components/PsychologistTreatments/components/InterruptTreatmentModal";
+import formatWeeklyHour from "@psi/home/utils/formatWeeklyHour";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 
 interface ActiveTreatmentProps {
   id: string;
+  weeklyStart: number;
   duration: number;
   price: number;
-  interval: number;
   patient: {
     fullName: string;
   };
@@ -17,6 +18,7 @@ interface ActiveTreatmentProps {
 
 const ActiveTreatment = ({
   id,
+  weeklyStart,
   duration,
   price,
   patient,
@@ -37,11 +39,14 @@ const ActiveTreatment = ({
       <Card floating>
         <div className="wrapper">
           <div>
-            <div className="text">{patient.fullName}</div>
+            <div className="text">Paciente: {patient.fullName}</div>
             <div className="text">
-              {durationInMinutes} minutos por sessão | {priceInCurrency} por
-              sessão
+              Horário das sessões: {formatWeeklyHour(weeklyStart)}
             </div>
+            <div className="text">
+              Duração de cada sessão: {durationInMinutes} minutos
+            </div>
+            <div>Valor cobrado por sessão: {priceInCurrency}</div>
           </div>
           <div className="buttons">
             <Button color="primary" onClick={() => finalizeModalOpen.set(true)}>

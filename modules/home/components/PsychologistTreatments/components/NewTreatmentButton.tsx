@@ -13,6 +13,8 @@ import Modal from "@psi/styleguide/components/Modal";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 const NewTreatmentButton = () => {
+  const weekday = useRef(null);
+  const start = useRef(null);
   const duration = useRef(null);
   const price = useRef(null);
 
@@ -32,9 +34,12 @@ const NewTreatmentButton = () => {
   const handleCreateConfirmClick = async () => {
     await createTreatment({
       variables: {
+        weeklyStart:
+          86400 * Number(weekday.current.value) +
+          Number(start.current.value) +
+          60 * new Date().getTimezoneOffset(),
         duration: 60 * Number(duration.current.value),
         price: Number(price.current.value),
-        interval: 86400 * 7,
       },
     });
     modalOpen.set(false);
@@ -61,6 +66,12 @@ const NewTreatmentButton = () => {
             Caso você não tenha tratamentos pendentes, você ficará invisível
             para novos pacientes que utilizarem o buscador de tratamentos.
           </Paragraph>
+          <Input name="weekday" label="Dia da semana" reference={weekday} />
+          <Input
+            name="start"
+            label="Hora de início da sessão (ex: 19:30)"
+            reference={start}
+          />
           <Input
             name="duration"
             label="Duração da sessão (minutos)"
