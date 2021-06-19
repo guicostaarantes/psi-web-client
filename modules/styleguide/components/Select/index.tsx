@@ -1,30 +1,38 @@
-import { InputHTMLAttributes, LegacyRef } from "react";
+import { LegacyRef, SelectHTMLAttributes } from "react";
 
 import useTheme from "@psi/styleguide/hooks/useTheme";
 
-interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "placeholder"> {
+interface SelectProps
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "placeholder"> {
   name: string;
   label: string;
-  reference?: LegacyRef<HTMLInputElement>;
-  type?: "text" | "password";
+  options: {
+    value: string | number;
+    label: string;
+  }[];
+  reference?: LegacyRef<HTMLSelectElement>;
 }
 
-const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
+const Select = ({ label, name, options, reference, ...rest }: SelectProps) => {
   const { theme } = useTheme();
 
   return (
     <>
       <div>
-        <input
+        <select
           aria-label={label}
           id={name}
           name={name}
           placeholder={label}
           ref={reference}
-          type={type || "text"}
           {...rest}
-        />
+        >
+          {options.map((op) => (
+            <option key={op.value} value={op.value}>
+              {op.label}
+            </option>
+          ))}
+        </select>
         <label htmlFor={name}>{label}</label>
       </div>
       <style jsx>{`
@@ -35,7 +43,7 @@ const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
           width: 100%;
         }
 
-        input {
+        select {
           background: transparent;
           border: 0;
           border-bottom: 2px solid ${theme.defaultColor};
@@ -43,27 +51,28 @@ const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
           font-family: inherit;
           font-size: 1rem;
           outline: 0;
-          padding: 0.4rem;
+          padding: 0.4rem 0;
           transition: border-color 0.2s;
           width: 100%;
         }
 
-        input::placeholder {
+        select::placeholder {
           color: transparent;
         }
 
-        input:placeholder-shown ~ label {
+        select:placeholder-shown ~ label {
           color: ${theme.defaultColor};
           cursor: text;
           font-size: 1rem;
+          padding-left: 0.4rem;
           top: 1.3rem;
         }
 
-        input:focus {
+        select:focus {
           border-color: ${theme.primaryColor};
         }
 
-        input:focus ~ label {
+        select:focus ~ label {
           color: ${theme.primaryColor};
           cursor: text;
           font-size: 0.75rem;
@@ -84,4 +93,4 @@ const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
   );
 };
 
-export default Input;
+export default Select;

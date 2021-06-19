@@ -7,9 +7,11 @@ import {
   CreateTreatmentInput,
   MyPsychologistTreatments,
 } from "@psi/home/components/PsychologistTreatments/graphql";
+import weekdayOptions from "@psi/home/constants/weekdayOptions";
 import Button from "@psi/styleguide/components/Button";
 import Input from "@psi/styleguide/components/Input";
 import Modal from "@psi/styleguide/components/Modal";
+import Select from "@psi/styleguide/components/Select";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import useToast from "@psi/styleguide/hooks/useToast";
 
@@ -92,7 +94,12 @@ const NewTreatmentButton = () => {
             Caso você não tenha tratamentos pendentes, você ficará invisível
             para novos pacientes que utilizarem o buscador de tratamentos.
           </Paragraph>
-          <Input name="weekday" label="Dia da semana" reference={weekday} />
+          <Select
+            name="weekday"
+            label="Dia da semana"
+            options={weekdayOptions}
+            reference={weekday}
+          />
           <Input
             name="start"
             label="Hora de início da sessão (ex: 19:30)"
