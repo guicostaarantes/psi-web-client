@@ -48,10 +48,10 @@ test("should render", async () => {
 
   await waitFor(() => {
     const patientName = screen.getByText("Paciente: Tom Brady");
-    screen.getByText("Horário das sessões: toda segunda-feira às 20:00");
+    screen.getByText("Horário das sessões: toda segunda-feira às 15:00");
     screen.getByText("Duração de cada sessão: 50 minutos");
     screen.getByText("Valor cobrado por sessão: R$25.00");
-    screen.getByText("Horário das sessões: todo domingo às 08:00");
+    screen.getByText("Horário das sessões: todo domingo às 03:00");
     screen.getByText("Duração de cada sessão: 60 minutos");
     screen.getByText("Valor cobrado por sessão: R$30.00");
     const newTreatmentButton = screen.getByText(

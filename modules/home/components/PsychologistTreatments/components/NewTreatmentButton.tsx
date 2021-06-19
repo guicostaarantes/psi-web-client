@@ -8,12 +8,14 @@ import {
   MyPsychologistTreatments,
 } from "@psi/home/components/PsychologistTreatments/graphql";
 import weekdayOptions from "@psi/home/constants/weekdayOptions";
+import getWeeklyStart from "@psi/home/utils/getWeeklyStart";
 import Button from "@psi/styleguide/components/Button";
 import DateInput from "@psi/styleguide/components/DateInput";
 import Input from "@psi/styleguide/components/Input";
 import Modal from "@psi/styleguide/components/Modal";
 import Select from "@psi/styleguide/components/Select";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
+import { HOUR_24_FORMAT } from "@psi/styleguide/constants/locale";
 import useToast from "@psi/styleguide/hooks/useToast";
 
 const NewTreatmentButton = () => {
@@ -41,10 +43,11 @@ const NewTreatmentButton = () => {
     try {
       await createTreatment({
         variables: {
-          weeklyStart:
-            86400 * Number(weekday.current.value) +
-            Number(start.current.value) +
-            60 * new Date().getTimezoneOffset(),
+          weeklyStart: getWeeklyStart(
+            weekday.current.value,
+            start.current.value,
+            HOUR_24_FORMAT,
+          ),
           duration: 60 * Number(duration.current.value),
           price: Number(price.current.value),
         },
@@ -102,7 +105,7 @@ const NewTreatmentButton = () => {
             reference={weekday}
           />
           <DateInput
-            format="HH:mm"
+            format={HOUR_24_FORMAT}
             name="start"
             label="Hora de início da sessão (ex: 19:30)"
             reference={start}

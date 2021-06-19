@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import dayjs from "dayjs";
+import { format } from "date-fns";
 import { useRouter } from "next/router";
 
 import {
@@ -48,8 +48,9 @@ const AppointmentApproval = () => {
         </Paragraph>
         <Paragraph>
           Você propôs uma próxima consulta para as{" "}
-          {dayjs(1000 * proposedAppointment.start).format(
-            "HH:mm [horas do dia ]DD/MM/YYYY",
+          {format(
+            1000 * proposedAppointment.start,
+            "HH:mm' horas do dia 'dd/MM/yyyy",
           )}
           , que está sob análise. Assim que houver retorno do profissional, você
           será avisado.

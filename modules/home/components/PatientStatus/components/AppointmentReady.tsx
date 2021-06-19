@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import dayjs from "dayjs";
+import { format } from "date-fns";
 import { useRouter } from "next/router";
 
 import {
@@ -52,8 +52,9 @@ const AppointmentApproval = () => {
         </Paragraph>
         <Paragraph>
           Sua próxima consulta está confirmada para as{" "}
-          {dayjs(1000 * confirmedAppointment.start).format(
-            "HH:mm [horas do dia ]DD/MM/YYYY",
+          {format(
+            1000 * confirmedAppointment.start,
+            "HH:mm' horas do dia 'dd/MM/yyyy",
           )}
           . Clique no botão abaixo para acessar a sala quando estiver chegando a
           hora.
