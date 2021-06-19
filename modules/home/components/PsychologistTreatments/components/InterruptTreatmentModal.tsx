@@ -56,7 +56,7 @@ const InterruptTreatmentModal = ({
         <Paragraph>
           Opcional: escreva no campo abaixo o motivo para a interrupção do
           tratamento. Essa informação será compartilhada com os coordenadores do
-          PSI e para o paciente.
+          projeto, mas não com o paciente.
         </Paragraph>
         <TextArea
           name="reason"
