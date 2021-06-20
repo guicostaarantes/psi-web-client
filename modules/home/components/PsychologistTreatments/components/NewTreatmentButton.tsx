@@ -40,18 +40,30 @@ const NewTreatmentButton = () => {
   const handleModalClose = () => modalOpen.set(false);
 
   const handleCreateConfirmClick = async () => {
-    try {
-      await createTreatment({
-        variables: {
-          weeklyStart: getWeeklyStart(
-            weekday.current.value,
-            start.current.value,
-            HOUR_24_FORMAT,
-          ),
-          duration: 60 * Number(duration.current.value),
-          price: Number(price.current.value),
-        },
+    const variables = {
+      weeklyStart: getWeeklyStart(
+        weekday.current.value,
+        start.current.value,
+        HOUR_24_FORMAT,
+      ),
+      duration: 60 * Number(duration.current.value),
+      price: Number(price.current.value),
+    };
+
+    if (
+      isNaN(variables.weeklyStart) ||
+      isNaN(variables.duration) ||
+      isNaN(variables.price)
+    ) {
+      addToast({
+        header: "Dados inválidos",
+        message: "Confira os dados inseridos e tente novamente.",
       });
+      return;
+    }
+
+    try {
+      await createTreatment({ variables });
     } catch (err) {
       // empty
     }
