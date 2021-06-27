@@ -3,9 +3,8 @@ import { useState } from "@hookstate/core";
 import { useEffect } from "react";
 
 import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
-import AppointmentApproval from "@psi/home/components/PatientStatus/components/AppointmentApproval";
 import AppointmentReady from "@psi/home/components/PatientStatus/components/AppointmentReady";
-import AppointmentSelection from "@psi/home/components/PatientStatus/components/AppointmentSelection";
+import AwaitingAppointment from "@psi/home/components/PatientStatus/components/AwaitingAppointment";
 import AwaitingProfile from "@psi/home/components/PatientStatus/components/AwaitingProfile";
 import TreatmentSelection from "@psi/home/components/PatientStatus/components/TreatmentSelection";
 import {
@@ -19,8 +18,7 @@ type StatusType =
   | "HIDDEN"
   | "AWAITING_PROFILE"
   | "TREATMENT_SELECTION"
-  | "APPOINTMENT_SELECTION"
-  | "APPOINTMENT_APPROVAL"
+  | "AWAITING_APPOINTMENT"
   | "APPOINTMENT_READY";
 
 const PatientStatus = () => {
@@ -47,38 +45,6 @@ const PatientStatus = () => {
       return;
     }
 
-    // Shortcuts
-    const treatments = data.myPatientProfile?.treatments;
-    const appointments = data.myPatientProfile?.appointments;
-
-    // Checks for at least one appointment with proposed or confirmed status
-    // whose end is in the future
-    let appointmentStatus: "MISSING" | "PROPOSED" | "CONFIRMED" = "MISSING";
-    for (const a of appointments) {
-      if (a.status === "CONFIRMED" && a.end > serverTime) {
-        appointmentStatus = "CONFIRMED";
-        break;
-      }
-      if (a.status === "PROPOSED" && a.end > serverTime) {
-        appointmentStatus = "PROPOSED";
-        break;
-      }
-    }
-
-    // If there's no active nor pending appointments, show message with details
-    // about the next appointment
-    if (appointmentStatus === "CONFIRMED") {
-      status.set("APPOINTMENT_READY");
-      return;
-    }
-
-    // If there is a proposed appointment, show message asking user to wait for
-    // psychologist approval
-    if (appointmentStatus === "PROPOSED") {
-      status.set("APPOINTMENT_APPROVAL");
-      return;
-    }
-
     // TODO: this code is using the absence of likeName to assume that the
     // patient profile hasn't been created yet. It would be better if the backend
     // could have a dedicated endpoint to check if the profile is complete
@@ -90,14 +56,28 @@ const PatientStatus = () => {
       return;
     }
 
-    // If user has an active treatment, show message to schedule a new appointment
-    if (treatments.some((t) => t.status === "ACTIVE")) {
-      status.set("APPOINTMENT_SELECTION");
+    // Shortcuts
+    const treatments = data.myPatientProfile?.treatments;
+    const appointments = data.myPatientProfile?.appointments;
+
+    // Checks for an active treatment,
+    // and show treatment selection if not found
+    const activeTreatment = treatments.find((t) => t.status === "ACTIVE");
+    if (!activeTreatment) {
+      status.set("TREATMENT_SELECTION");
       return;
     }
 
-    // If none of the above is true, show message to let user choose new treatment
-    status.set("TREATMENT_SELECTION");
+    // Checks for at least one appointment in the future
+    const futureAppointment = appointments.find((a) => a.end > serverTime);
+
+    // If there's an appointment in the future, show it
+    if (futureAppointment) {
+      status.set("APPOINTMENT_READY");
+      return;
+    }
+
+    status.set("AWAITING_APPOINTMENT");
   }, [data, user]);
 
   switch (status.value) {
@@ -107,10 +87,8 @@ const PatientStatus = () => {
       return <AwaitingProfile />;
     case "TREATMENT_SELECTION":
       return <TreatmentSelection />;
-    case "APPOINTMENT_SELECTION":
-      return <AppointmentSelection />;
-    case "APPOINTMENT_APPROVAL":
-      return <AppointmentApproval />;
+    case "AWAITING_APPOINTMENT":
+      return <AwaitingAppointment />;
     case "APPOINTMENT_READY":
       return <AppointmentReady />;
     default:

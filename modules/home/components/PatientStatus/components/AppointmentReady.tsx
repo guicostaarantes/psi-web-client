@@ -11,7 +11,7 @@ import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
-const AppointmentApproval = () => {
+const AppointmentReady = () => {
   const router = useRouter();
 
   const serverTime = useServerTime();
@@ -24,12 +24,12 @@ const AppointmentApproval = () => {
     (tr) => tr.status === "ACTIVE",
   );
 
-  const confirmedAppointment = data?.myPatientProfile?.appointments?.find(
-    (ap) => ap.status === "CONFIRMED" && ap.end > serverTime,
+  const futureAppointment = data?.myPatientProfile?.appointments?.find(
+    (ap) => ap.end > serverTime,
   );
 
   const handleJoinRoomClick = () => {
-    router.push(`/sala-${confirmedAppointment.id}`);
+    router.push(`/sala-${futureAppointment.id}`);
   };
 
   const handleAppointmentClick = () => {
@@ -53,11 +53,9 @@ const AppointmentApproval = () => {
         <Paragraph>
           Sua próxima consulta está confirmada para as{" "}
           {format(
-            1000 * confirmedAppointment.start,
+            1000 * futureAppointment.start,
             "HH:mm' horas do dia 'dd/MM/yyyy",
           )}
-          . Clique no botão abaixo para acessar a sala quando estiver chegando a
-          hora.
         </Paragraph>
         <div className="button-wrapper">
           <Button block color="primary" onClick={handleJoinRoomClick}>
@@ -103,4 +101,4 @@ const AppointmentApproval = () => {
   );
 };
 
-export default AppointmentApproval;
+export default AppointmentReady;
