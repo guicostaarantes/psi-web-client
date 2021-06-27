@@ -42,9 +42,9 @@ const PsychologistTreatments = () => {
           ))}
         </Card>
       ) : null}
-      <Card>
-        {pendingTreatments ? (
-          pendingTreatments.length ? (
+      {pendingTreatments ? (
+        <Card>
+          {pendingTreatments.length ? (
             <>
               <MediumTitle center>Tratamentos aguardando paciente</MediumTitle>
               {pendingTreatments.map((tr) => (
@@ -65,12 +65,12 @@ const PsychologistTreatments = () => {
               {activeTreatments?.length ? " mais pacientes" : " algum paciente"}
               , clique no botão abaixo.
             </Paragraph>
-          )
-        ) : null}
-        <div className="button-wrapper">
-          <NewTreatmentButton />
-        </div>
-      </Card>
+          )}
+          <div className="button-wrapper">
+            <NewTreatmentButton />
+          </div>
+        </Card>
+      ) : null}
       <style jsx>{`
         .button-wrapper {
           display: flex;
