@@ -52,7 +52,7 @@ const Appointment = () => {
 
   if (loading) return null;
 
-  const futureAppointment = data?.myPatientProfile.appointments?.find(
+  const futureAppointment = data?.myPatientProfile?.appointments?.find(
     (a) => a.end > serverTime,
   );
 
