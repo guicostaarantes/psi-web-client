@@ -1,6 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { useRef } from "react";
 
+import { MyPsychologistAppointments } from "@psi/psychologistStart/components/Appointments/graphql";
 import {
   InterruptTreatment,
   InterruptTreatmentInput,
@@ -33,14 +34,16 @@ const InterruptTreatmentModal = ({
     InterruptTreatmentInput
   >(InterruptTreatment, {
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPsychologistTreatments }],
+    refetchQueries: [
+      { query: MyPsychologistTreatments },
+      { query: MyPsychologistAppointments },
+    ],
   });
 
   const handleInterruptConfirmClick = async () => {
     await interruptTreatment({
       variables: { id: treatmentId, reason: reason.current.value },
     });
-    onClose();
   };
 
   return (

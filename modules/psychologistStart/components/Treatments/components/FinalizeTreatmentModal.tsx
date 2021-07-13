@@ -1,5 +1,6 @@
 import { useMutation } from "@apollo/client";
 
+import { MyPsychologistAppointments } from "@psi/psychologistStart/components/Appointments/graphql";
 import {
   FinalizeTreatment,
   FinalizeTreatmentInput,
@@ -29,14 +30,16 @@ const FinalizeTreatmentModal = ({
     FinalizeTreatmentInput
   >(FinalizeTreatment, {
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPsychologistTreatments }],
+    refetchQueries: [
+      { query: MyPsychologistTreatments },
+      { query: MyPsychologistAppointments },
+    ],
   });
 
   const handleFinalizeConfirmClick = async () => {
     await finalizeTreatment({
       variables: { id: treatmentId },
     });
-    onClose();
   };
 
   return (
