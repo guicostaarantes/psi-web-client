@@ -41,7 +41,7 @@ const DateInput = ({
     <>
       <div>
         <InputMask
-          mask={format.replace(/[YMD]/g, "9")}
+          mask={format.replace(/[yMdHhm]/g, "9")}
           value={dateInput.value}
           onChange={changeDateInput}
         >

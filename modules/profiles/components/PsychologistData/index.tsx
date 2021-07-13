@@ -1,6 +1,6 @@
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { Downgraded, useState } from "@hookstate/core";
-import dayjs from "dayjs";
+import { format, parse } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
@@ -119,7 +119,7 @@ const PsychologistDataComponent = () => {
         : undefined;
 
       if (birthDate) {
-        birthDateInitialValue.set(dayjs(birthDate).format(BIRTH_DATE_FORMAT));
+        birthDateInitialValue.set(format(birthDate, BIRTH_DATE_FORMAT));
       }
     }
   }, [profileData]);
@@ -251,11 +251,14 @@ const PsychologistDataComponent = () => {
     const profileInput = {
       fullName: fullNameRef.current.value,
       likeName: likeNameRef.current.value,
-      birthDate: dayjs(
-        birthDateRef.current.value,
-        BIRTH_DATE_FORMAT,
-        true,
-      ).unix(),
+      birthDate:
+        Number(
+          parse(
+            birthDateRef.current.value,
+            BIRTH_DATE_FORMAT,
+            new Date(43200000),
+          ),
+        ) / 1000,
       city: cityRef.current.value,
     };
 

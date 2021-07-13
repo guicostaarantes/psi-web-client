@@ -18,7 +18,7 @@ const mocks = [
           id: "7289bb4f-eb82-4f6e-8cde-d02d52eeed1c",
           fullName: "Peyton Williams Manning",
           likeName: "Peyton Manning",
-          birthDate: 196484400,
+          birthDate: 196527600,
           city: "Indianapolis - IN",
           characteristics: [
             {

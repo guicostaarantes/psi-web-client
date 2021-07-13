@@ -1,15 +1,14 @@
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-
-dayjs.extend(customParseFormat);
-
 export type DATE_FORMATS =
-  | "DD/MM/YYYY"
-  | "MM/DD/YYYY"
-  | "YYYY/MM/DD"
-  | "DD/MM"
-  | "MM/DD"
-  | "MM/YYYY"
-  | "YYYY/MM";
+  | "dd/MM/yyyy"
+  | "MM/dd/yyyy"
+  | "yyyy/MM/dd"
+  | "dd/MM"
+  | "MM/dd"
+  | "MM/yyyy"
+  | "yyyy/MM"
+  | "HH:mm"
+  | "hh:mm";
 
-export const BIRTH_DATE_FORMAT: DATE_FORMATS = "DD/MM/YYYY";
+export const BIRTH_DATE_FORMAT: DATE_FORMATS = "dd/MM/yyyy";
+
+export const HOUR_24_FORMAT: DATE_FORMATS = "HH:mm";
