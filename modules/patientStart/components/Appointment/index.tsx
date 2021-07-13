@@ -67,6 +67,21 @@ const Appointment = () => {
     "EDITED_BY_PSYCHOLOGIST",
   ].includes(status);
 
+  const canEdit = ![
+    "CANCELED_BY_PSYCHOLOGIST",
+    "TREATMENT_INTERRUPTED_BY_PATIENT",
+    "TREATMENT_INTERRUPTED_BY_PSYCHOLOGIST",
+    "TREATMENT_FINALIZED",
+  ].includes(status);
+
+  const canCancel = ![
+    "CANCELED_BY_PSYCHOLOGIST",
+    "CANCELED_BY_PATIENT",
+    "TREATMENT_INTERRUPTED_BY_PATIENT",
+    "TREATMENT_INTERRUPTED_BY_PSYCHOLOGIST",
+    "TREATMENT_FINALIZED",
+  ].includes(status);
+
   const statusSentence =
     status === "CONFIRMED_BY_PSYCHOLOGIST"
       ? `${psyName} já confirmou a consulta.`
@@ -99,18 +114,22 @@ const Appointment = () => {
           {canConfirm ? (
             <Button
               loading={confirmLoading}
-              color="secondary"
+              color="primary"
               onClick={handleConfirmClick}
             >
               Confirmar
             </Button>
           ) : null}
-          <Button color="secondary" onClick={() => editModalOpen.set(true)}>
-            Sugerir novo horário
-          </Button>
-          <Button color="secondary" onClick={() => cancelModalOpen.set(true)}>
-            Cancelar consulta
-          </Button>
+          {canEdit ? (
+            <Button color="secondary" onClick={() => editModalOpen.set(true)}>
+              Sugerir novo horário
+            </Button>
+          ) : null}
+          {canCancel ? (
+            <Button color="secondary" onClick={() => cancelModalOpen.set(true)}>
+              Cancelar consulta
+            </Button>
+          ) : null}
         </div>
       </Card>
       <EditAppointmentModal

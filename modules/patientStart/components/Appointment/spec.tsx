@@ -17,6 +17,8 @@ jest.mock("@psi/shared/hooks/useServerTime", () => {
   return jest.fn(() => now);
 });
 
+// TODO: test which buttons should appear depending on the status
+
 test("should not render if no future appointments", async () => {
   const mocks = [
     {
