@@ -1,6 +1,7 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 
+import { MyPsychologistAppointments } from "@psi/psychologistStart/components/Appointments/graphql";
 import { MyPsychologistLikeName } from "@psi/psychologistStart/components/Greeting/graphql";
 import Home from "@psi/psychologistStart/components/Home";
 
@@ -14,6 +15,19 @@ const mocks = [
         myPsychologistProfile: {
           id: "fb01ceb9-0d6e-4f3d-87af-3e178681e05a",
           likeName: "Peyton Manning",
+        },
+      },
+    },
+  },
+  {
+    request: {
+      query: MyPsychologistAppointments,
+    },
+    result: {
+      data: {
+        myPsychologistProfile: {
+          id: "fb01ceb9-0d6e-4f3d-87af-3e178681e05a",
+          appointments: [],
         },
       },
     },
