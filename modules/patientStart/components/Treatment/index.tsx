@@ -25,7 +25,7 @@ const Treatment = () => {
 
   if (!activeTreatment) return <TreatmentSelection />;
 
-  return <InterruptTreatment />;
+  return <InterruptTreatment treatment={activeTreatment} />;
 };
 
 export default Treatment;
