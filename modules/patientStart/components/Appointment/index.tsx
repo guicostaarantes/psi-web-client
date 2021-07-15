@@ -11,6 +11,7 @@ import {
   MyPatientAppointments,
   MyPatientAppointmentsResponse,
 } from "@psi/patientStart/components/Appointment/graphql";
+import Empty from "@psi/shared/components/Empty";
 import useServerTime from "@psi/shared/hooks/useServerTime";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
@@ -61,25 +62,27 @@ const Appointment = () => {
   const psyName = futureAppointment.treatment?.psychologist?.likeName;
   const status = futureAppointment.status;
 
+  if (
+    [
+      "TREATMENT_INTERRUPTED_BY_PATIENT",
+      "TREATMENT_INTERRUPTED_BY_PSYCHOLOGIST",
+      "TREATMENT_FINALIZED",
+    ].includes(status)
+  ) {
+    return <Empty />;
+  }
+
   const canConfirm = [
     "CREATED",
     "CONFIRMED_BY_PSYCHOLOGIST",
     "EDITED_BY_PSYCHOLOGIST",
   ].includes(status);
 
-  const canEdit = ![
-    "CANCELED_BY_PSYCHOLOGIST",
-    "TREATMENT_INTERRUPTED_BY_PATIENT",
-    "TREATMENT_INTERRUPTED_BY_PSYCHOLOGIST",
-    "TREATMENT_FINALIZED",
-  ].includes(status);
+  const canEdit = status !== "CANCELED_BY_PSYCHOLOGIST";
 
   const canCancel = ![
     "CANCELED_BY_PSYCHOLOGIST",
     "CANCELED_BY_PATIENT",
-    "TREATMENT_INTERRUPTED_BY_PATIENT",
-    "TREATMENT_INTERRUPTED_BY_PSYCHOLOGIST",
-    "TREATMENT_FINALIZED",
   ].includes(status);
 
   const statusSentence =

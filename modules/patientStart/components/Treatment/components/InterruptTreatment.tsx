@@ -1,15 +1,20 @@
-import { useRouter } from "next/router";
+import { useState } from "@hookstate/core";
+import { ValuesType } from "utility-types";
 
+import InterruptTreatmentModal from "@psi/patientStart/components/Treatment/components/InterruptTreatmentModal";
+import { MyPatientTreatmentsResponse } from "@psi/patientStart/components/Treatment/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
-const InterruptTreatment = () => {
-  const router = useRouter();
+interface InterruptTreatmentProps {
+  treatment: ValuesType<
+    MyPatientTreatmentsResponse["myPatientProfile"]["treatments"]
+  >;
+}
 
-  const handleInterruptClick = () => {
-    router.push("/interromper");
-  };
+const InterruptTreatment = ({ treatment }: InterruptTreatmentProps) => {
+  const interruptModalOpen = useState(false);
 
   return (
     <>
@@ -19,7 +24,7 @@ const InterruptTreatment = () => {
           interrompê-lo clicando no botão abaixo.
         </Paragraph>
         <div className="button-wrapper">
-          <Button color="secondary" onClick={handleInterruptClick}>
+          <Button color="primary" onClick={() => interruptModalOpen.set(true)}>
             Interromper tratamento
           </Button>
         </div>
@@ -31,6 +36,11 @@ const InterruptTreatment = () => {
           interesse.
         </Paragraph>
       </Card>
+      <InterruptTreatmentModal
+        onClose={() => interruptModalOpen.set(false)}
+        open={interruptModalOpen.value}
+        treatment={treatment}
+      />
       <style jsx>{`
         .button-wrapper {
           display: flex;
