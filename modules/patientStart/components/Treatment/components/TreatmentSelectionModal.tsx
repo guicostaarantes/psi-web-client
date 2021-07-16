@@ -29,14 +29,14 @@ const TreatmentSelectionModal = ({
 }: TreatmentSelectionModalProps) => {
   const { addToast } = useToast();
 
-  const { data } = useQuery<MyPatientTopAffinitiesResponse>(
+  const { loading, data } = useQuery<MyPatientTopAffinitiesResponse>(
     MyPatientTopAffinities,
     {
       fetchPolicy: "no-cache",
     },
   );
 
-  const [assignTreatment, { loading, error }] = useMutation<
+  const [assignTreatment, { loading: assignLoading, error }] = useMutation<
     null,
     AssignTreatmentInput
   >(AssignTreatment, {
@@ -72,52 +72,55 @@ const TreatmentSelectionModal = ({
 
   return (
     <Modal open={open} onClose={onClose} title="Escolher psicólogo">
-      {loading ? (
-        <Paragraph>
-          Aguarde enquanto procuramos os psicólogos que estão disponíveis e
-          possuem a maior sinergia com as suas preferências.
-        </Paragraph>
-      ) : topAffinities.length ? (
-        <Paragraph>
-          Escolha um dos psicólogos e horários abaixo para iniciar o tratamento.
-        </Paragraph>
-      ) : (
-        <Paragraph>
-          Não conseguimos encontrar nenhum psicólogo que esteja disponível no
-          momento. Estamos sempre tentando aumentar nossa rede, pedimos que
-          tente novamente amanhã.
-        </Paragraph>
-      )}
-      {topAffinities.map((aff) => (
-        <Card floating key={aff.psychologist.id}>
-          <div>{aff.psychologist.fullName}</div>
-          <div className="radio-group">
-            {aff.psychologist.pendingTreatments.map((tr) => (
-              <div key={tr.id}>
-                <Radio
-                  name={tr.id}
-                  value={tr.id}
-                  label={`Sessões ${formatWeeklyHour(tr.weeklyStart)}`}
-                  checked={tr.id === selectedTreatment.value}
-                  onChange={() => selectedTreatment.set(tr.id)}
-                />
-              </div>
-            ))}
-          </div>
-        </Card>
-      ))}
-      <div className="buttons">
-        <Button
-          color="primary"
-          disabled={!selectedTreatment.value}
-          loading={loading}
-          onClick={handleAssignClick}
-        >
-          Iniciar tratamento
-        </Button>
-        <Button color="secondary" onClick={onClose}>
-          Voltar
-        </Button>
+      <div className="wrapper">
+        {loading ? (
+          <Paragraph>
+            Aguarde enquanto procuramos os psicólogos que estão disponíveis e
+            possuem a maior sinergia com as suas preferências...
+          </Paragraph>
+        ) : topAffinities.length ? (
+          <Paragraph>
+            Escolha um dos psicólogos e horários abaixo para iniciar o
+            tratamento.
+          </Paragraph>
+        ) : (
+          <Paragraph>
+            Não conseguimos encontrar nenhum psicólogo que esteja disponível no
+            momento. Estamos sempre tentando aumentar nossa rede, pedimos que
+            tente novamente amanhã.
+          </Paragraph>
+        )}
+        {topAffinities.map((aff) => (
+          <Card floating key={aff.psychologist.id}>
+            <div>{aff.psychologist.fullName}</div>
+            <div className="radio-group">
+              {aff.psychologist.pendingTreatments.map((tr) => (
+                <div key={tr.id}>
+                  <Radio
+                    name={tr.id}
+                    value={tr.id}
+                    label={`Sessões ${formatWeeklyHour(tr.weeklyStart)}`}
+                    checked={tr.id === selectedTreatment.value}
+                    onChange={() => selectedTreatment.set(tr.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          </Card>
+        ))}
+        <div className="buttons">
+          <Button
+            color="primary"
+            disabled={!selectedTreatment.value}
+            loading={assignLoading}
+            onClick={handleAssignClick}
+          >
+            Iniciar tratamento
+          </Button>
+          <Button color="secondary" onClick={onClose}>
+            Voltar
+          </Button>
+        </div>
       </div>
       <style jsx>{`
         .buttons {
@@ -132,6 +135,10 @@ const TreatmentSelectionModal = ({
           gap: 0.5rem;
           margin-bottom: 0.5rem;
           margin-top: 0.5rem;
+        }
+        .wrapper {
+          max-width: 100%;
+          width: 30rem;
         }
       `}</style>
     </Modal>
