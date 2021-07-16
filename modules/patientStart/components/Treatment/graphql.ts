@@ -37,6 +37,36 @@ export const MyPatientTreatments = gql`
   }
 `;
 
+export interface MyPatientTopAffinitiesResponse {
+  myPatientTopAffinities: {
+    psychologist?: {
+      id: string;
+      fullName: string;
+      pendingTreatments: {
+        id: string;
+        weeklyStart: number;
+        price: number;
+      }[];
+    };
+  }[];
+}
+
+export const MyPatientTopAffinities = gql`
+  query MyPatientTopAffinities {
+    myPatientTopAffinities {
+      psychologist {
+        id
+        fullName
+        pendingTreatments {
+          id
+          weeklyStart
+          price
+        }
+      }
+    }
+  }
+`;
+
 export interface InterruptTreatmentByPatientInput {
   id: string;
   reason: string;
@@ -45,5 +75,15 @@ export interface InterruptTreatmentByPatientInput {
 export const InterruptTreatmentByPatient = gql`
   mutation InterruptTreatmentByPatient($id: ID!, $reason: String!) {
     interruptTreatmentByPatient(id: $id, reason: $reason)
+  }
+`;
+
+export interface AssignTreatmentInput {
+  id: string;
+}
+
+export const AssignTreatment = gql`
+  mutation AssignTreatment($id: ID!) {
+    assignTreatment(id: $id)
   }
 `;
