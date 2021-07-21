@@ -1,8 +1,7 @@
-import { State, useState } from "@hookstate/core";
+import { State } from "@hookstate/core";
 
-import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
-import EmojiRadio from "@psi/styleguide/components/EmojiRadio";
-import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
+import BooleanPreferenceSelector from "@psi/profiles/components/PreferenceChooser/components/BooleanPreferenceSelector";
+import PreferenceSelector from "@psi/profiles/components/PreferenceChooser/components/PreferenceSelector";
 
 interface PreferenceChooserComponentProps {
   preferences: {
@@ -26,60 +25,28 @@ const PreferenceChooserComponent = ({
       {preferences.map((pref, index) => (
         <div key={pref.name}>
           {index > 0 ? <div style={{ padding: "0.5rem" }}></div> : null}
-          {pref.possibleValues
-            .filter((pv) => messages[`${prefix}:${pref.name}:${pv}`])
-            .map((pv) => (
-              <PreferenceSelector
-                key={`${pref.name}:${pv}`}
-                message={messages[`${prefix}:${pref.name}:${pv}`]}
-                prefName={pref.name}
-                pv={pv}
-                weight={weights[pref.name]}
-              />
-            ))}
+          {pref.type === "BOOLEAN" ? (
+            <BooleanPreferenceSelector
+              message={messages[`${prefix}:${pref.name}:true`]}
+              prefName={pref.name}
+              weight={weights[pref.name]}
+            />
+          ) : (
+            pref.possibleValues
+              .filter((pv) => messages[`${prefix}:${pref.name}:${pv}`])
+              .map((pv) => (
+                <PreferenceSelector
+                  key={`${pref.name}:${pv}`}
+                  message={messages[`${prefix}:${pref.name}:${pv}`]}
+                  prefName={pref.name}
+                  pv={pv}
+                  weight={weights[pref.name]}
+                />
+              ))
+          )}
         </div>
       ))}
     </>
-  );
-};
-
-interface PreferenceSelectorProps {
-  message: string;
-  prefName: string;
-  pv: string;
-  weight: State<Record<string, number>>;
-}
-
-const PreferenceSelector = ({
-  message,
-  prefName,
-  pv,
-  weight,
-}: PreferenceSelectorProps) => {
-  const internalWeight = useState(weight[pv]);
-
-  return (
-    <div className="wrapper">
-      <div>
-        <Paragraph noMarginBottom>{message}</Paragraph>
-      </div>
-      <div>
-        <EmojiRadio
-          name={`${prefName}:${pv}`}
-          checkedValue={internalWeight.value}
-          onChange={(newValue) => internalWeight.set(newValue)}
-          options={HAPPINESS_OPTIONS}
-        />
-      </div>
-      <style jsx>{`
-        .wrapper {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin: 1rem;
-        }
-      `}</style>
-    </div>
   );
 };
 
