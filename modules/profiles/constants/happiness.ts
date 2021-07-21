@@ -11,7 +11,7 @@ export const HAPPINESS_OPTIONS = [
   },
   {
     label: "neutral",
-    src: "https://twemoji.maxcdn.com/2/svg/1f610.svg",
+    src: "https://twemoji.maxcdn.com/2/svg/1f914.svg",
     value: 0,
   },
   {
