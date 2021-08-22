@@ -3,7 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { GraphQLError } from "graphql";
 
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
-import { MyUser } from "@psi/auth/hooks/usePagePermission/graphql";
+import { MyUserDocument, Role } from "@psi/shared/graphql";
 
 const mockPushRoute = jest
   .fn()
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 const successMock = [
   {
-    request: { query: MyUser },
+    request: { query: MyUserDocument },
     result: {
       data: {
         myUser: {
@@ -35,7 +35,7 @@ const successMock = [
 
 const notAuthenticatedMock = [
   {
-    request: { query: MyUser },
+    request: { query: MyUserDocument },
     result: {
       errors: [new GraphQLError("forbidden")],
     },
@@ -44,7 +44,7 @@ const notAuthenticatedMock = [
 
 const userWithoutPatientProfileMock = [
   {
-    request: { query: MyUser },
+    request: { query: MyUserDocument },
     result: {
       data: {
         myUser: {
@@ -129,7 +129,7 @@ test("should redirect to /login if user not found", async () => {
 const RestrictToPsychologistComponent = () => {
   const { pageStatus } = usePagePermission({
     requiresAuth: true,
-    requiresRole: ["PSYCHOLOGIST"],
+    requiresRole: [Role.Psychologist],
   });
 
   return <div>current pageStatus is {pageStatus}</div>;

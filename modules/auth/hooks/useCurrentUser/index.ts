@@ -1,14 +1,16 @@
-import { useQuery } from "@apollo/client";
+import { useMyUserQuery } from "@psi/shared/graphql";
 
-import MyUser, {
-  MyUserResponse,
-  MyUserResponseData,
-} from "@psi/auth/hooks/useCurrentUser/graphql";
+const useCurrentUser = () => {
+  const { data } = useMyUserQuery();
 
-const useCurrentUser = (): MyUserResponseData => {
-  const { data } = useQuery<MyUserResponse>(MyUser);
-
-  return data?.myUser || ({} as MyUserResponseData);
+  return (
+    data?.myUser || {
+      __typename: "User",
+      id: undefined,
+      email: undefined,
+      role: undefined,
+    }
+  );
 };
 
 export default useCurrentUser;

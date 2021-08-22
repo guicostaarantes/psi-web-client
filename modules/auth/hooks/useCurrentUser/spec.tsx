@@ -3,11 +3,11 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { GraphQLError } from "graphql";
 
 import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
-import MyUser from "@psi/auth/hooks/useCurrentUser/graphql";
+import { MyUserDocument } from "@psi/shared/graphql";
 
 const successMock = [
   {
-    request: { query: MyUser },
+    request: { query: MyUserDocument },
     result: {
       data: {
         myUser: {
@@ -22,7 +22,7 @@ const successMock = [
 
 const errorMock = [
   {
-    request: { query: MyUser },
+    request: { query: MyUserDocument },
     result: {
       errors: [new GraphQLError("forbidden")],
     },
