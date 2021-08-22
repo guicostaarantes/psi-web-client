@@ -1,8 +1,8 @@
 export enum frequencyValues {
   "SEVEN_DAYS",
-  "FOURTEEN_DAYS_TWO_TREATMENTS",
-  "FOURTEEN_DAYS_EVEN_WEEKS",
-  "FOURTEEN_DAYS_ODD_WEEKS",
+  "FOURTEEN_DAYS_AB",
+  "FOURTEEN_DAYS_A",
+  "FOURTEEN_DAYS_B",
 }
 
 const treatmentFrequencies = [
@@ -12,21 +12,21 @@ const treatmentFrequencies = [
     params: [{ frequency: 1, phase: 0 }],
   },
   {
-    label: "A cada 14 dias (dois tratamentos)",
-    value: frequencyValues.FOURTEEN_DAYS_TWO_TREATMENTS,
+    label: "A cada 14 dias (semanas A e B)",
+    value: frequencyValues.FOURTEEN_DAYS_AB,
     params: [
       { frequency: 2, phase: 0 },
       { frequency: 2, phase: 604800 },
     ],
   },
   {
-    label: "A cada 14 dias (semanas pares)",
-    value: frequencyValues.FOURTEEN_DAYS_EVEN_WEEKS,
+    label: "A cada 14 dias (semanas A)",
+    value: frequencyValues.FOURTEEN_DAYS_A,
     params: [{ frequency: 2, phase: 0 }],
   },
   {
-    label: "A cada 14 dias (semanas ímpares)",
-    value: frequencyValues.FOURTEEN_DAYS_ODD_WEEKS,
+    label: "A cada 14 dias (semanas B)",
+    value: frequencyValues.FOURTEEN_DAYS_B,
     params: [{ frequency: 2, phase: 604800 }],
   },
 ];

@@ -1,3 +1,5 @@
+export const startOfWeekDay = 3;
+
 const weekdayOptions = [
   { value: 3, label: "Domingo" },
   { value: 4, label: "Segunda-feira" },

@@ -9,6 +9,7 @@ import {
 } from "@psi/psychologistStart/components/Treatments/graphql";
 import treatmentFrequencies from "@psi/shared/constants/treatmentFrequencies";
 import weekdayOptions from "@psi/shared/constants/weekdayOptions";
+import getABWeek from "@psi/shared/utils/getABWeek";
 import getPhases from "@psi/shared/utils/getPhases";
 import Button from "@psi/styleguide/components/Button";
 import DateInput from "@psi/styleguide/components/DateInput";
@@ -117,6 +118,9 @@ const NewTreatmentButton = () => {
           <Paragraph>
             Caso você não tenha tratamentos pendentes, você ficará invisível
             para novos pacientes que utilizarem o buscador de tratamentos.
+          </Paragraph>
+          <Paragraph>
+            Atualmente estamos em uma semana {getABWeek(new Date())}.
           </Paragraph>
           <Select
             name="frequency"

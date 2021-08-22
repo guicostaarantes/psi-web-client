@@ -18,11 +18,16 @@ const formatHourFromFrequencyAndPhase = (frequency: number, phase: number) => {
   let week = "";
 
   if (frequency === 2) {
-    if (phase >= 7 * 24 * 60 * 60) {
-      week = " de semanas ímpares";
-    } else {
-      week = " de semanas pares";
-    }
+    const timezoneCompensation = 60 * new Date().getTimezoneOffset();
+    const secondsInOneDay = 24 * 60 * 60;
+
+    const minimumWeekEven = 3 * secondsInOneDay + timezoneCompensation;
+    const maximumWeekEven = 10 * secondsInOneDay + timezoneCompensation;
+
+    const isAbsoluteWeekEven =
+      phase >= minimumWeekEven && phase < maximumWeekEven;
+
+    week = isAbsoluteWeekEven ? " de semanas A" : " de semanas B";
   }
 
   return `${weekdays[day]}${week} às ${hour}:${minute}`;

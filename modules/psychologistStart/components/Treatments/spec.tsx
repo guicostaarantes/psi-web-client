@@ -54,7 +54,7 @@ test("should render", async () => {
     screen.getByText("Duração de cada sessão: 50 minutos");
     screen.getByText("Valor cobrado por sessão: R$25.00");
     screen.getByText(
-      "Horário das sessões: às quintas-feiras de semanas ímpares às 15:00",
+      "Horário das sessões: às quintas-feiras de semanas A às 15:00",
     );
     screen.getByText("Duração de cada sessão: 60 minutos");
     screen.getByText("Valor cobrado por sessão: R$30.00");
