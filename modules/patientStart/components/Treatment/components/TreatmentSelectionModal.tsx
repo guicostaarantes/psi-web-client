@@ -10,7 +10,7 @@ import {
   MyPatientTopAffinities,
   MyPatientTopAffinitiesResponse,
 } from "@psi/patientStart/components/Treatment/graphql";
-import formatWeeklyHour from "@psi/shared/utils/formatWeeklyHour";
+import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Modal from "@psi/styleguide/components/Modal";
@@ -99,7 +99,10 @@ const TreatmentSelectionModal = ({
                   <Radio
                     name={tr.id}
                     value={tr.id}
-                    label={`Sessões ${formatWeeklyHour(tr.weeklyStart)}`}
+                    label={`Sessões ${formatHourFromFrequencyAndPhase(
+                      tr.frequency,
+                      tr.phase,
+                    )}`}
                     checked={tr.id === selectedTreatment.value}
                     onChange={() => selectedTreatment.set(tr.id)}
                   />
