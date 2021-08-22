@@ -7,8 +7,10 @@ import {
   CreateTreatmentInput,
   MyPsychologistTreatments,
 } from "@psi/psychologistStart/components/Treatments/graphql";
+import treatmentFrequencies from "@psi/shared/constants/treatmentFrequencies";
 import weekdayOptions from "@psi/shared/constants/weekdayOptions";
-import getWeeklyStart from "@psi/shared/utils/getWeeklyStart";
+import getABWeek from "@psi/shared/utils/getABWeek";
+import getPhases from "@psi/shared/utils/getPhases";
 import Button from "@psi/styleguide/components/Button";
 import DateInput from "@psi/styleguide/components/DateInput";
 import Input from "@psi/styleguide/components/Input";
@@ -21,6 +23,7 @@ import useToast from "@psi/styleguide/hooks/useToast";
 const NewTreatmentButton = () => {
   const { addToast } = useToast();
 
+  const frequency = useRef(null);
   const weekday = useRef(null);
   const start = useRef(null);
   const duration = useRef(null);
@@ -40,20 +43,12 @@ const NewTreatmentButton = () => {
   const handleModalClose = () => modalOpen.set(false);
 
   const handleCreateConfirmClick = async () => {
-    const variables = {
-      weeklyStart: getWeeklyStart(
-        weekday.current.value,
-        start.current.value,
-        HOUR_24_FORMAT,
-      ),
-      duration: 60 * Number(duration.current.value),
-      price: Number(price.current.value),
-    };
-
     if (
-      isNaN(variables.weeklyStart) ||
-      isNaN(variables.duration) ||
-      isNaN(variables.price)
+      isNaN(Number(frequency.current.value)) ||
+      isNaN(Number(weekday.current.value)) ||
+      !start.current.value ||
+      isNaN(Number(duration.current.value)) ||
+      isNaN(Number(price.current.value))
     ) {
       addToast({
         header: "Dados inválidos",
@@ -62,8 +57,22 @@ const NewTreatmentButton = () => {
       return;
     }
 
+    const phases = getPhases(
+      frequency.current.value,
+      weekday.current.value,
+      start.current.value,
+      HOUR_24_FORMAT,
+    ).map((phase) => ({
+      frequency: phase.frequency,
+      phase: phase.phase,
+      duration: 60 * Number(duration.current.value),
+      price: Number(price.current.value),
+    }));
+
     try {
-      await createTreatment({ variables });
+      await Promise.all(
+        phases.map((variables) => createTreatment({ variables })),
+      );
     } catch (err) {
       // empty
     }
@@ -110,6 +119,15 @@ const NewTreatmentButton = () => {
             Caso você não tenha tratamentos pendentes, você ficará invisível
             para novos pacientes que utilizarem o buscador de tratamentos.
           </Paragraph>
+          <Paragraph>
+            Atualmente estamos em uma semana {getABWeek(new Date())}.
+          </Paragraph>
+          <Select
+            name="frequency"
+            label="Frequência de tratamento"
+            options={treatmentFrequencies}
+            reference={frequency}
+          />
           <Select
             name="weekday"
             label="Dia da semana"

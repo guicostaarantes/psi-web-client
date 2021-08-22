@@ -13,7 +13,8 @@ export interface MyPsychologistTreatmentsResponse {
     treatments: {
       id: string;
       status: TreatmentStatus;
-      weeklyStart: number;
+      frequency: number;
+      phase: number;
       duration: number;
       price: number;
       patient: {
@@ -30,7 +31,8 @@ export const MyPsychologistTreatments = gql`
       treatments {
         id
         status
-        weeklyStart
+        frequency
+        phase
         duration
         price
         patient {
@@ -42,15 +44,26 @@ export const MyPsychologistTreatments = gql`
 `;
 
 export interface CreateTreatmentInput {
-  weeklyStart: number;
+  frequency: number;
+  phase: number;
   duration: number;
   price: number;
 }
 
 export const CreateTreatment = gql`
-  mutation CreateTreatment($weeklyStart: Int!, $duration: Int!, $price: Int!) {
+  mutation CreateTreatment(
+    $frequency: Int!
+    $phase: Int!
+    $duration: Int!
+    $price: Int!
+  ) {
     createTreatment(
-      input: { weeklyStart: $weeklyStart, duration: $duration, price: $price }
+      input: {
+        frequency: $frequency
+        phase: $phase
+        duration: $duration
+        price: $price
+      }
     )
   }
 `;

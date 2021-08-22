@@ -44,7 +44,9 @@ export interface MyPatientTopAffinitiesResponse {
       fullName: string;
       pendingTreatments: {
         id: string;
-        weeklyStart: number;
+        frequency: number;
+        phase: number;
+        duration: number;
         price: number;
       }[];
     };
@@ -59,7 +61,9 @@ export const MyPatientTopAffinities = gql`
         fullName
         pendingTreatments {
           id
-          weeklyStart
+          frequency
+          phase
+          duration
           price
         }
       }

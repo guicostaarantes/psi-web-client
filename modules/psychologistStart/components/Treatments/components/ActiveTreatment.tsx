@@ -2,13 +2,14 @@ import { useState } from "@hookstate/core";
 
 import FinalizeTreatmentModal from "@psi/psychologistStart/components/Treatments/components/FinalizeTreatmentModal";
 import InterruptTreatmentModal from "@psi/psychologistStart/components/Treatments/components/InterruptTreatmentModal";
-import formatWeeklyHour from "@psi/shared/utils/formatWeeklyHour";
+import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 
 interface ActiveTreatmentProps {
   id: string;
-  weeklyStart: number;
+  frequency: number;
+  phase: number;
   duration: number;
   price: number;
   patient: {
@@ -18,7 +19,8 @@ interface ActiveTreatmentProps {
 
 const ActiveTreatment = ({
   id,
-  weeklyStart,
+  frequency,
+  phase,
   duration,
   price,
   patient,
@@ -41,7 +43,8 @@ const ActiveTreatment = ({
           <div>
             <div className="text">Paciente: {patient.fullName}</div>
             <div className="text">
-              Horário das sessões: {formatWeeklyHour(weeklyStart)}
+              Horário das sessões:{" "}
+              {formatHourFromFrequencyAndPhase(frequency, phase)}
             </div>
             <div className="text">
               Duração de cada sessão: {durationInMinutes} minutos
