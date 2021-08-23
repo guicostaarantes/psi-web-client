@@ -1,17 +1,7 @@
-import { gql, useQuery } from "@apollo/client";
-
-interface GetServerTimeResponse {
-  time: number;
-}
-
-export const GetServerTime = gql`
-  query GetServerTime {
-    time
-  }
-`;
+import { useGetServerTimeQuery } from "@psi/shared/graphql";
 
 const useServerTime = () => {
-  const { data } = useQuery<GetServerTimeResponse>(GetServerTime, {
+  const { data } = useGetServerTimeQuery({
     fetchPolicy: "no-cache",
   });
 

@@ -1,12 +1,13 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 
-import useServerTime, { GetServerTime } from "@psi/shared/hooks/useServerTime";
+import { GetServerTimeDocument } from "@psi/shared/graphql";
+import useServerTime from "@psi/shared/hooks/useServerTime";
 
 const timeMock = [
   {
     request: {
-      query: GetServerTime,
+      query: GetServerTimeDocument,
     },
     result: {
       data: {
@@ -19,7 +20,7 @@ const timeMock = [
 const errorMock = [
   {
     request: {
-      query: GetServerTime,
+      query: GetServerTimeDocument,
     },
     result: {
       data: null,
