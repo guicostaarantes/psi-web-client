@@ -1,0 +1,3 @@
+mutation ConfirmAppointmentByPsychologist($id: ID!) {
+  confirmAppointmentByPsychologist(id: $id)
+}

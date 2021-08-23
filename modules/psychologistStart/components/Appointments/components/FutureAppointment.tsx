@@ -1,4 +1,3 @@
-import { useMutation } from "@apollo/client";
 import { useState } from "@hookstate/core";
 import { format } from "date-fns";
 
@@ -6,10 +5,9 @@ import CancelAppointmentModal from "@psi/psychologistStart/components/Appointmen
 import EditAppointmentModal from "@psi/psychologistStart/components/Appointments/components/EditAppointmentModal";
 import {
   AppointmentStatus,
-  ConfirmAppointmentByPsychologist,
-  ConfirmAppointmentByPsychologistInput,
-  MyPsychologistAppointments,
-} from "@psi/psychologistStart/components/Appointments/graphql";
+  MyPsychologistAppointmentsDocument,
+  useConfirmAppointmentByPsychologistMutation,
+} from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import useToast from "@psi/styleguide/hooks/useToast";
@@ -33,12 +31,12 @@ const FutureAppointment = ({
 
   const cancelModalOpen = useState(false);
 
-  const [confirmAppointment, { loading }] = useMutation<
-    null,
-    ConfirmAppointmentByPsychologistInput
-  >(ConfirmAppointmentByPsychologist, {
+  const [
+    confirmAppointment,
+    { loading },
+  ] = useConfirmAppointmentByPsychologistMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPsychologistAppointments }],
+    refetchQueries: [{ query: MyPsychologistAppointmentsDocument }],
   });
 
   const handleConfirmClick = async () => {

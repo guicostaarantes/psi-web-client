@@ -1,15 +1,14 @@
-import { useMutation } from "@apollo/client";
 import { parse } from "date-fns";
 import { useRef } from "react";
 import { useEffect } from "react";
 
 import {
-  EditAppointmentByPsychologist,
-  EditAppointmentByPsychologistInput,
-  MyPsychologistAppointments,
-} from "@psi/psychologistStart/components/Appointments/graphql";
+  MyPsychologistAppointmentsDocument,
+  useEditAppointmentByPsychologistMutation,
+} from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import DateInput from "@psi/styleguide/components/DateInput";
+import Input from "@psi/styleguide/components/Input";
 import Modal from "@psi/styleguide/components/Modal";
 import TextArea from "@psi/styleguide/components/TextArea";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
@@ -32,16 +31,18 @@ const EditAppointmentModal = ({
 }: EditAppointmentModalProps) => {
   const dateRef = useRef(null);
   const timeRef = useRef(null);
+  const durationRef = useRef(null);
+  const priceRef = useRef(null);
   const reasonRef = useRef(null);
 
   const { addToast } = useToast();
 
-  const [editAppointment, { loading, error, data }] = useMutation<
-    null,
-    EditAppointmentByPsychologistInput
-  >(EditAppointmentByPsychologist, {
+  const [
+    editAppointment,
+    { loading, error, data },
+  ] = useEditAppointmentByPsychologistMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPsychologistAppointments }],
+    refetchQueries: [{ query: MyPsychologistAppointmentsDocument }],
   });
 
   useEffect(() => {
@@ -77,6 +78,8 @@ const EditAppointmentModal = ({
       Number(parse(timeRef.current.value, HOUR_24_FORMAT, new Date(43200000))) /
       1000;
 
+    const duration = 60 * Number(durationRef.current.value);
+
     const timezoneCompensation = -new Date().getTimezoneOffset() * 60;
 
     try {
@@ -85,6 +88,8 @@ const EditAppointmentModal = ({
           id: appointmentId,
           input: {
             start: dateStart + timeStart + timezoneCompensation,
+            end: dateStart + timeStart + timezoneCompensation + duration,
+            price: priceRef.current.value,
             reason: reasonRef.current.value,
           },
         },
@@ -113,6 +118,16 @@ const EditAppointmentModal = ({
           name="time"
           label="Hora"
           reference={timeRef}
+        />
+        <Input
+          name="duration"
+          label="Duração da sessão (minutos)"
+          reference={durationRef}
+        />
+        <Input
+          name="price"
+          label="Preço da sessão (reais)"
+          reference={priceRef}
         />
         <TextArea
           name="reason"

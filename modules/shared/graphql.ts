@@ -655,6 +655,140 @@ export type MyPatientTreatmentsQuery = {
   }>;
 };
 
+export type CancelAppointmentByPsychologistMutationVariables = Exact<{
+  id: Scalars["ID"];
+  reason: Scalars["String"];
+}>;
+
+export type CancelAppointmentByPsychologistMutation = {
+  __typename?: "Mutation";
+  cancelAppointmentByPsychologist?: Maybe<boolean>;
+};
+
+export type ConfirmAppointmentByPsychologistMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type ConfirmAppointmentByPsychologistMutation = {
+  __typename?: "Mutation";
+  confirmAppointmentByPsychologist?: Maybe<boolean>;
+};
+
+export type CreateTreatmentMutationVariables = Exact<{
+  frequency: Scalars["Int"];
+  phase: Scalars["Int"];
+  duration: Scalars["Int"];
+  price: Scalars["Int"];
+}>;
+
+export type CreateTreatmentMutation = {
+  __typename?: "Mutation";
+  createTreatment?: Maybe<boolean>;
+};
+
+export type DeleteTreatmentMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type DeleteTreatmentMutation = {
+  __typename?: "Mutation";
+  deleteTreatment?: Maybe<boolean>;
+};
+
+export type EditAppointmentByPsychologistMutationVariables = Exact<{
+  id: Scalars["ID"];
+  input: EditAppointmentByPsychologistInput;
+}>;
+
+export type EditAppointmentByPsychologistMutation = {
+  __typename?: "Mutation";
+  editAppointmentByPsychologist?: Maybe<boolean>;
+};
+
+export type FinalizeTreatmentMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type FinalizeTreatmentMutation = {
+  __typename?: "Mutation";
+  finalizeTreatment?: Maybe<boolean>;
+};
+
+export type InterruptTreatmentByPsychologistMutationVariables = Exact<{
+  id: Scalars["ID"];
+  reason: Scalars["String"];
+}>;
+
+export type InterruptTreatmentByPsychologistMutation = {
+  __typename?: "Mutation";
+  interruptTreatmentByPsychologist?: Maybe<boolean>;
+};
+
+export type MyPsychologistAppointmentsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type MyPsychologistAppointmentsQuery = {
+  __typename?: "Query";
+  myPsychologistProfile?: Maybe<{
+    __typename?: "PsychologistProfile";
+    id: string;
+    appointments: Array<{
+      __typename?: "PsychologistAppointment";
+      id: string;
+      status: AppointmentStatus;
+      start: number;
+      end: number;
+      price: number;
+      treatment: {
+        __typename?: "PsychologistTreatment";
+        patient?: Maybe<{
+          __typename?: "PublicPatientProfile";
+          fullName: string;
+        }>;
+      };
+    }>;
+  }>;
+};
+
+export type MyPsychologistLikeNameQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type MyPsychologistLikeNameQuery = {
+  __typename?: "Query";
+  myPsychologistProfile?: Maybe<{
+    __typename?: "PsychologistProfile";
+    id: string;
+    likeName: string;
+  }>;
+};
+
+export type MyPsychologistTreatmentsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type MyPsychologistTreatmentsQuery = {
+  __typename?: "Query";
+  myPsychologistProfile?: Maybe<{
+    __typename?: "PsychologistProfile";
+    id: string;
+    treatments: Array<{
+      __typename?: "PsychologistTreatment";
+      id: string;
+      status: TreatmentStatus;
+      frequency: number;
+      phase: number;
+      duration: number;
+      price: number;
+      patient?: Maybe<{
+        __typename?: "PublicPatientProfile";
+        fullName: string;
+      }>;
+    }>;
+  }>;
+};
+
 export type GetServerTimeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetServerTimeQuery = { __typename?: "Query"; time: number };
@@ -1207,6 +1341,551 @@ export type MyPatientTreatmentsLazyQueryHookResult = ReturnType<
 export type MyPatientTreatmentsQueryResult = Apollo.QueryResult<
   MyPatientTreatmentsQuery,
   MyPatientTreatmentsQueryVariables
+>;
+export const CancelAppointmentByPsychologistDocument = gql`
+  mutation CancelAppointmentByPsychologist($id: ID!, $reason: String!) {
+    cancelAppointmentByPsychologist(id: $id, reason: $reason)
+  }
+`;
+export type CancelAppointmentByPsychologistMutationFn = Apollo.MutationFunction<
+  CancelAppointmentByPsychologistMutation,
+  CancelAppointmentByPsychologistMutationVariables
+>;
+
+/**
+ * __useCancelAppointmentByPsychologistMutation__
+ *
+ * To run a mutation, you first call `useCancelAppointmentByPsychologistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelAppointmentByPsychologistMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelAppointmentByPsychologistMutation, { data, loading, error }] = useCancelAppointmentByPsychologistMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      reason: // value for 'reason'
+ *   },
+ * });
+ */
+export function useCancelAppointmentByPsychologistMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CancelAppointmentByPsychologistMutation,
+    CancelAppointmentByPsychologistMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CancelAppointmentByPsychologistMutation,
+    CancelAppointmentByPsychologistMutationVariables
+  >(CancelAppointmentByPsychologistDocument, options);
+}
+export type CancelAppointmentByPsychologistMutationHookResult = ReturnType<
+  typeof useCancelAppointmentByPsychologistMutation
+>;
+export type CancelAppointmentByPsychologistMutationResult = Apollo.MutationResult<CancelAppointmentByPsychologistMutation>;
+export type CancelAppointmentByPsychologistMutationOptions = Apollo.BaseMutationOptions<
+  CancelAppointmentByPsychologistMutation,
+  CancelAppointmentByPsychologistMutationVariables
+>;
+export const ConfirmAppointmentByPsychologistDocument = gql`
+  mutation ConfirmAppointmentByPsychologist($id: ID!) {
+    confirmAppointmentByPsychologist(id: $id)
+  }
+`;
+export type ConfirmAppointmentByPsychologistMutationFn = Apollo.MutationFunction<
+  ConfirmAppointmentByPsychologistMutation,
+  ConfirmAppointmentByPsychologistMutationVariables
+>;
+
+/**
+ * __useConfirmAppointmentByPsychologistMutation__
+ *
+ * To run a mutation, you first call `useConfirmAppointmentByPsychologistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useConfirmAppointmentByPsychologistMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [confirmAppointmentByPsychologistMutation, { data, loading, error }] = useConfirmAppointmentByPsychologistMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useConfirmAppointmentByPsychologistMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ConfirmAppointmentByPsychologistMutation,
+    ConfirmAppointmentByPsychologistMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    ConfirmAppointmentByPsychologistMutation,
+    ConfirmAppointmentByPsychologistMutationVariables
+  >(ConfirmAppointmentByPsychologistDocument, options);
+}
+export type ConfirmAppointmentByPsychologistMutationHookResult = ReturnType<
+  typeof useConfirmAppointmentByPsychologistMutation
+>;
+export type ConfirmAppointmentByPsychologistMutationResult = Apollo.MutationResult<ConfirmAppointmentByPsychologistMutation>;
+export type ConfirmAppointmentByPsychologistMutationOptions = Apollo.BaseMutationOptions<
+  ConfirmAppointmentByPsychologistMutation,
+  ConfirmAppointmentByPsychologistMutationVariables
+>;
+export const CreateTreatmentDocument = gql`
+  mutation CreateTreatment(
+    $frequency: Int!
+    $phase: Int!
+    $duration: Int!
+    $price: Int!
+  ) {
+    createTreatment(
+      input: {
+        frequency: $frequency
+        phase: $phase
+        duration: $duration
+        price: $price
+      }
+    )
+  }
+`;
+export type CreateTreatmentMutationFn = Apollo.MutationFunction<
+  CreateTreatmentMutation,
+  CreateTreatmentMutationVariables
+>;
+
+/**
+ * __useCreateTreatmentMutation__
+ *
+ * To run a mutation, you first call `useCreateTreatmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTreatmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTreatmentMutation, { data, loading, error }] = useCreateTreatmentMutation({
+ *   variables: {
+ *      frequency: // value for 'frequency'
+ *      phase: // value for 'phase'
+ *      duration: // value for 'duration'
+ *      price: // value for 'price'
+ *   },
+ * });
+ */
+export function useCreateTreatmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateTreatmentMutation,
+    CreateTreatmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateTreatmentMutation,
+    CreateTreatmentMutationVariables
+  >(CreateTreatmentDocument, options);
+}
+export type CreateTreatmentMutationHookResult = ReturnType<
+  typeof useCreateTreatmentMutation
+>;
+export type CreateTreatmentMutationResult = Apollo.MutationResult<CreateTreatmentMutation>;
+export type CreateTreatmentMutationOptions = Apollo.BaseMutationOptions<
+  CreateTreatmentMutation,
+  CreateTreatmentMutationVariables
+>;
+export const DeleteTreatmentDocument = gql`
+  mutation DeleteTreatment($id: ID!) {
+    deleteTreatment(id: $id)
+  }
+`;
+export type DeleteTreatmentMutationFn = Apollo.MutationFunction<
+  DeleteTreatmentMutation,
+  DeleteTreatmentMutationVariables
+>;
+
+/**
+ * __useDeleteTreatmentMutation__
+ *
+ * To run a mutation, you first call `useDeleteTreatmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTreatmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTreatmentMutation, { data, loading, error }] = useDeleteTreatmentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteTreatmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteTreatmentMutation,
+    DeleteTreatmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteTreatmentMutation,
+    DeleteTreatmentMutationVariables
+  >(DeleteTreatmentDocument, options);
+}
+export type DeleteTreatmentMutationHookResult = ReturnType<
+  typeof useDeleteTreatmentMutation
+>;
+export type DeleteTreatmentMutationResult = Apollo.MutationResult<DeleteTreatmentMutation>;
+export type DeleteTreatmentMutationOptions = Apollo.BaseMutationOptions<
+  DeleteTreatmentMutation,
+  DeleteTreatmentMutationVariables
+>;
+export const EditAppointmentByPsychologistDocument = gql`
+  mutation EditAppointmentByPsychologist(
+    $id: ID!
+    $input: EditAppointmentByPsychologistInput!
+  ) {
+    editAppointmentByPsychologist(id: $id, input: $input)
+  }
+`;
+export type EditAppointmentByPsychologistMutationFn = Apollo.MutationFunction<
+  EditAppointmentByPsychologistMutation,
+  EditAppointmentByPsychologistMutationVariables
+>;
+
+/**
+ * __useEditAppointmentByPsychologistMutation__
+ *
+ * To run a mutation, you first call `useEditAppointmentByPsychologistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditAppointmentByPsychologistMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editAppointmentByPsychologistMutation, { data, loading, error }] = useEditAppointmentByPsychologistMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useEditAppointmentByPsychologistMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    EditAppointmentByPsychologistMutation,
+    EditAppointmentByPsychologistMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    EditAppointmentByPsychologistMutation,
+    EditAppointmentByPsychologistMutationVariables
+  >(EditAppointmentByPsychologistDocument, options);
+}
+export type EditAppointmentByPsychologistMutationHookResult = ReturnType<
+  typeof useEditAppointmentByPsychologistMutation
+>;
+export type EditAppointmentByPsychologistMutationResult = Apollo.MutationResult<EditAppointmentByPsychologistMutation>;
+export type EditAppointmentByPsychologistMutationOptions = Apollo.BaseMutationOptions<
+  EditAppointmentByPsychologistMutation,
+  EditAppointmentByPsychologistMutationVariables
+>;
+export const FinalizeTreatmentDocument = gql`
+  mutation FinalizeTreatment($id: ID!) {
+    finalizeTreatment(id: $id)
+  }
+`;
+export type FinalizeTreatmentMutationFn = Apollo.MutationFunction<
+  FinalizeTreatmentMutation,
+  FinalizeTreatmentMutationVariables
+>;
+
+/**
+ * __useFinalizeTreatmentMutation__
+ *
+ * To run a mutation, you first call `useFinalizeTreatmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFinalizeTreatmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [finalizeTreatmentMutation, { data, loading, error }] = useFinalizeTreatmentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFinalizeTreatmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    FinalizeTreatmentMutation,
+    FinalizeTreatmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    FinalizeTreatmentMutation,
+    FinalizeTreatmentMutationVariables
+  >(FinalizeTreatmentDocument, options);
+}
+export type FinalizeTreatmentMutationHookResult = ReturnType<
+  typeof useFinalizeTreatmentMutation
+>;
+export type FinalizeTreatmentMutationResult = Apollo.MutationResult<FinalizeTreatmentMutation>;
+export type FinalizeTreatmentMutationOptions = Apollo.BaseMutationOptions<
+  FinalizeTreatmentMutation,
+  FinalizeTreatmentMutationVariables
+>;
+export const InterruptTreatmentByPsychologistDocument = gql`
+  mutation InterruptTreatmentByPsychologist($id: ID!, $reason: String!) {
+    interruptTreatmentByPsychologist(id: $id, reason: $reason)
+  }
+`;
+export type InterruptTreatmentByPsychologistMutationFn = Apollo.MutationFunction<
+  InterruptTreatmentByPsychologistMutation,
+  InterruptTreatmentByPsychologistMutationVariables
+>;
+
+/**
+ * __useInterruptTreatmentByPsychologistMutation__
+ *
+ * To run a mutation, you first call `useInterruptTreatmentByPsychologistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInterruptTreatmentByPsychologistMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [interruptTreatmentByPsychologistMutation, { data, loading, error }] = useInterruptTreatmentByPsychologistMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      reason: // value for 'reason'
+ *   },
+ * });
+ */
+export function useInterruptTreatmentByPsychologistMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    InterruptTreatmentByPsychologistMutation,
+    InterruptTreatmentByPsychologistMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    InterruptTreatmentByPsychologistMutation,
+    InterruptTreatmentByPsychologistMutationVariables
+  >(InterruptTreatmentByPsychologistDocument, options);
+}
+export type InterruptTreatmentByPsychologistMutationHookResult = ReturnType<
+  typeof useInterruptTreatmentByPsychologistMutation
+>;
+export type InterruptTreatmentByPsychologistMutationResult = Apollo.MutationResult<InterruptTreatmentByPsychologistMutation>;
+export type InterruptTreatmentByPsychologistMutationOptions = Apollo.BaseMutationOptions<
+  InterruptTreatmentByPsychologistMutation,
+  InterruptTreatmentByPsychologistMutationVariables
+>;
+export const MyPsychologistAppointmentsDocument = gql`
+  query MyPsychologistAppointments {
+    myPsychologistProfile {
+      id
+      appointments {
+        id
+        status
+        start
+        end
+        price
+        treatment {
+          patient {
+            fullName
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useMyPsychologistAppointmentsQuery__
+ *
+ * To run a query within a React component, call `useMyPsychologistAppointmentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyPsychologistAppointmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyPsychologistAppointmentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyPsychologistAppointmentsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    MyPsychologistAppointmentsQuery,
+    MyPsychologistAppointmentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    MyPsychologistAppointmentsQuery,
+    MyPsychologistAppointmentsQueryVariables
+  >(MyPsychologistAppointmentsDocument, options);
+}
+export function useMyPsychologistAppointmentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    MyPsychologistAppointmentsQuery,
+    MyPsychologistAppointmentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    MyPsychologistAppointmentsQuery,
+    MyPsychologistAppointmentsQueryVariables
+  >(MyPsychologistAppointmentsDocument, options);
+}
+export type MyPsychologistAppointmentsQueryHookResult = ReturnType<
+  typeof useMyPsychologistAppointmentsQuery
+>;
+export type MyPsychologistAppointmentsLazyQueryHookResult = ReturnType<
+  typeof useMyPsychologistAppointmentsLazyQuery
+>;
+export type MyPsychologistAppointmentsQueryResult = Apollo.QueryResult<
+  MyPsychologistAppointmentsQuery,
+  MyPsychologistAppointmentsQueryVariables
+>;
+export const MyPsychologistLikeNameDocument = gql`
+  query MyPsychologistLikeName {
+    myPsychologistProfile {
+      id
+      likeName
+    }
+  }
+`;
+
+/**
+ * __useMyPsychologistLikeNameQuery__
+ *
+ * To run a query within a React component, call `useMyPsychologistLikeNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyPsychologistLikeNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyPsychologistLikeNameQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyPsychologistLikeNameQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    MyPsychologistLikeNameQuery,
+    MyPsychologistLikeNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    MyPsychologistLikeNameQuery,
+    MyPsychologistLikeNameQueryVariables
+  >(MyPsychologistLikeNameDocument, options);
+}
+export function useMyPsychologistLikeNameLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    MyPsychologistLikeNameQuery,
+    MyPsychologistLikeNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    MyPsychologistLikeNameQuery,
+    MyPsychologistLikeNameQueryVariables
+  >(MyPsychologistLikeNameDocument, options);
+}
+export type MyPsychologistLikeNameQueryHookResult = ReturnType<
+  typeof useMyPsychologistLikeNameQuery
+>;
+export type MyPsychologistLikeNameLazyQueryHookResult = ReturnType<
+  typeof useMyPsychologistLikeNameLazyQuery
+>;
+export type MyPsychologistLikeNameQueryResult = Apollo.QueryResult<
+  MyPsychologistLikeNameQuery,
+  MyPsychologistLikeNameQueryVariables
+>;
+export const MyPsychologistTreatmentsDocument = gql`
+  query MyPsychologistTreatments {
+    myPsychologistProfile {
+      id
+      treatments {
+        id
+        status
+        frequency
+        phase
+        duration
+        price
+        patient {
+          fullName
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useMyPsychologistTreatmentsQuery__
+ *
+ * To run a query within a React component, call `useMyPsychologistTreatmentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyPsychologistTreatmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyPsychologistTreatmentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyPsychologistTreatmentsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    MyPsychologistTreatmentsQuery,
+    MyPsychologistTreatmentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    MyPsychologistTreatmentsQuery,
+    MyPsychologistTreatmentsQueryVariables
+  >(MyPsychologistTreatmentsDocument, options);
+}
+export function useMyPsychologistTreatmentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    MyPsychologistTreatmentsQuery,
+    MyPsychologistTreatmentsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    MyPsychologistTreatmentsQuery,
+    MyPsychologistTreatmentsQueryVariables
+  >(MyPsychologistTreatmentsDocument, options);
+}
+export type MyPsychologistTreatmentsQueryHookResult = ReturnType<
+  typeof useMyPsychologistTreatmentsQuery
+>;
+export type MyPsychologistTreatmentsLazyQueryHookResult = ReturnType<
+  typeof useMyPsychologistTreatmentsLazyQuery
+>;
+export type MyPsychologistTreatmentsQueryResult = Apollo.QueryResult<
+  MyPsychologistTreatmentsQuery,
+  MyPsychologistTreatmentsQueryVariables
 >;
 export const GetServerTimeDocument = gql`
   query GetServerTime {

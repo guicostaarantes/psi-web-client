@@ -1,0 +1,16 @@
+query MyPsychologistTreatments {
+  myPsychologistProfile {
+    id
+    treatments {
+      id
+      status
+      frequency
+      phase
+      duration
+      price
+      patient {
+        fullName
+      }
+    }
+  }
+}

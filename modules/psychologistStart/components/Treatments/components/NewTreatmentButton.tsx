@@ -1,14 +1,12 @@
-import { useMutation } from "@apollo/client";
 import { useState } from "@hookstate/core";
 import { useEffect, useRef } from "react";
 
-import {
-  CreateTreatment,
-  CreateTreatmentInput,
-  MyPsychologistTreatments,
-} from "@psi/psychologistStart/components/Treatments/graphql";
 import treatmentFrequencies from "@psi/shared/constants/treatmentFrequencies";
 import weekdayOptions from "@psi/shared/constants/weekdayOptions";
+import {
+  MyPsychologistTreatmentsDocument,
+  useCreateTreatmentMutation,
+} from "@psi/shared/graphql";
 import getABWeek from "@psi/shared/utils/getABWeek";
 import getPhases from "@psi/shared/utils/getPhases";
 import Button from "@psi/styleguide/components/Button";
@@ -31,12 +29,9 @@ const NewTreatmentButton = () => {
 
   const modalOpen = useState(false);
 
-  const [createTreatment, { loading, error }] = useMutation<
-    null,
-    CreateTreatmentInput
-  >(CreateTreatment, {
+  const [createTreatment, { loading, error }] = useCreateTreatmentMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPsychologistTreatments }],
+    refetchQueries: [{ query: MyPsychologistTreatmentsDocument }],
   });
 
   const handleCreateClick = () => modalOpen.set(true);

@@ -1,0 +1,3 @@
+mutation FinalizeTreatment($id: ID!) {
+  finalizeTreatment(id: $id)
+}

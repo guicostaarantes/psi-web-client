@@ -1,17 +1,15 @@
-import { useMutation } from "@apollo/client";
 import { useRef } from "react";
 
 import {
-  CancelAppointmentByPsychologist,
-  CancelAppointmentByPsychologistInput,
-  MyPsychologistAppointments,
-} from "@psi/psychologistStart/components/Appointments/graphql";
+  MyPsychologistAppointmentsDocument,
+  useCancelAppointmentByPsychologistMutation,
+} from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Modal from "@psi/styleguide/components/Modal";
 import TextArea from "@psi/styleguide/components/TextArea";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
-interface EditAppointmentModalProps {
+interface CancelAppointmentModalProps {
   onClose: () => void;
   open: boolean;
   appointmentId: string;
@@ -21,18 +19,18 @@ const CancelAppointmentModal = ({
   onClose,
   open,
   appointmentId,
-}: EditAppointmentModalProps) => {
+}: CancelAppointmentModalProps) => {
   const reason = useRef(null);
 
-  const [cancelAppointment, { loading }] = useMutation<
-    null,
-    CancelAppointmentByPsychologistInput
-  >(CancelAppointmentByPsychologist, {
+  const [
+    cancelAppointment,
+    { loading },
+  ] = useCancelAppointmentByPsychologistMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPsychologistAppointments }],
+    refetchQueries: [{ query: MyPsychologistAppointmentsDocument }],
   });
 
-  const handleEditClick = async () => {
+  const handleCancelClick = async () => {
     await cancelAppointment({
       variables: {
         id: appointmentId,
@@ -56,7 +54,7 @@ const CancelAppointmentModal = ({
           reference={reason}
         />
         <div className="buttons">
-          <Button color="primary" loading={loading} onClick={handleEditClick}>
+          <Button color="primary" loading={loading} onClick={handleCancelClick}>
             Cancelar consulta
           </Button>
           <Button color="secondary" onClick={onClose}>
