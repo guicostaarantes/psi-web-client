@@ -3,14 +3,14 @@ import { render, screen, waitFor } from "@testing-library/react";
 
 import PatientDataComponent from "@psi/profiles/components/PatientData";
 import {
-  GetCharacteristics,
-  MyPatientProfile,
-} from "@psi/profiles/components/PatientData/graphql";
+  GetCharacteristicsDocument,
+  MyPatientProfileDocument,
+} from "@psi/shared/graphql";
 
 const mocks = [
   {
     request: {
-      query: MyPatientProfile,
+      query: MyPatientProfileDocument,
     },
     result: {
       data: {
@@ -55,7 +55,7 @@ const mocks = [
   },
   {
     request: {
-      query: GetCharacteristics,
+      query: GetCharacteristicsDocument,
     },
     result: {
       data: {

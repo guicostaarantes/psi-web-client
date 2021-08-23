@@ -1,0 +1,3 @@
+mutation UpsertMyPatientProfile($profileInput: UpsertMyPatientProfileInput!) {
+  upsertMyPatientProfile(input: $profileInput)
+}

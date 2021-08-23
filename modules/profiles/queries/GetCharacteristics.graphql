@@ -1,0 +1,12 @@
+query GetCharacteristics {
+  patientCharacteristics {
+    name
+    type
+    possibleValues
+  }
+  psychologistCharacteristics {
+    name
+    type
+    possibleValues
+  }
+}

@@ -1,0 +1,7 @@
+mutation SetMyPsychologistCharacteristicChoicesAndPreferences(
+  $choiceInput: [SetMyProfileCharacteristicChoiceInput!]!
+  $weightInput: [SetMyProfilePreferenceInput!]!
+) {
+  setMyPsychologistCharacteristicChoices(input: $choiceInput)
+  setMyPsychologistPreferences(input: $weightInput)
+}

@@ -1,0 +1,7 @@
+query GetCharacteristicMessages($lang: String!, $keys: [String!]!) {
+  translations(lang: $lang, keys: $keys) {
+    lang
+    key
+    value
+  }
+}
