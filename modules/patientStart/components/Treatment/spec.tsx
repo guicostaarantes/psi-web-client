@@ -2,13 +2,13 @@ import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import Treatment from "@psi/patientStart/components/Treatment";
-import { MyPatientTreatments } from "@psi/patientStart/components/Treatment/graphql";
+import { MyPatientTreatmentsDocument } from "@psi/shared/graphql";
 
 test("should render awaiting profile if likeName is missing", async () => {
   const mocks = [
     {
       request: {
-        query: MyPatientTreatments,
+        query: MyPatientTreatmentsDocument,
       },
       result: {
         data: {
@@ -35,7 +35,7 @@ test("should render treatment selection if no active treatment", async () => {
   const mocks = [
     {
       request: {
-        query: MyPatientTreatments,
+        query: MyPatientTreatmentsDocument,
       },
       result: {
         data: {
@@ -74,7 +74,7 @@ test("should render interrupt treatment if active treatment", async () => {
   const mocks = [
     {
       request: {
-        query: MyPatientTreatments,
+        query: MyPatientTreatmentsDocument,
       },
       result: {
         data: {

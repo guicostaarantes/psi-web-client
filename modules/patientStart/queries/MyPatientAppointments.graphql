@@ -1,0 +1,17 @@
+query MyPatientAppointments {
+  myPatientProfile {
+    id
+    appointments {
+      id
+      status
+      start
+      end
+      price
+      treatment {
+        psychologist {
+          likeName
+        }
+      }
+    }
+  }
+}

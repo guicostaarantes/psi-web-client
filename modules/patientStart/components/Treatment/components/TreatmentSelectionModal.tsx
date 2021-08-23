@@ -1,15 +1,12 @@
-import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "@hookstate/core";
 import { useEffect } from "react";
 
-import { MyPatientAppointments } from "@psi/patientStart/components/Appointment/graphql";
-import { MyPatientTreatments } from "@psi/patientStart/components/Treatment/graphql";
 import {
-  AssignTreatment,
-  AssignTreatmentInput,
-  MyPatientTopAffinities,
-  MyPatientTopAffinitiesResponse,
-} from "@psi/patientStart/components/Treatment/graphql";
+  MyPatientAppointmentsDocument,
+  MyPatientTreatmentsDocument,
+  useAssignTreatmentMutation,
+  useMyPatientTopAffinitiesQuery,
+} from "@psi/shared/graphql";
 import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
@@ -29,21 +26,18 @@ const TreatmentSelectionModal = ({
 }: TreatmentSelectionModalProps) => {
   const { addToast } = useToast();
 
-  const { loading, data } = useQuery<MyPatientTopAffinitiesResponse>(
-    MyPatientTopAffinities,
-    {
-      fetchPolicy: "no-cache",
-    },
-  );
+  const { loading, data } = useMyPatientTopAffinitiesQuery({
+    fetchPolicy: "no-cache",
+  });
 
-  const [assignTreatment, { loading: assignLoading, error }] = useMutation<
-    null,
-    AssignTreatmentInput
-  >(AssignTreatment, {
+  const [
+    assignTreatment,
+    { loading: assignLoading, error },
+  ] = useAssignTreatmentMutation({
     awaitRefetchQueries: true,
     refetchQueries: [
-      { query: MyPatientAppointments },
-      { query: MyPatientTreatments },
+      { query: MyPatientAppointmentsDocument },
+      { query: MyPatientTreatmentsDocument },
     ],
   });
 

@@ -1,13 +1,11 @@
-import { useMutation } from "@apollo/client";
 import { parse } from "date-fns";
 import { useRef } from "react";
 import { useEffect } from "react";
 
 import {
-  EditAppointmentByPatient,
-  EditAppointmentByPatientInput,
-  MyPatientAppointments,
-} from "@psi/patientStart/components/Appointment/graphql";
+  MyPatientAppointmentsDocument,
+  useEditAppointmentByPatientMutation,
+} from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import DateInput from "@psi/styleguide/components/DateInput";
 import Modal from "@psi/styleguide/components/Modal";
@@ -36,12 +34,12 @@ const EditAppointmentModal = ({
 
   const { addToast } = useToast();
 
-  const [editAppointment, { loading, error, data }] = useMutation<
-    null,
-    EditAppointmentByPatientInput
-  >(EditAppointmentByPatient, {
+  const [
+    editAppointment,
+    { loading, error, data },
+  ] = useEditAppointmentByPatientMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPatientAppointments }],
+    refetchQueries: [{ query: MyPatientAppointmentsDocument }],
   });
 
   useEffect(() => {

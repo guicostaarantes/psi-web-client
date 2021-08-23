@@ -1,0 +1,3 @@
+mutation InterruptTreatmentByPatient($id: ID!, $reason: String!) {
+  interruptTreatmentByPatient(id: $id, reason: $reason)
+}

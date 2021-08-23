@@ -1,10 +1,6 @@
-import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 
-import {
-  MyPatientLikeName,
-  MyPatientLikeNameResponse,
-} from "@psi/patientStart/components/Greeting/graphql";
+import { useMyPatientLikeNameQuery } from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Image from "@psi/styleguide/components/Image";
@@ -13,7 +9,7 @@ import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 const PatientGreeting = () => {
   const router = useRouter();
 
-  const { data } = useQuery<MyPatientLikeNameResponse>(MyPatientLikeName);
+  const { data } = useMyPatientLikeNameQuery();
 
   const likeName = data?.myPatientProfile?.likeName;
 

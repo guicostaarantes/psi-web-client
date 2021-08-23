@@ -1,14 +1,11 @@
-import { useMutation } from "@apollo/client";
 import { useRef } from "react";
-import { ValuesType } from "utility-types";
 
-import { MyPatientAppointments } from "@psi/patientStart/components/Appointment/graphql";
 import {
-  InterruptTreatmentByPatient,
-  InterruptTreatmentByPatientInput,
-  MyPatientTreatments,
-  MyPatientTreatmentsResponse,
-} from "@psi/patientStart/components/Treatment/graphql";
+  MyPatientAppointmentsDocument,
+  MyPatientTreatmentsDocument,
+  PatientTreatment,
+  useInterruptTreatmentByPatientMutation,
+} from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Modal from "@psi/styleguide/components/Modal";
 import TextArea from "@psi/styleguide/components/TextArea";
@@ -17,9 +14,7 @@ import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 interface InterruptTreatmentModalProps {
   onClose: () => void;
   open: boolean;
-  treatment: ValuesType<
-    MyPatientTreatmentsResponse["myPatientProfile"]["treatments"]
-  >;
+  treatment: PatientTreatment;
 }
 
 const InterruptTreatmentModal = ({
@@ -29,14 +24,14 @@ const InterruptTreatmentModal = ({
 }: InterruptTreatmentModalProps) => {
   const reason = useRef(null);
 
-  const [interruptTreatment, { loading }] = useMutation<
-    null,
-    InterruptTreatmentByPatientInput
-  >(InterruptTreatmentByPatient, {
+  const [
+    interruptTreatment,
+    { loading },
+  ] = useInterruptTreatmentByPatientMutation({
     awaitRefetchQueries: true,
     refetchQueries: [
-      { query: MyPatientTreatments },
-      { query: MyPatientAppointments },
+      { query: MyPatientTreatmentsDocument },
+      { query: MyPatientAppointmentsDocument },
     ],
   });
 

@@ -1,0 +1,6 @@
+query MyPatientLikeName {
+  myPatientProfile {
+    id
+    likeName
+  }
+}

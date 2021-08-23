@@ -1,17 +1,15 @@
-import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "@hookstate/core";
 import { format } from "date-fns";
 
 import CancelAppointmentModal from "@psi/patientStart/components/Appointment/components/CancelAppointmentModal";
 import EditAppointmentModal from "@psi/patientStart/components/Appointment/components/EditAppointmentModal";
 import NoFutureAppointments from "@psi/patientStart/components/Appointment/components/NoFutureAppointments";
-import {
-  ConfirmAppointmentByPatient,
-  ConfirmAppointmentByPatientInput,
-  MyPatientAppointments,
-  MyPatientAppointmentsResponse,
-} from "@psi/patientStart/components/Appointment/graphql";
 import Empty from "@psi/shared/components/Empty";
+import {
+  MyPatientAppointmentsDocument,
+  useConfirmAppointmentByPatientMutation,
+  useMyPatientAppointmentsQuery,
+} from "@psi/shared/graphql";
 import useServerTime from "@psi/shared/hooks/useServerTime";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
@@ -27,16 +25,14 @@ const Appointment = () => {
 
   const cancelModalOpen = useState(false);
 
-  const { loading, data } = useQuery<MyPatientAppointmentsResponse>(
-    MyPatientAppointments,
-  );
+  const { loading, data } = useMyPatientAppointmentsQuery();
 
-  const [confirmAppointment, { loading: confirmLoading }] = useMutation<
-    null,
-    ConfirmAppointmentByPatientInput
-  >(ConfirmAppointmentByPatient, {
+  const [
+    confirmAppointment,
+    { loading: confirmLoading },
+  ] = useConfirmAppointmentByPatientMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPatientAppointments }],
+    refetchQueries: [{ query: MyPatientAppointmentsDocument }],
   });
 
   const handleConfirmClick = async () => {

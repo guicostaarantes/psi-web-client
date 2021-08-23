@@ -1,0 +1,6 @@
+mutation EditAppointmentByPatient(
+  $id: ID!
+  $input: EditAppointmentByPatientInput!
+) {
+  editAppointmentByPatient(id: $id, input: $input)
+}
