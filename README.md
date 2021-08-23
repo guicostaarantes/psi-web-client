@@ -19,10 +19,10 @@ Feel free to open an issue or create a pull request. Please follow the rules:
 - This project is based on React and NextJS.
 - Make sure to read the [NextJS documentation](https://nextjs.org/docs) to better understand what is going on.
 
-### Server
+### Running locally
 
 - This app consumes a GraphQL API available at [https://github.com/guicostaarantes/psi-server](https://github.com/guicostaarantes/psi-server).
-- It is recommended to clone this repo and run it with `docker-compose up --build` so that you can fully test the features on the web client.
+- It is recommended that you clone the repo above and run it with `docker-compose up --build` so that you can fully test the features on the web client.
 - You may run the dev server for this web client with `yarn dev` and it will be available at port 7007.
 
 ### Folder structure
@@ -33,8 +33,9 @@ Feel free to open an issue or create a pull request. Please follow the rules:
 - `./modules/styleguide`: a module specific to React components that are small and likely to be used in other React components multiple times, such as a Button, an Input, etc.
 - `./modules/shared`: a module for components and hooks that are not really specific to any feature aggregation, but rather to be used by different modules.
 - `./modules/*/components`: a place for React components that shall be used in components inside or outside the module, or in a page.
-- `./modules/*/hooks`: a place for React custom hooks that shall be used in components inside or outside the module.
 - `./modules/*/constants`: a place for numeric or string constants that are likely to be used multiple times in other files.
+- `./modules/*/hooks`: a place for React custom hooks that shall be used in components inside or outside the module.
+- `./modules/*/queries`: a place for GraphQL queries, mutations and subscriptions that shall be used in components inside or outside the module.
 
 ### Component structure
 
@@ -42,7 +43,14 @@ Feel free to open an issue or create a pull request. Please follow the rules:
 - `index.tsx` files hold all the information for rendering the component (logic, markup and styles).
 - Styles are delivered by using `<style jsx>` tags, [following NextJS documentation](https://nextjs.org/docs/basic-features/built-in-css-support#css-in-js).
 - `spec.tsx` files hold the tests for the React component or hook in the `index.tsx` file in the same folder.
-- If the component requires a call to the GraphQL API, it will also have a `graphql.ts` file with the queries and mutations.
+
+### GraphQL code generation
+
+- GraphQL provides typing for all of our server entities.
+- We can benefit from this by introspecting the server and automatically creating our typescript equivalent structure.
+- Also, the alternative of duplicating things manually which is slow and error-prone.
+- Provided that the GraphQL API is running locally (check _Running locally_ section), run `yarn graphql-generate`.
+- Check `./modules/shared/graphql.ts`. You now have types for everything that GraphQL exposes (like enums), and also custom hooks for querying, mutating and subscribing to the API.
 
 ### Templates
 
