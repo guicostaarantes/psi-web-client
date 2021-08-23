@@ -518,11 +518,40 @@ export type User = {
   role: Role;
 };
 
+export type AuthenticateUserQueryVariables = Exact<{
+  email: Scalars["String"];
+  password: Scalars["String"];
+}>;
+
+export type AuthenticateUserQuery = {
+  __typename?: "Query";
+  authenticateUser: { __typename?: "Token"; token: string; expiresAt: number };
+};
+
+export type CreatePatientUserMutationVariables = Exact<{
+  email: Scalars["String"];
+}>;
+
+export type CreatePatientUserMutation = {
+  __typename?: "Mutation";
+  createPatientUser?: Maybe<boolean>;
+};
+
 export type MyUserQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MyUserQuery = {
   __typename?: "Query";
   myUser: { __typename?: "User"; id: string; email: string; role: Role };
+};
+
+export type ResetPasswordMutationVariables = Exact<{
+  token: Scalars["String"];
+  newPassword: Scalars["String"];
+}>;
+
+export type ResetPasswordMutation = {
+  __typename?: "Mutation";
+  resetPassword?: Maybe<boolean>;
 };
 
 export type AssignTreatmentMutationVariables = Exact<{
@@ -793,6 +822,113 @@ export type GetServerTimeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetServerTimeQuery = { __typename?: "Query"; time: number };
 
+export const AuthenticateUserDocument = gql`
+  query AuthenticateUser($email: String!, $password: String!) {
+    authenticateUser(input: { email: $email, password: $password }) {
+      token
+      expiresAt
+    }
+  }
+`;
+
+/**
+ * __useAuthenticateUserQuery__
+ *
+ * To run a query within a React component, call `useAuthenticateUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAuthenticateUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAuthenticateUserQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useAuthenticateUserQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    AuthenticateUserQuery,
+    AuthenticateUserQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AuthenticateUserQuery, AuthenticateUserQueryVariables>(
+    AuthenticateUserDocument,
+    options,
+  );
+}
+export function useAuthenticateUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AuthenticateUserQuery,
+    AuthenticateUserQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    AuthenticateUserQuery,
+    AuthenticateUserQueryVariables
+  >(AuthenticateUserDocument, options);
+}
+export type AuthenticateUserQueryHookResult = ReturnType<
+  typeof useAuthenticateUserQuery
+>;
+export type AuthenticateUserLazyQueryHookResult = ReturnType<
+  typeof useAuthenticateUserLazyQuery
+>;
+export type AuthenticateUserQueryResult = Apollo.QueryResult<
+  AuthenticateUserQuery,
+  AuthenticateUserQueryVariables
+>;
+export const CreatePatientUserDocument = gql`
+  mutation CreatePatientUser($email: String!) {
+    createPatientUser(input: { email: $email })
+  }
+`;
+export type CreatePatientUserMutationFn = Apollo.MutationFunction<
+  CreatePatientUserMutation,
+  CreatePatientUserMutationVariables
+>;
+
+/**
+ * __useCreatePatientUserMutation__
+ *
+ * To run a mutation, you first call `useCreatePatientUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePatientUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPatientUserMutation, { data, loading, error }] = useCreatePatientUserMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useCreatePatientUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreatePatientUserMutation,
+    CreatePatientUserMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreatePatientUserMutation,
+    CreatePatientUserMutationVariables
+  >(CreatePatientUserDocument, options);
+}
+export type CreatePatientUserMutationHookResult = ReturnType<
+  typeof useCreatePatientUserMutation
+>;
+export type CreatePatientUserMutationResult = Apollo.MutationResult<CreatePatientUserMutation>;
+export type CreatePatientUserMutationOptions = Apollo.BaseMutationOptions<
+  CreatePatientUserMutation,
+  CreatePatientUserMutationVariables
+>;
 export const MyUserDocument = gql`
   query MyUser {
     myUser {
@@ -841,6 +977,54 @@ export type MyUserLazyQueryHookResult = ReturnType<typeof useMyUserLazyQuery>;
 export type MyUserQueryResult = Apollo.QueryResult<
   MyUserQuery,
   MyUserQueryVariables
+>;
+export const ResetPasswordDocument = gql`
+  mutation ResetPassword($token: String!, $newPassword: String!) {
+    resetPassword(input: { token: $token, password: $newPassword })
+  }
+`;
+export type ResetPasswordMutationFn = Apollo.MutationFunction<
+  ResetPasswordMutation,
+  ResetPasswordMutationVariables
+>;
+
+/**
+ * __useResetPasswordMutation__
+ *
+ * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetPasswordMutation, { data, loading, error }] = useResetPasswordMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *      newPassword: // value for 'newPassword'
+ *   },
+ * });
+ */
+export function useResetPasswordMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ResetPasswordMutation,
+    ResetPasswordMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    ResetPasswordMutation,
+    ResetPasswordMutationVariables
+  >(ResetPasswordDocument, options);
+}
+export type ResetPasswordMutationHookResult = ReturnType<
+  typeof useResetPasswordMutation
+>;
+export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMutation>;
+export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<
+  ResetPasswordMutation,
+  ResetPasswordMutationVariables
 >;
 export const AssignTreatmentDocument = gql`
   mutation AssignTreatment($id: ID!) {

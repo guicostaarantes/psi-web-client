@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { GraphQLError } from "graphql";
 
 import ResetPasswordComponent from "@psi/auth/components/ResetPassword";
-import ResetPassword from "@psi/auth/components/ResetPassword/graphql";
+import { ResetPasswordDocument } from "@psi/shared/graphql";
 
 const mockAddToast = jest.fn();
 
@@ -32,7 +32,7 @@ jest.mock("next/router", () => ({
 const mocks = [
   {
     request: {
-      query: ResetPassword,
+      query: ResetPasswordDocument,
       variables: {
         token: "valid-token",
         newPassword: "Abc123!@#",
@@ -46,7 +46,7 @@ const mocks = [
   },
   {
     request: {
-      query: ResetPassword,
+      query: ResetPasswordDocument,
       variables: {
         token: "invalid-token",
         newPassword: "Abc123!@#",
@@ -58,7 +58,7 @@ const mocks = [
   },
   {
     request: {
-      query: ResetPassword,
+      query: ResetPasswordDocument,
       variables: {
         token: "valid-token",
         newPassword: "weak",

@@ -1,8 +1,7 @@
-import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import ResetPassword from "@psi/auth/components/ResetPassword/graphql";
+import { useResetPasswordMutation } from "@psi/shared/graphql";
 import useSearchParams from "@psi/shared/hooks/useSearchParams";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
@@ -21,11 +20,9 @@ const ResetPasswordComponent = () => {
 
   const { getSearchParam } = useSearchParams();
 
-  const [resetPasswordQuery, { loading, data, error }] = useMutation(
-    ResetPassword,
-  );
+  const [resetPassword, { loading, data, error }] = useResetPasswordMutation();
 
-  const resetPassword = async () => {
+  const handleResetPassword = async () => {
     try {
       if (passwordRef.current.value !== confirmRef.current.value) {
         addToast({
@@ -36,7 +33,7 @@ const ResetPasswordComponent = () => {
         return;
       }
       const token = getSearchParam("token");
-      await resetPasswordQuery({
+      await resetPassword({
         variables: {
           token,
           newPassword: passwordRef.current.value,
@@ -94,7 +91,12 @@ const ResetPasswordComponent = () => {
         type="password"
         reference={confirmRef}
       />
-      <Button block color="primary" loading={loading} onClick={resetPassword}>
+      <Button
+        block
+        color="primary"
+        loading={loading}
+        onClick={handleResetPassword}
+      >
         Redefinir senha
       </Button>
       <Button block color="secondary" onClick={() => router.push("/login")}>

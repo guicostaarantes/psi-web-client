@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { GraphQLError } from "graphql";
 
 import NewAccountComponent from "@psi/auth/components/NewAccount";
-import CreatePatientUser from "@psi/auth/components/NewAccount/graphql";
+import { CreatePatientUserDocument } from "@psi/shared/graphql";
 
 const mockAddToast = jest.fn();
 
@@ -24,7 +24,7 @@ jest.mock("next/router", () => ({
 const mocks = [
   {
     request: {
-      query: CreatePatientUser,
+      query: CreatePatientUserDocument,
       variables: {
         email: "tom.brady@psi.com.br",
       },
@@ -37,7 +37,7 @@ const mocks = [
   },
   {
     request: {
-      query: CreatePatientUser,
+      query: CreatePatientUserDocument,
       variables: {
         email: "invalid-email",
       },
