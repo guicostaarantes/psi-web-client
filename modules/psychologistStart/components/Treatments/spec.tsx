@@ -2,12 +2,12 @@ import { MockedProvider } from "@apollo/client/testing";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import PsychologistTreatments from "@psi/psychologistStart/components/Treatments";
-import { MyPsychologistTreatments } from "@psi/psychologistStart/components/Treatments/graphql";
+import { MyPsychologistTreatmentsDocument } from "@psi/shared/graphql";
 
 const mocks = [
   {
     request: {
-      query: MyPsychologistTreatments,
+      query: MyPsychologistTreatmentsDocument,
     },
     result: {
       data: {
@@ -52,12 +52,12 @@ test("should render", async () => {
     const patientName = screen.getByText("Paciente: Tom Brady");
     screen.getByText("Horário das sessões: às segundas-feiras às 15:00");
     screen.getByText("Duração de cada sessão: 50 minutos");
-    screen.getByText("Valor cobrado por sessão: R$25.00");
+    screen.getByText("Valor cobrado por sessão: R$ 25,00");
     screen.getByText(
       "Horário das sessões: às quintas-feiras de semanas A às 15:00",
     );
     screen.getByText("Duração de cada sessão: 60 minutos");
-    screen.getByText("Valor cobrado por sessão: R$30.00");
+    screen.getByText("Valor cobrado por sessão: R$ 30,00");
     const newTreatmentButton = screen.getByText(
       "Quero tratar um novo paciente",
     );

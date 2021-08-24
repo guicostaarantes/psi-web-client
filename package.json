@@ -10,7 +10,8 @@
     "new-component": "hygen component new",
     "new-page": "hygen page new",
     "test": "jest",
-    "start": "next start"
+    "start": "next start",
+    "graphql-generate": "graphql-codegen --config codegen.yml; eslint ./modules/shared/graphql.ts --fix"
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",
@@ -27,6 +28,11 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.1.1",
+    "@graphql-codegen/typescript": "2.1.0",
+    "@graphql-codegen/typescript-operations": "2.1.0",
+    "@graphql-codegen/typescript-react-apollo": "3.1.0",
+    "@graphql-codegen/visitor-plugin-common": "^2.1.0",
     "@testing-library/dom": "^7.29.4",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",

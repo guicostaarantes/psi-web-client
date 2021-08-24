@@ -3,9 +3,9 @@ import { render, screen, waitFor } from "@testing-library/react";
 
 import Appointment from "@psi/patientStart/components/Appointment";
 import {
-  MyPatientAppointments,
-  MyPatientTreatments,
-} from "@psi/patientStart/components/Appointment/graphql";
+  MyPatientAppointmentsDocument,
+  MyPatientTreatmentsDocument,
+} from "@psi/shared/graphql";
 
 const now = 1612345678;
 const yesterday = now - 86400;
@@ -23,7 +23,7 @@ test("should not render if no future appointments", async () => {
   const mocks = [
     {
       request: {
-        query: MyPatientAppointments,
+        query: MyPatientAppointmentsDocument,
       },
       result: {
         data: {
@@ -49,7 +49,7 @@ test("should not render if no future appointments", async () => {
     },
     {
       request: {
-        query: MyPatientTreatments,
+        query: MyPatientTreatmentsDocument,
       },
       result: {
         data: {
@@ -96,7 +96,7 @@ test("should render message and confirm button for CREATED status", async () => 
   const mocks = [
     {
       request: {
-        query: MyPatientAppointments,
+        query: MyPatientAppointmentsDocument,
       },
       result: {
         data: {
@@ -139,7 +139,7 @@ test("should render message and confirm button for CONFIRMED_BY_PSYCHOLOGIST sta
   const mocks = [
     {
       request: {
-        query: MyPatientAppointments,
+        query: MyPatientAppointmentsDocument,
       },
       result: {
         data: {
@@ -183,7 +183,7 @@ test("should render message for CONFIRMED_BY_PATIENT status", async () => {
   const mocks = [
     {
       request: {
-        query: MyPatientAppointments,
+        query: MyPatientAppointmentsDocument,
       },
       result: {
         data: {
@@ -228,7 +228,7 @@ test("should render message for CONFIRMED_BY_BOTH status", async () => {
   const mocks = [
     {
       request: {
-        query: MyPatientAppointments,
+        query: MyPatientAppointmentsDocument,
       },
       result: {
         data: {
@@ -271,7 +271,7 @@ test("should render message and confirm button for EDITED_BY_PSYCHOLOGIST status
   const mocks = [
     {
       request: {
-        query: MyPatientAppointments,
+        query: MyPatientAppointmentsDocument,
       },
       result: {
         data: {
@@ -315,7 +315,7 @@ test("should render message for EDITED_BY_PATIENT status", async () => {
   const mocks = [
     {
       request: {
-        query: MyPatientAppointments,
+        query: MyPatientAppointmentsDocument,
       },
       result: {
         data: {
@@ -358,7 +358,7 @@ test("should render message for CANCELED_BY_PSYCHOLOGIST status", async () => {
   const mocks = [
     {
       request: {
-        query: MyPatientAppointments,
+        query: MyPatientAppointmentsDocument,
       },
       result: {
         data: {
@@ -401,7 +401,7 @@ test("should render message for CANCELED_BY_PATIENT status", async () => {
   const mocks = [
     {
       request: {
-        query: MyPatientAppointments,
+        query: MyPatientAppointmentsDocument,
       },
       result: {
         data: {

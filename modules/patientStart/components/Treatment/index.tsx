@@ -1,17 +1,10 @@
-import { useQuery } from "@apollo/client";
-
 import AwaitingProfile from "@psi/patientStart/components/Treatment/components/AwaitingProfile";
 import InterruptTreatment from "@psi/patientStart/components/Treatment/components/InterruptTreatment";
 import TreatmentSelection from "@psi/patientStart/components/Treatment/components/TreatmentSelection";
-import {
-  MyPatientTreatments,
-  MyPatientTreatmentsResponse,
-} from "@psi/patientStart/components/Treatment/graphql";
+import { useMyPatientTreatmentsQuery } from "@psi/shared/graphql";
 
 const Treatment = () => {
-  const { loading, data } = useQuery<MyPatientTreatmentsResponse>(
-    MyPatientTreatments,
-  );
+  const { loading, data } = useMyPatientTreatmentsQuery();
 
   if (loading) return null;
 

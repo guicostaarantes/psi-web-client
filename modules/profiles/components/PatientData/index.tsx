@@ -1,26 +1,20 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { Downgraded, useState } from "@hookstate/core";
 import { format, parse } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
-import {
-  CharacteristicType,
-  GetCharacteristicMessages,
-  GetCharacteristicMessagesInput,
-  GetCharacteristicMessagesResponse,
-  GetCharacteristics,
-  GetCharacteristicsResponse,
-  MyPatientProfile,
-  MyPatientProfileResponse,
-  SetMyPatientCharacteristicChoicesAndPreferences,
-  SetMyPatientCharacteristicChoicesAndPreferencesInput,
-  UpsertMyPatientProfile,
-  UpsertMyPatientProfileInput,
-} from "@psi/profiles/components/PatientData/graphql";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
+import {
+  CharacteristicType,
+  MyPatientProfileDocument,
+  useGetCharacteristicMessagesLazyQuery,
+  useGetCharacteristicsQuery,
+  useMyPatientProfileQuery,
+  useSetMyPatientCharacteristicChoicesAndPreferencesMutation,
+  useUpsertMyPatientProfileMutation,
+} from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import DateInput from "@psi/styleguide/components/DateInput";
@@ -37,31 +31,23 @@ const PatientDataComponent = () => {
 
   const { addToast } = useToast();
 
-  const { data: characteristicData } = useQuery<GetCharacteristicsResponse>(
-    GetCharacteristics,
-  );
+  const { data: characteristicData } = useGetCharacteristicsQuery();
 
   const {
     data: profileData,
     error: profileError,
     loading: profileLoading,
-  } = useQuery<MyPatientProfileResponse>(MyPatientProfile);
+  } = useMyPatientProfileQuery();
 
   const [
     getCharacteristicMessages,
     { data: characteristicMessagesData },
-  ] = useLazyQuery<
-    GetCharacteristicMessagesResponse,
-    GetCharacteristicMessagesInput
-  >(GetCharacteristicMessages);
+  ] = useGetCharacteristicMessagesLazyQuery();
 
   const [
     getPreferenceMessages,
     { data: preferenceMessagesData },
-  ] = useLazyQuery<
-    GetCharacteristicMessagesResponse,
-    GetCharacteristicMessagesInput
-  >(GetCharacteristicMessages);
+  ] = useGetCharacteristicMessagesLazyQuery();
 
   const fullNameRef = useRef<HTMLInputElement>(null);
   const likeNameRef = useRef<HTMLInputElement>(null);
@@ -232,16 +218,12 @@ const PatientDataComponent = () => {
     }
   }, [profileLoading, preferences.value]);
 
-  const [upsertMyPatientProfile] = useMutation<
-    null,
-    UpsertMyPatientProfileInput
-  >(UpsertMyPatientProfile);
+  const [upsertMyPatientProfile] = useUpsertMyPatientProfileMutation();
 
-  const [setMyPatientCharacteristicChoicesAndPreferences] = useMutation<
-    null,
-    SetMyPatientCharacteristicChoicesAndPreferencesInput
-  >(SetMyPatientCharacteristicChoicesAndPreferences, {
-    refetchQueries: [{ query: MyPatientProfile }],
+  const [
+    setMyPatientCharacteristicChoicesAndPreferences,
+  ] = useSetMyPatientCharacteristicChoicesAndPreferencesMutation({
+    refetchQueries: [{ query: MyPatientProfileDocument }],
   });
 
   const handleSave = async () => {

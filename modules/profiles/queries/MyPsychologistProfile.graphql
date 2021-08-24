@@ -1,0 +1,19 @@
+query MyPsychologistProfile {
+  myPsychologistProfile {
+    id
+    fullName
+    likeName
+    birthDate
+    city
+    characteristics {
+      name
+      type
+      selectedValues
+    }
+    preferences {
+      characteristicName
+      selectedValue
+      weight
+    }
+  }
+}

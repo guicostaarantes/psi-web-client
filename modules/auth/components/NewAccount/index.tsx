@@ -1,8 +1,7 @@
-import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import CreatePatientUser from "@psi/auth/components/NewAccount/graphql";
+import { useCreatePatientUserMutation } from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Input from "@psi/styleguide/components/Input";
@@ -17,9 +16,10 @@ const NewAccountComponent = () => {
 
   const emailRef = useRef<HTMLInputElement>(null);
 
-  const [signupQuery, { loading, data, error }] = useMutation(
-    CreatePatientUser,
-  );
+  const [
+    signupQuery,
+    { loading, data, error },
+  ] = useCreatePatientUserMutation();
 
   useEffect(() => {
     if (error) {

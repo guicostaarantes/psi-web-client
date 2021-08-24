@@ -1,10 +1,7 @@
-import { useMutation } from "@apollo/client";
-
 import {
-  DeleteTreatment,
-  DeleteTreatmentInput,
-  MyPsychologistTreatments,
-} from "@psi/psychologistStart/components/Treatments/graphql";
+  MyPsychologistTreatmentsDocument,
+  useDeleteTreatmentMutation,
+} from "@psi/shared/graphql";
 import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
@@ -24,12 +21,9 @@ const PendingTreatment = ({
   duration,
   price,
 }: PendingTreatmentProps) => {
-  const [deleteTreatment, { loading }] = useMutation<
-    null,
-    DeleteTreatmentInput
-  >(DeleteTreatment, {
+  const [deleteTreatment, { loading }] = useDeleteTreatmentMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPsychologistTreatments }],
+    refetchQueries: [{ query: MyPsychologistTreatmentsDocument }],
   });
 
   const handleDeleteClick = () => {

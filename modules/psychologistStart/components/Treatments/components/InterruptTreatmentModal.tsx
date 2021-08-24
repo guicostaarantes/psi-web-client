@@ -1,12 +1,10 @@
-import { useMutation } from "@apollo/client";
 import { useRef } from "react";
 
-import { MyPsychologistAppointments } from "@psi/psychologistStart/components/Appointments/graphql";
 import {
-  InterruptTreatment,
-  InterruptTreatmentInput,
-  MyPsychologistTreatments,
-} from "@psi/psychologistStart/components/Treatments/graphql";
+  MyPsychologistAppointmentsDocument,
+  MyPsychologistTreatmentsDocument,
+  useInterruptTreatmentByPsychologistMutation,
+} from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Modal from "@psi/styleguide/components/Modal";
 import TextArea from "@psi/styleguide/components/TextArea";
@@ -29,14 +27,14 @@ const InterruptTreatmentModal = ({
 }: InterruptTreatmentModalProps) => {
   const reason = useRef(null);
 
-  const [interruptTreatment, { loading }] = useMutation<
-    null,
-    InterruptTreatmentInput
-  >(InterruptTreatment, {
+  const [
+    interruptTreatment,
+    { loading },
+  ] = useInterruptTreatmentByPsychologistMutation({
     awaitRefetchQueries: true,
     refetchQueries: [
-      { query: MyPsychologistTreatments },
-      { query: MyPsychologistAppointments },
+      { query: MyPsychologistTreatmentsDocument },
+      { query: MyPsychologistAppointmentsDocument },
     ],
   });
 

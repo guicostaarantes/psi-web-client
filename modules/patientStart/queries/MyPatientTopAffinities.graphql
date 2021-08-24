@@ -1,0 +1,15 @@
+query MyPatientTopAffinities {
+  myPatientTopAffinities {
+    psychologist {
+      id
+      fullName
+      pendingTreatments {
+        id
+        frequency
+        phase
+        duration
+        price
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+query MyPsychologistAppointments {
+  myPsychologistProfile {
+    id
+    appointments {
+      id
+      status
+      start
+      end
+      price
+      treatment {
+        patient {
+          fullName
+        }
+      }
+    }
+  }
+}

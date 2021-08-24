@@ -2,7 +2,7 @@ import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import Appointments from "@psi/psychologistStart/components/Appointments";
-import { MyPsychologistAppointments } from "@psi/psychologistStart/components/Appointments/graphql";
+import { MyPsychologistAppointmentsDocument } from "@psi/shared/graphql";
 
 const now = 1612345678;
 const yesterday = now - 86400;
@@ -24,7 +24,7 @@ test("should not render if no future appointments", async () => {
   const mocks = [
     {
       request: {
-        query: MyPsychologistAppointments,
+        query: MyPsychologistAppointmentsDocument,
       },
       result: {
         data: {
@@ -65,7 +65,7 @@ test("should render only future appointments", async () => {
   const mocks = [
     {
       request: {
-        query: MyPsychologistAppointments,
+        query: MyPsychologistAppointmentsDocument,
       },
       result: {
         data: {

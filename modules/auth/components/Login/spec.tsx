@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { GraphQLError } from "graphql";
 
 import LoginComponent from "@psi/auth/components/Login";
-import AuthenticateUser from "@psi/auth/components/Login/graphql";
+import { AuthenticateUserDocument } from "@psi/shared/graphql";
 
 const mockAddToast = jest.fn();
 
@@ -24,7 +24,7 @@ jest.mock("next/router", () => ({
 const mocks = [
   {
     request: {
-      query: AuthenticateUser,
+      query: AuthenticateUserDocument,
       variables: {
         email: "tom.brady@psi.com.br",
         password: "Abc123!@#",
@@ -42,7 +42,7 @@ const mocks = [
   },
   {
     request: {
-      query: AuthenticateUser,
+      query: AuthenticateUserDocument,
       variables: {
         email: "tom.brady@psi.com.br",
         password: "Abc123!@#-wrong",

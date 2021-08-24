@@ -1,0 +1,13 @@
+query MyPatientTreatments {
+  myPatientProfile {
+    id
+    likeName
+    treatments {
+      id
+      status
+      psychologist {
+        likeName
+      }
+    }
+  }
+}

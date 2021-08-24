@@ -1,0 +1,7 @@
+mutation SetMyPatientCharacteristicChoicesAndPreferences(
+  $choiceInput: [SetMyProfileCharacteristicChoiceInput!]!
+  $weightInput: [SetMyProfilePreferenceInput!]!
+) {
+  setMyPatientCharacteristicChoices(input: $choiceInput)
+  setMyPatientPreferences(input: $weightInput)
+}

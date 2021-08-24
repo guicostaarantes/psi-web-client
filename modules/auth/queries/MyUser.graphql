@@ -1,0 +1,7 @@
+query MyUser {
+  myUser {
+    id
+    email
+    role
+  }
+}

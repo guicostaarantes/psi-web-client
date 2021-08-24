@@ -1,0 +1,6 @@
+query MyPsychologistLikeName {
+  myPsychologistProfile {
+    id
+    likeName
+  }
+}

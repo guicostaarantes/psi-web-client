@@ -1,21 +1,13 @@
-import { useQuery } from "@apollo/client";
-import React from "react";
-
 import ActiveTreatment from "@psi/psychologistStart/components/Treatments/components/ActiveTreatment";
 import NewTreatmentButton from "@psi/psychologistStart/components/Treatments/components/NewTreatmentButton";
 import PendingTreatment from "@psi/psychologistStart/components/Treatments/components/PendingTreatment";
-import {
-  MyPsychologistTreatments,
-  MyPsychologistTreatmentsResponse,
-} from "@psi/psychologistStart/components/Treatments/graphql";
+import { useMyPsychologistTreatmentsQuery } from "@psi/shared/graphql";
 import Card from "@psi/styleguide/components/Card";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 const PsychologistTreatments = () => {
-  const { data } = useQuery<MyPsychologistTreatmentsResponse>(
-    MyPsychologistTreatments,
-  );
+  const { data } = useMyPsychologistTreatmentsQuery();
 
   const activeTreatments = data?.myPsychologistProfile?.treatments.filter(
     (tr) => tr.status === "ACTIVE",

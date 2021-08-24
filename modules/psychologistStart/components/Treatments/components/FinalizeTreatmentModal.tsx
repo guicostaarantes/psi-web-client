@@ -1,11 +1,8 @@
-import { useMutation } from "@apollo/client";
-
-import { MyPsychologistAppointments } from "@psi/psychologistStart/components/Appointments/graphql";
 import {
-  FinalizeTreatment,
-  FinalizeTreatmentInput,
-  MyPsychologistTreatments,
-} from "@psi/psychologistStart/components/Treatments/graphql";
+  MyPsychologistAppointmentsDocument,
+  MyPsychologistTreatmentsDocument,
+  useFinalizeTreatmentMutation,
+} from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Modal from "@psi/styleguide/components/Modal";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
@@ -25,14 +22,11 @@ const FinalizeTreatmentModal = ({
   patient,
   treatmentId,
 }: FinalizeTreatmentModalProps) => {
-  const [finalizeTreatment, { loading }] = useMutation<
-    null,
-    FinalizeTreatmentInput
-  >(FinalizeTreatment, {
+  const [finalizeTreatment, { loading }] = useFinalizeTreatmentMutation({
     awaitRefetchQueries: true,
     refetchQueries: [
-      { query: MyPsychologistTreatments },
-      { query: MyPsychologistAppointments },
+      { query: MyPsychologistTreatmentsDocument },
+      { query: MyPsychologistAppointmentsDocument },
     ],
   });
 

@@ -2,12 +2,12 @@ import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import PsychologistGreeting from "@psi/psychologistStart/components/Greeting";
-import { MyPsychologistLikeName } from "@psi/psychologistStart/components/Greeting/graphql";
+import { MyPsychologistLikeNameDocument } from "@psi/shared/graphql";
 
 const mocks = [
   {
     request: {
-      query: MyPsychologistLikeName,
+      query: MyPsychologistLikeNameDocument,
     },
     result: {
       data: {

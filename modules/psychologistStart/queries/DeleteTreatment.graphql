@@ -1,0 +1,3 @@
+mutation DeleteTreatment($id: ID!) {
+  deleteTreatment(id: $id)
+}

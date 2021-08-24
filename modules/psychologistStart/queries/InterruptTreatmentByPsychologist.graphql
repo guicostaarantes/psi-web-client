@@ -1,0 +1,3 @@
+mutation InterruptTreatmentByPsychologist($id: ID!, $reason: String!) {
+  interruptTreatmentByPsychologist(id: $id, reason: $reason)
+}

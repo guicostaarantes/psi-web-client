@@ -1,0 +1,3 @@
+mutation ConfirmAppointmentByPatient($id: ID!) {
+  confirmAppointmentByPatient(id: $id)
+}

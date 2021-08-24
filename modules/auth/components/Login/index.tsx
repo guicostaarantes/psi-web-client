@@ -1,10 +1,7 @@
-import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { KeyboardEventHandler, useEffect, useRef } from "react";
 
-import AuthenticateUser, {
-  AuthenticateUserResponse,
-} from "@psi/auth/components/Login/graphql";
+import { useAuthenticateUserLazyQuery } from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Input from "@psi/styleguide/components/Input";
@@ -20,10 +17,7 @@ const LoginComponent = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const [
-    signinQuery,
-    { loading, data, error },
-  ] = useLazyQuery<AuthenticateUserResponse>(AuthenticateUser, {
+  const [signinQuery, { loading, data, error }] = useAuthenticateUserLazyQuery({
     fetchPolicy: "no-cache",
   });
 

@@ -1,0 +1,19 @@
+query MyPatientProfile {
+  myPatientProfile {
+    id
+    fullName
+    likeName
+    birthDate
+    city
+    characteristics {
+      name
+      type
+      selectedValues
+    }
+    preferences {
+      characteristicName
+      selectedValue
+      weight
+    }
+  }
+}

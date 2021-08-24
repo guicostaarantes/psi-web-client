@@ -1,0 +1,3 @@
+mutation AssignTreatment($id: ID!) {
+  assignTreatment(id: $id)
+}

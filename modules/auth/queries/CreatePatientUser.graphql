@@ -1,0 +1,3 @@
+mutation CreatePatientUser($email: String!) {
+  createPatientUser(input: { email: $email })
+}

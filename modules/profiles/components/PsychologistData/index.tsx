@@ -1,4 +1,3 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { Downgraded, useState } from "@hookstate/core";
 import { format, parse } from "date-fns";
 import { useRouter } from "next/router";
@@ -6,21 +5,16 @@ import { useEffect, useRef } from "react";
 
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
+import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
 import {
   CharacteristicType,
-  GetCharacteristicMessages,
-  GetCharacteristicMessagesInput,
-  GetCharacteristicMessagesResponse,
-  GetCharacteristics,
-  GetCharacteristicsResponse,
-  MyPsychologistProfile,
-  MyPsychologistProfileResponse,
-  SetMyPsychologistCharacteristicChoicesAndPreferences,
-  SetMyPsychologistCharacteristicChoicesAndPreferencesInput,
-  UpsertMyPsychologistProfile,
-  UpsertMyPsychologistProfileInput,
-} from "@psi/profiles/components/PsychologistData/graphql";
-import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
+  MyPsychologistProfileDocument,
+  useGetCharacteristicMessagesLazyQuery,
+  useGetCharacteristicsQuery,
+  useMyPsychologistProfileQuery,
+  useSetMyPsychologistCharacteristicChoicesAndPreferencesMutation,
+  useUpsertMyPsychologistProfileMutation,
+} from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import DateInput from "@psi/styleguide/components/DateInput";
@@ -37,31 +31,23 @@ const PsychologistDataComponent = () => {
 
   const { addToast } = useToast();
 
-  const { data: characteristicData } = useQuery<GetCharacteristicsResponse>(
-    GetCharacteristics,
-  );
+  const { data: characteristicData } = useGetCharacteristicsQuery();
 
   const {
     data: profileData,
     error: profileError,
     loading: profileLoading,
-  } = useQuery<MyPsychologistProfileResponse>(MyPsychologistProfile);
+  } = useMyPsychologistProfileQuery();
 
   const [
     getCharacteristicMessages,
     { data: characteristicMessagesData },
-  ] = useLazyQuery<
-    GetCharacteristicMessagesResponse,
-    GetCharacteristicMessagesInput
-  >(GetCharacteristicMessages);
+  ] = useGetCharacteristicMessagesLazyQuery();
 
   const [
     getPreferenceMessages,
     { data: preferenceMessagesData },
-  ] = useLazyQuery<
-    GetCharacteristicMessagesResponse,
-    GetCharacteristicMessagesInput
-  >(GetCharacteristicMessages);
+  ] = useGetCharacteristicMessagesLazyQuery();
 
   const fullNameRef = useRef<HTMLInputElement>(null);
   const likeNameRef = useRef<HTMLInputElement>(null);
@@ -234,16 +220,14 @@ const PsychologistDataComponent = () => {
     }
   }, [profileLoading, preferences.value]);
 
-  const [upsertMyPsychologistProfile] = useMutation<
-    null,
-    UpsertMyPsychologistProfileInput
-  >(UpsertMyPsychologistProfile);
+  const [
+    upsertMyPsychologistProfile,
+  ] = useUpsertMyPsychologistProfileMutation();
 
-  const [setMyPsychologistCharacteristicChoicesAndPreferences] = useMutation<
-    null,
-    SetMyPsychologistCharacteristicChoicesAndPreferencesInput
-  >(SetMyPsychologistCharacteristicChoicesAndPreferences, {
-    refetchQueries: [{ query: MyPsychologistProfile }],
+  const [
+    setMyPsychologistCharacteristicChoicesAndPreferences,
+  ] = useSetMyPsychologistCharacteristicChoicesAndPreferencesMutation({
+    refetchQueries: [{ query: MyPsychologistProfileDocument }],
   });
 
   const handleSave = async () => {

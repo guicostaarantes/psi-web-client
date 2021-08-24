@@ -1,0 +1,3 @@
+mutation CancelAppointmentByPatient($id: ID!, $reason: String!) {
+  cancelAppointmentByPatient(id: $id, reason: $reason)
+}

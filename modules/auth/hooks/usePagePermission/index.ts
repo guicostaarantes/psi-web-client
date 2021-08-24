@@ -1,13 +1,8 @@
-import { useQuery } from "@apollo/client";
 import { useState } from "@hookstate/core";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { Role } from "@psi/auth/constants/roles";
-import {
-  MyUser,
-  MyUserResponse,
-} from "@psi/auth/hooks/usePagePermission/graphql";
+import { Role, useMyUserQuery } from "@psi/shared/graphql";
 
 interface usePagePermissionArgs {
   requiresAuth: boolean;
@@ -20,13 +15,13 @@ interface usePagePermissionReturn {
 
 const usePagePermission = ({
   requiresAuth,
-  requiresRole = ["COORDINATOR", "PSYCHOLOGIST", "PATIENT"],
+  requiresRole = [Role.Coordinator, Role.Psychologist, Role.Patient],
 }: usePagePermissionArgs): usePagePermissionReturn => {
   const router = useRouter();
 
   const pageStatus = useState("loading");
 
-  const { client, data, error } = useQuery<MyUserResponse>(MyUser, {
+  const { client, data, error } = useMyUserQuery({
     fetchPolicy: "no-cache",
   });
 

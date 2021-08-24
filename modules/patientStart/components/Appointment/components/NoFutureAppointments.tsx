@@ -1,14 +1,9 @@
-import { useQuery } from "@apollo/client";
-
-import {
-  MyPatientTreatments,
-  MyPatientTreatmentsResponse,
-} from "@psi/patientStart/components/Appointment/graphql";
+import { useMyPatientTreatmentsQuery } from "@psi/shared/graphql";
 import Card from "@psi/styleguide/components/Card";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 const NoFutureAppointments = () => {
-  const { data } = useQuery<MyPatientTreatmentsResponse>(MyPatientTreatments);
+  const { data } = useMyPatientTreatmentsQuery();
 
   const activeTreatment = data?.myPatientProfile?.treatments?.find(
     (tr) => tr.status === "ACTIVE",

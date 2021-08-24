@@ -1,11 +1,6 @@
-import { useQuery } from "@apollo/client";
-
 import FutureAppointment from "@psi/psychologistStart/components/Appointments/components/FutureAppointment";
-import {
-  MyPsychologistAppointments,
-  MyPsychologistAppointmentsResponse,
-} from "@psi/psychologistStart/components/Appointments/graphql";
 import Empty from "@psi/shared/components/Empty";
+import { useMyPsychologistAppointmentsQuery } from "@psi/shared/graphql";
 import useServerTime from "@psi/shared/hooks/useServerTime";
 import Card from "@psi/styleguide/components/Card";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
@@ -13,9 +8,7 @@ import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 const Appointments = () => {
   const serverTime = useServerTime();
 
-  const { loading, data } = useQuery<MyPsychologistAppointmentsResponse>(
-    MyPsychologistAppointments,
-  );
+  const { loading, data } = useMyPsychologistAppointmentsQuery();
 
   if (loading) return null;
 

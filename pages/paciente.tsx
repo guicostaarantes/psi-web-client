@@ -4,12 +4,13 @@ import usePagePermission from "@psi/auth/hooks/usePagePermission";
 import PatientDataComponent from "@psi/profiles/components/PatientData";
 import LoadingPage from "@psi/shared/components/LoadingPage";
 import NotFoundPage from "@psi/shared/components/NotFoundPage";
+import { Role } from "@psi/shared/graphql";
 import Container from "@psi/styleguide/components/Layout/Container";
 
 const PatientPage = () => {
   const { pageStatus } = usePagePermission({
     requiresAuth: true,
-    requiresRole: ["COORDINATOR", "PATIENT"],
+    requiresRole: [Role.Coordinator, Role.Patient],
   });
 
   if (pageStatus === "loading") {

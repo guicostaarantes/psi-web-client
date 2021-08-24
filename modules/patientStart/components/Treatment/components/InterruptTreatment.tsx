@@ -1,16 +1,13 @@
 import { useState } from "@hookstate/core";
-import { ValuesType } from "utility-types";
 
 import InterruptTreatmentModal from "@psi/patientStart/components/Treatment/components/InterruptTreatmentModal";
-import { MyPatientTreatmentsResponse } from "@psi/patientStart/components/Treatment/graphql";
+import { PatientTreatment } from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 interface InterruptTreatmentProps {
-  treatment: ValuesType<
-    MyPatientTreatmentsResponse["myPatientProfile"]["treatments"]
-  >;
+  treatment: PatientTreatment;
 }
 
 const InterruptTreatment = ({ treatment }: InterruptTreatmentProps) => {
