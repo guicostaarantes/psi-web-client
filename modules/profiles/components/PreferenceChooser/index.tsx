@@ -1,52 +1,55 @@
 import { State } from "@hookstate/core";
 
+import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
 import BooleanPreferenceSelector from "@psi/profiles/components/PreferenceChooser/components/BooleanPreferenceSelector";
 import PreferenceSelector from "@psi/profiles/components/PreferenceChooser/components/PreferenceSelector";
+import {
+  PATIENT_PREFERENCE_PREFIX,
+  PSYCHOLOGIST_PREFERENCE_PREFIX,
+} from "@psi/profiles/constants/characteristicPrefixes";
+import useCharacteristics from "@psi/profiles/hooks/useCharacteristics";
+import { Characteristic, Role } from "@psi/shared/graphql";
 
 interface PreferenceChooserComponentProps {
-  preferences: {
-    name: string;
-    type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
-    possibleValues: string[];
-  }[];
+  preference: Characteristic;
   weights: State<Record<string, Record<string, number>>>;
-  messages: Record<string, string>;
-  prefix: string;
 }
 
 const PreferenceChooserComponent = ({
-  preferences,
+  preference,
   weights,
-  messages,
-  prefix,
 }: PreferenceChooserComponentProps) => {
+  const { role } = useCurrentUser();
+
+  const { messages } = useCharacteristics();
+
+  const prefix =
+    role === Role.Patient
+      ? PSYCHOLOGIST_PREFERENCE_PREFIX
+      : PATIENT_PREFERENCE_PREFIX;
+
   return (
-    <>
-      {preferences.map((pref, index) => (
-        <div key={pref.name}>
-          {index > 0 ? <div style={{ padding: "0.5rem" }}></div> : null}
-          {pref.type === "BOOLEAN" ? (
-            <BooleanPreferenceSelector
-              message={messages[`${prefix}:${pref.name}:true`]}
-              prefName={pref.name}
-              weight={weights[pref.name]}
+    <div key={preference.name}>
+      {preference.type === "BOOLEAN" ? (
+        <BooleanPreferenceSelector
+          message={messages[`${prefix}:${preference.name}:true`]}
+          prefName={preference.name}
+          weight={weights[preference.name]}
+        />
+      ) : (
+        preference.possibleValues
+          .filter((pv) => messages[`${prefix}:${preference.name}:${pv}`])
+          .map((pv) => (
+            <PreferenceSelector
+              key={`${preference.name}:${pv}`}
+              message={messages[`${prefix}:${preference.name}:${pv}`]}
+              prefName={preference.name}
+              pv={pv}
+              weight={weights[preference.name]}
             />
-          ) : (
-            pref.possibleValues
-              .filter((pv) => messages[`${prefix}:${pref.name}:${pv}`])
-              .map((pv) => (
-                <PreferenceSelector
-                  key={`${pref.name}:${pv}`}
-                  message={messages[`${prefix}:${pref.name}:${pv}`]}
-                  prefName={pref.name}
-                  pv={pv}
-                  weight={weights[pref.name]}
-                />
-              ))
-          )}
-        </div>
-      ))}
-    </>
+          ))
+      )}
+    </div>
   );
 };
 

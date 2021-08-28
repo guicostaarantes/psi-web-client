@@ -1,5 +1,12 @@
 import { State, useState } from "@hookstate/core";
 
+import useCurrentUser from "@psi/auth/hooks/useCurrentUser";
+import {
+  PATIENT_CHARACTERISTIC_PREFIX,
+  PSYCHOLOGIST_CHARACTERISTIC_PREFIX,
+} from "@psi/profiles/constants/characteristicPrefixes";
+import useCharacteristics from "@psi/profiles/hooks/useCharacteristics";
+import { Characteristic, Role } from "@psi/shared/graphql";
 import Checkbox from "@psi/styleguide/components/Checkbox";
 import Col from "@psi/styleguide/components/Layout/Col";
 import Row from "@psi/styleguide/components/Layout/Row";
@@ -7,61 +14,60 @@ import Radio from "@psi/styleguide/components/Radio";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 interface CharacteristicChooserComponentProps {
-  characteristics: {
-    name: string;
-    type: "BOOLEAN" | "SINGLE" | "MULTIPLE";
-    possibleValues: string[];
-  }[];
+  characteristic: Characteristic;
   choices: State<Record<string, unknown>>;
-  messages: Record<string, string>;
-  prefix: string;
 }
 
 const CharacteristicChooserComponent = ({
-  characteristics,
+  characteristic,
   choices,
-  messages,
-  prefix,
 }: CharacteristicChooserComponentProps) => {
+  const { role } = useCurrentUser();
+
+  const { messages } = useCharacteristics();
+
+  const prefix =
+    role === Role.Patient
+      ? PATIENT_CHARACTERISTIC_PREFIX
+      : PSYCHOLOGIST_CHARACTERISTIC_PREFIX;
+
   return (
     <>
-      {characteristics
-        .filter((char) => messages[`${prefix}:${char.name}`])
-        .map((char) => (
-          <div key={char.name}>
-            <Row style={{ margin: "1rem" }}>
-              <Paragraph noMarginBottom noMarginTop>
-                {messages[`${prefix}:${char.name}`]}
-              </Paragraph>
-            </Row>
-            <Row style={{ margin: "1rem" }}>
-              {char.type === "BOOLEAN" || char.type === "SINGLE"
-                ? char.possibleValues
-                    .filter((pv) => messages[`${prefix}:${char.name}:${pv}`])
-                    .map((pv) => (
-                      <RadioCharacteristicSelector
-                        key={`${char.name}:${pv}`}
-                        charName={char.name}
-                        choice={choices[char.name]}
-                        message={messages[`${prefix}:${char.name}:${pv}`]}
-                        pv={pv}
-                      />
-                    ))
-                : char.type === "MULTIPLE"
-                ? char.possibleValues
-                    .filter((pv) => messages[`${prefix}:${char.name}:${pv}`])
-                    .map((pv) => (
-                      <CheckboxCharacteristicSelector
-                        key={`${char.name}:${pv}`}
-                        choice={choices[char.name]}
-                        message={messages[`${prefix}:${char.name}:${pv}`]}
-                        pv={pv}
-                      />
-                    ))
-                : null}
-            </Row>
-          </div>
-        ))}
+      <Row style={{ margin: "1rem" }}>
+        <Paragraph noMarginBottom noMarginTop>
+          {messages[`${prefix}:${characteristic.name}`]}
+        </Paragraph>
+      </Row>
+      <Row style={{ margin: "1rem" }}>
+        {characteristic.type === "BOOLEAN" || characteristic.type === "SINGLE"
+          ? characteristic.possibleValues
+              .filter(
+                (pv) => messages[`${prefix}:${characteristic.name}:${pv}`],
+              )
+              .map((pv) => (
+                <RadioCharacteristicSelector
+                  key={`${characteristic.name}:${pv}`}
+                  charName={characteristic.name}
+                  choice={choices[characteristic.name]}
+                  message={messages[`${prefix}:${characteristic.name}:${pv}`]}
+                  pv={pv}
+                />
+              ))
+          : characteristic.type === "MULTIPLE"
+          ? characteristic.possibleValues
+              .filter(
+                (pv) => messages[`${prefix}:${characteristic.name}:${pv}`],
+              )
+              .map((pv) => (
+                <CheckboxCharacteristicSelector
+                  key={`${characteristic.name}:${pv}`}
+                  choice={choices[characteristic.name]}
+                  message={messages[`${prefix}:${characteristic.name}:${pv}`]}
+                  pv={pv}
+                />
+              ))
+          : null}
+      </Row>
     </>
   );
 };

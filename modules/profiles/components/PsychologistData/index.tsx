@@ -1,16 +1,15 @@
-import { Downgraded, useState } from "@hookstate/core";
+import { useState } from "@hookstate/core";
 import { format, parse } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
+import { PSYCHOLOGIST_CHARACTERISTIC_PREFIX } from "@psi/profiles/constants/characteristicPrefixes";
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
+import useCharacteristics from "@psi/profiles/hooks/useCharacteristics";
 import {
-  CharacteristicType,
   MyPsychologistProfileDocument,
-  useGetCharacteristicMessagesLazyQuery,
-  useGetCharacteristicsQuery,
   useMyPsychologistProfileQuery,
   useSetMyPsychologistCharacteristicChoicesAndPreferencesMutation,
   useUpsertMyPsychologistProfileMutation,
@@ -31,23 +30,11 @@ const PsychologistDataComponent = () => {
 
   const { addToast } = useToast();
 
-  const { data: characteristicData } = useGetCharacteristicsQuery();
-
   const {
     data: profileData,
     error: profileError,
     loading: profileLoading,
   } = useMyPsychologistProfileQuery();
-
-  const [
-    getCharacteristicMessages,
-    { data: characteristicMessagesData },
-  ] = useGetCharacteristicMessagesLazyQuery();
-
-  const [
-    getPreferenceMessages,
-    { data: preferenceMessagesData },
-  ] = useGetCharacteristicMessagesLazyQuery();
 
   const fullNameRef = useRef<HTMLInputElement>(null);
   const likeNameRef = useRef<HTMLInputElement>(null);
@@ -55,29 +42,9 @@ const PsychologistDataComponent = () => {
   const cityRef = useRef<HTMLInputElement>(null);
   const birthDateInitialValue = useState<string>("");
 
-  const characteristics = useState<
-    {
-      name: string;
-      type: CharacteristicType;
-      possibleValues: string[];
-    }[]
-  >([]).attach(Downgraded);
-
   const choices = useState<Record<string, unknown>>({});
 
-  const preferences = useState<
-    {
-      name: string;
-      type: CharacteristicType;
-      possibleValues: string[];
-    }[]
-  >([]).attach(Downgraded);
-
   const weights = useState<Record<string, Record<string, number>>>({});
-
-  const characteristicMessages = useState<Record<string, string>>({});
-
-  const preferenceMessages = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (profileError?.message && profileError.message !== "forbidden") {
@@ -110,74 +77,16 @@ const PsychologistDataComponent = () => {
     }
   }, [profileData]);
 
-  // Load all characteristics and all preferences
-  useEffect(() => {
-    if (characteristicData) {
-      characteristics.set(characteristicData.psychologistCharacteristics);
-      preferences.set(characteristicData.patientCharacteristics);
-    }
-  }, [characteristicData]);
+  const { characteristics, messages } = useCharacteristics();
 
-  // Fetch messages for characteristics and preferences
-  useEffect(() => {
-    if (characteristicData) {
-      let keys = [];
-
-      for (const i of characteristicData.psychologistCharacteristics) {
-        keys.push(`psy-char:${i.name}`);
-        for (const j of i.possibleValues) {
-          keys.push(`psy-char:${i.name}:${j}`);
-        }
-      }
-      getCharacteristicMessages({ variables: { lang: "pt-BR", keys } });
-
-      keys = [];
-
-      for (const i of characteristicData.patientCharacteristics) {
-        for (const j of i.possibleValues) {
-          keys.push(`pat-pref:${i.name}:${j}`);
-        }
-      }
-
-      getPreferenceMessages({ variables: { lang: "pt-BR", keys } });
-    }
-  }, [characteristicData]);
-
-  // Set characteristic messages from server
-  useEffect(() => {
-    if (characteristicMessagesData) {
-      characteristicMessages.set(
-        characteristicMessagesData?.translations.reduce(
-          (final, current) => ({
-            ...final,
-            [current.key]: current.value,
-          }),
-          {},
-        ),
-      );
-    }
-  }, [characteristicMessagesData]);
-
-  // Set preference messages from server
-  useEffect(() => {
-    if (preferenceMessagesData) {
-      preferenceMessages.set(
-        preferenceMessagesData?.translations.reduce(
-          (final, current) => ({
-            ...final,
-            [current.key]: current.value,
-          }),
-          {},
-        ),
-      );
-    }
-  }, [preferenceMessagesData]);
+  const chars = characteristics?.psychologistCharacteristics || [];
+  const preferences = characteristics?.patientCharacteristics || [];
 
   // Load current characteristic choices and fill the fields
   useEffect(() => {
-    if (!profileLoading && characteristics.value) {
+    if (!profileLoading && chars) {
       const initialChoices = {};
-      for (const char of characteristics.value) {
+      for (const char of chars) {
         if (char.type === "BOOLEAN" || char.type === "SINGLE") {
           initialChoices[
             char.name
@@ -195,14 +104,14 @@ const PsychologistDataComponent = () => {
       }
       choices.set(initialChoices);
     }
-  }, [profileLoading, characteristics.value]);
+  }, [profileLoading, chars]);
 
   // Load current preference weights and fill the fields
   useEffect(() => {
-    if (!profileLoading && preferences.value) {
+    if (!profileLoading && preferences) {
       const initialWeights = {};
       const possibleWeights = HAPPINESS_OPTIONS.map((ho) => ho.value);
-      for (const pref of preferences.value) {
+      for (const pref of preferences) {
         initialWeights[pref.name] = {};
         for (const pv of pref.possibleValues) {
           const weight = profileData.myPsychologistProfile?.preferences?.find(
@@ -218,7 +127,7 @@ const PsychologistDataComponent = () => {
       }
       weights.set(initialWeights);
     }
-  }, [profileLoading, preferences.value]);
+  }, [profileLoading, preferences]);
 
   const [
     upsertMyPsychologistProfile,
@@ -279,7 +188,7 @@ const PsychologistDataComponent = () => {
 
     // Checking if choiceInput is invalid (all BOOLEAN and SINGLE fields must be filled)
     if (
-      !characteristics.value
+      !chars
         .filter((ch) => ["BOOLEAN", "SINGLE"].includes(ch.type))
         .every((ch) => Object.keys(choices.value).includes(ch.name))
     ) {
@@ -303,7 +212,7 @@ const PsychologistDataComponent = () => {
 
     // Checking if weightInput is invalid
     if (
-      preferences.value.reduce(
+      preferences.reduce(
         (final, current) => final + current.possibleValues.length,
         0,
       ) !== weightInput.length
@@ -388,23 +297,30 @@ const PsychologistDataComponent = () => {
         <MediumTitle center noMarginTop>
           Características do psicólogo
         </MediumTitle>
-        <CharacteristicChooserComponent
-          characteristics={characteristics.value}
-          choices={choices}
-          messages={characteristicMessages.value}
-          prefix="psy-char"
-        />
+        {chars
+          .filter(
+            (char) =>
+              messages[`${PSYCHOLOGIST_CHARACTERISTIC_PREFIX}:${char.name}`],
+          )
+          .map((char) => (
+            <CharacteristicChooserComponent
+              key={char.name}
+              characteristic={char}
+              choices={choices}
+            />
+          ))}
       </Card>
       <Card>
         <MediumTitle center noMarginTop>
           Preferências do psicólogo
         </MediumTitle>
-        <PreferenceChooserComponent
-          preferences={preferences.value}
-          weights={weights}
-          messages={preferenceMessages.value}
-          prefix="pat-pref"
-        />
+        {preferences.map((pref) => (
+          <PreferenceChooserComponent
+            key={pref.name}
+            preference={pref}
+            weights={weights}
+          />
+        ))}
       </Card>
       <Card>
         <Row style={{ margin: "1rem" }}>
