@@ -207,7 +207,7 @@ const mocks = [
   },
 ];
 
-const preferences: Characteristic = {
+const preference: Characteristic = {
   name: "gender",
   type: CharacteristicType.Single,
   possibleValues: ["male", "female", "non-binary"],
@@ -237,7 +237,10 @@ const WrapperTestComponent = () => {
 
   return (
     <MockedProvider mocks={mocks}>
-      <PreferenceChooserComponent preference={preferences} weights={weights} />
+      <PreferenceChooserComponent
+        preference={preference}
+        weight={weights[preference.name]}
+      />
     </MockedProvider>
   );
 };

@@ -15,12 +15,12 @@ import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 interface CharacteristicChooserComponentProps {
   characteristic: Characteristic;
-  choices: State<Record<string, unknown>>;
+  choice: State<unknown>;
 }
 
 const CharacteristicChooserComponent = ({
   characteristic,
-  choices,
+  choice,
 }: CharacteristicChooserComponentProps) => {
   const { role } = useCurrentUser();
 
@@ -48,7 +48,7 @@ const CharacteristicChooserComponent = ({
                 <RadioCharacteristicSelector
                   key={`${characteristic.name}:${pv}`}
                   charName={characteristic.name}
-                  choice={choices[characteristic.name]}
+                  choice={choice}
                   message={messages[`${prefix}:${characteristic.name}:${pv}`]}
                   pv={pv}
                 />
@@ -61,7 +61,7 @@ const CharacteristicChooserComponent = ({
               .map((pv) => (
                 <CheckboxCharacteristicSelector
                   key={`${characteristic.name}:${pv}`}
-                  choice={choices[characteristic.name]}
+                  choice={choice}
                   message={messages[`${prefix}:${characteristic.name}:${pv}`]}
                   pv={pv}
                 />

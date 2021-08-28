@@ -306,7 +306,7 @@ const PsychologistDataComponent = () => {
             <CharacteristicChooserComponent
               key={char.name}
               characteristic={char}
-              choices={choices}
+              choice={choices[char.name]}
             />
           ))}
       </Card>
@@ -318,7 +318,7 @@ const PsychologistDataComponent = () => {
           <PreferenceChooserComponent
             key={pref.name}
             preference={pref}
-            weights={weights}
+            weight={weights[pref.name]}
           />
         ))}
       </Card>

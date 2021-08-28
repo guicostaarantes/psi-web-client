@@ -222,7 +222,7 @@ const WrapperTestComponent = () => {
     <MockedProvider mocks={mocks}>
       <CharacteristicChooserComponent
         characteristic={characteristic}
-        choices={choices}
+        choice={choices[characteristic.name]}
       />
     </MockedProvider>
   );

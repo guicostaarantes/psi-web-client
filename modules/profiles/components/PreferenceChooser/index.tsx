@@ -12,12 +12,12 @@ import { Characteristic, Role } from "@psi/shared/graphql";
 
 interface PreferenceChooserComponentProps {
   preference: Characteristic;
-  weights: State<Record<string, Record<string, number>>>;
+  weight: State<Record<string, number>>;
 }
 
 const PreferenceChooserComponent = ({
   preference,
-  weights,
+  weight,
 }: PreferenceChooserComponentProps) => {
   const { role } = useCurrentUser();
 
@@ -34,7 +34,7 @@ const PreferenceChooserComponent = ({
         <BooleanPreferenceSelector
           message={messages[`${prefix}:${preference.name}:true`]}
           prefName={preference.name}
-          weight={weights[preference.name]}
+          weight={weight}
         />
       ) : (
         preference.possibleValues
@@ -45,7 +45,7 @@ const PreferenceChooserComponent = ({
               message={messages[`${prefix}:${preference.name}:${pv}`]}
               prefName={preference.name}
               pv={pv}
-              weight={weights[preference.name]}
+              weight={weight}
             />
           ))
       )}
