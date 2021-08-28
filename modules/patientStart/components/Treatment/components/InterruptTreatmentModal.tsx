@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { DeepPartial } from "utility-types";
 
 import {
   MyPatientAppointmentsDocument,
@@ -14,7 +15,7 @@ import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 interface InterruptTreatmentModalProps {
   onClose: () => void;
   open: boolean;
-  treatment: PatientTreatment;
+  treatment: DeepPartial<PatientTreatment>;
 }
 
 const InterruptTreatmentModal = ({

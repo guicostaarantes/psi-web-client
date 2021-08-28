@@ -1,4 +1,5 @@
 import { useState } from "@hookstate/core";
+import { DeepPartial } from "utility-types";
 
 import InterruptTreatmentModal from "@psi/patientStart/components/Treatment/components/InterruptTreatmentModal";
 import { PatientTreatment } from "@psi/shared/graphql";
@@ -7,7 +8,7 @@ import Card from "@psi/styleguide/components/Card";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 interface InterruptTreatmentProps {
-  treatment: PatientTreatment;
+  treatment: DeepPartial<PatientTreatment>;
 }
 
 const InterruptTreatment = ({ treatment }: InterruptTreatmentProps) => {
