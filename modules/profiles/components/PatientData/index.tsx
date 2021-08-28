@@ -288,6 +288,19 @@ const PatientDataComponent = () => {
             />
           </Col>
         </Row>
+        {chars
+          .filter(
+            (char) =>
+              char.name === "income" &&
+              messages[`${PATIENT_CHARACTERISTIC_PREFIX}:${char.name}`],
+          )
+          .map((char) => (
+            <CharacteristicChooserComponent
+              key={char.name}
+              characteristic={char}
+              choice={choices[char.name]}
+            />
+          ))}
       </Card>
       <Card>
         <MediumTitle center noMarginTop>
@@ -295,7 +308,9 @@ const PatientDataComponent = () => {
         </MediumTitle>
         {chars
           .filter(
-            (char) => messages[`${PATIENT_CHARACTERISTIC_PREFIX}:${char.name}`],
+            (char) =>
+              char.name !== "income" &&
+              messages[`${PATIENT_CHARACTERISTIC_PREFIX}:${char.name}`],
           )
           .map((char) => (
             <CharacteristicChooserComponent
