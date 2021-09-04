@@ -2,14 +2,14 @@ mutation CreateTreatment(
   $frequency: Int!
   $phase: Int!
   $duration: Int!
-  $price: Int!
+  $priceRangeName: String!
 ) {
   createTreatment(
     input: {
       frequency: $frequency
       phase: $phase
       duration: $duration
-      price: $price
+      priceRangeName: $priceRangeName
     }
   )
 }

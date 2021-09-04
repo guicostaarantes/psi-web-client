@@ -1,17 +1,21 @@
 import { useState } from "@hookstate/core";
 import { useEffect } from "react";
+import { DeepPartial } from "utility-types";
 
 import {
   MyPatientAppointmentsDocument,
   MyPatientTreatmentsDocument,
+  TreatmentPriceRange,
   useAssignTreatmentMutation,
   useMyPatientTopAffinitiesQuery,
 } from "@psi/shared/graphql";
 import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
+import formatValueRange from "@psi/shared/utils/formatValueRange";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Modal from "@psi/styleguide/components/Modal";
 import Radio from "@psi/styleguide/components/Radio";
+import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import useToast from "@psi/styleguide/hooks/useToast";
 
@@ -52,10 +56,16 @@ const TreatmentSelectionModal = ({
   }, [error]);
 
   const selectedTreatment = useState("");
+  const selectedPriceRange = useState("");
 
   const handleAssignClick = async () => {
     try {
-      await assignTreatment({ variables: { id: selectedTreatment.value } });
+      await assignTreatment({
+        variables: {
+          id: selectedTreatment.value,
+          priceRangeName: selectedPriceRange.value,
+        },
+      });
     } catch (err) {
       // empty
     }
@@ -63,6 +73,31 @@ const TreatmentSelectionModal = ({
 
   const topAffinities =
     data?.myPatientTopAffinities?.filter((aff) => aff.psychologist) || [];
+
+  const possiblePriceRanges: Record<
+    string,
+    Array<DeepPartial<TreatmentPriceRange>>
+  > = {};
+
+  topAffinities.forEach((aff) => {
+    aff.psychologist.priceRangeOfferings.forEach((pro) => {
+      if (!possiblePriceRanges[aff.psychologist.id]) {
+        possiblePriceRanges[aff.psychologist.id] = [];
+      }
+
+      if (
+        !possiblePriceRanges[aff.psychologist.id].some(
+          (ppr) => ppr.name === pro.priceRange.name,
+        )
+      ) {
+        possiblePriceRanges[aff.psychologist.id].push(pro.priceRange);
+      }
+    });
+
+    possiblePriceRanges[aff.psychologist.id].sort((a, b) =>
+      a.minimumPrice < b.minimumPrice ? -1 : 1,
+    );
+  });
 
   return (
     <Modal open={open} onClose={onClose} title="Escolher psicólogo">
@@ -86,7 +121,8 @@ const TreatmentSelectionModal = ({
         )}
         {topAffinities.map((aff) => (
           <Card floating key={aff.psychologist.id}>
-            <div>{aff.psychologist.fullName}</div>
+            <MediumTitle>{aff.psychologist.fullName}</MediumTitle>
+            <div>Selecione um horário:</div>
             <div className="radio-group">
               {aff.psychologist.pendingTreatments.map((tr) => (
                 <div key={tr.id}>
@@ -103,12 +139,29 @@ const TreatmentSelectionModal = ({
                 </div>
               ))}
             </div>
+            <div>Selecione um custo:</div>
+            <div className="radio-group">
+              {possiblePriceRanges[aff.psychologist.id].map((ppr) => (
+                <div key={ppr.name}>
+                  <Radio
+                    name={ppr.name}
+                    value={ppr.name}
+                    label={`Preço ${formatValueRange(
+                      ppr.minimumPrice,
+                      ppr.maximumPrice,
+                    )}`}
+                    checked={ppr.name === selectedPriceRange.value}
+                    onChange={() => selectedPriceRange.set(ppr.name)}
+                  />
+                </div>
+              ))}
+            </div>
           </Card>
         ))}
         <div className="buttons">
           <Button
             color="primary"
-            disabled={!selectedTreatment.value}
+            disabled={!selectedTreatment.value || !selectedPriceRange.value}
             loading={assignLoading}
             onClick={handleAssignClick}
           >

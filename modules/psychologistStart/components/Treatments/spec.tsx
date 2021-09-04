@@ -20,7 +20,11 @@ const mocks = [
               frequency: 1,
               phase: 4 * 86400 + 20 * 3600,
               duration: 50 * 60,
-              price: 25,
+              priceRange: {
+                name: "low",
+                minimumPrice: 25,
+                maximumPrice: 50,
+              },
               patient: {
                 fullName: "Tom Brady",
               },
@@ -31,8 +35,17 @@ const mocks = [
               frequency: 2,
               phase: 7 * 86400 + 20 * 3600,
               duration: 60 * 60,
-              price: 30,
+              priceRange: null,
               patient: null,
+            },
+          ],
+          priceRangeOfferings: [
+            {
+              priceRange: {
+                name: "medium",
+                minimumPrice: 50,
+                maximumPrice: 100,
+              },
             },
           ],
         },
@@ -52,12 +65,11 @@ test("should render", async () => {
     const patientName = screen.getByText("Paciente: Tom Brady");
     screen.getByText("Horário das sessões: às segundas-feiras às 15:00");
     screen.getByText("Duração de cada sessão: 50 minutos");
-    screen.getByText("Valor cobrado por sessão: R$ 25,00");
+    screen.getByText("Valor cobrado por sessão: entre 25 e 50 reais");
     screen.getByText(
       "Horário das sessões: às quintas-feiras de semanas A às 15:00",
     );
     screen.getByText("Duração de cada sessão: 60 minutos");
-    screen.getByText("Valor cobrado por sessão: R$ 30,00");
     const newTreatmentButton = screen.getByText(
       "Quero tratar um novo paciente",
     );

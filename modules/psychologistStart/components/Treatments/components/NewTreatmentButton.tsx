@@ -21,11 +21,11 @@ import useToast from "@psi/styleguide/hooks/useToast";
 const NewTreatmentButton = () => {
   const { addToast } = useToast();
 
-  const frequency = useRef(null);
-  const weekday = useRef(null);
-  const start = useRef(null);
-  const duration = useRef(null);
-  const price = useRef(null);
+  const frequencyRef = useRef(null);
+  const weekdayRef = useRef(null);
+  const startRef = useRef(null);
+  const durationRef = useRef(null);
+  const priceRangeRef = useRef(null);
 
   const modalOpen = useState(false);
 
@@ -39,11 +39,11 @@ const NewTreatmentButton = () => {
 
   const handleCreateConfirmClick = async () => {
     if (
-      isNaN(Number(frequency.current.value)) ||
-      isNaN(Number(weekday.current.value)) ||
-      !start.current.value ||
-      isNaN(Number(duration.current.value)) ||
-      isNaN(Number(price.current.value))
+      isNaN(Number(frequencyRef.current.value)) ||
+      isNaN(Number(weekdayRef.current.value)) ||
+      !startRef.current.value ||
+      isNaN(Number(durationRef.current.value)) ||
+      !priceRangeRef.current.value
     ) {
       addToast({
         header: "Dados inválidos",
@@ -53,15 +53,15 @@ const NewTreatmentButton = () => {
     }
 
     const phases = getPhases(
-      frequency.current.value,
-      weekday.current.value,
-      start.current.value,
+      frequencyRef.current.value,
+      weekdayRef.current.value,
+      startRef.current.value,
       HOUR_24_FORMAT,
     ).map((phase) => ({
       frequency: phase.frequency,
       phase: phase.phase,
-      duration: 60 * Number(duration.current.value),
-      price: Number(price.current.value),
+      duration: 60 * Number(durationRef.current.value),
+      priceRangeName: priceRangeRef.current.value,
     }));
 
     try {
@@ -121,29 +121,29 @@ const NewTreatmentButton = () => {
             name="frequency"
             label="Frequência de tratamento"
             options={treatmentFrequencies}
-            reference={frequency}
+            reference={frequencyRef}
           />
           <Select
             name="weekday"
             label="Dia da semana"
             options={weekdayOptions}
-            reference={weekday}
+            reference={weekdayRef}
           />
           <DateInput
             format={HOUR_24_FORMAT}
             name="start"
             label="Hora de início da sessão (ex: 19:30)"
-            reference={start}
+            reference={startRef}
           />
           <Input
             name="duration"
             label="Duração da sessão (minutos)"
-            reference={duration}
+            reference={durationRef}
           />
           <Input
             name="price"
             label="Preço da sessão (reais)"
-            reference={price}
+            reference={priceRangeRef}
           />
           <div className="buttons">
             <Button

@@ -2,7 +2,9 @@ import { useState } from "@hookstate/core";
 
 import FinalizeTreatmentModal from "@psi/psychologistStart/components/Treatments/components/FinalizeTreatmentModal";
 import InterruptTreatmentModal from "@psi/psychologistStart/components/Treatments/components/InterruptTreatmentModal";
+import { TreatmentPriceRange } from "@psi/shared/graphql";
 import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
+import formatValueRange from "@psi/shared/utils/formatValueRange";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 
@@ -11,7 +13,7 @@ interface ActiveTreatmentProps {
   frequency: number;
   phase: number;
   duration: number;
-  price: number;
+  priceRange: Partial<TreatmentPriceRange>;
   patient: {
     fullName: string;
   };
@@ -22,7 +24,7 @@ const ActiveTreatment = ({
   frequency,
   phase,
   duration,
-  price,
+  priceRange,
   patient,
 }: ActiveTreatmentProps) => {
   const finalizeModalOpen = useState(false);
@@ -30,11 +32,6 @@ const ActiveTreatment = ({
   const interruptModalOpen = useState(false);
 
   const durationInMinutes = Math.floor(duration / 60);
-
-  const priceInCurrency = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(price);
 
   return (
     <>
@@ -49,7 +46,13 @@ const ActiveTreatment = ({
             <div className="text">
               Duração de cada sessão: {durationInMinutes} minutos
             </div>
-            <div>Valor cobrado por sessão: {priceInCurrency}</div>
+            <div>
+              Valor cobrado por sessão:{" "}
+              {formatValueRange(
+                priceRange.minimumPrice,
+                priceRange.maximumPrice,
+              )}
+            </div>
           </div>
           <div className="buttons">
             <Button color="primary" onClick={() => finalizeModalOpen.set(true)}>

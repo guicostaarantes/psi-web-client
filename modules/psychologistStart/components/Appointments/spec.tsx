@@ -36,7 +36,11 @@ test("should not render if no future appointments", async () => {
                 start: yesterday,
                 end: laterYesterday,
                 status: "CONFIRMED_BY_BOTH",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                  minimumPrice: 25,
+                  maximumPrice: 50,
+                },
                 treatment: {
                   patient: {
                     fullName: "Patrick Mahomes",
@@ -77,7 +81,11 @@ test("should render only future appointments", async () => {
                 start: yesterday,
                 end: laterYesterday,
                 status: "CONFIRMED_BY_BOTH",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                  minimumPrice: 25,
+                  maximumPrice: 50,
+                },
                 treatment: {
                   patient: {
                     fullName: "Patrick Mahomes",
@@ -89,7 +97,11 @@ test("should render only future appointments", async () => {
                 start: tomorrow,
                 end: laterTomorrow,
                 status: "CONFIRMED_BY_BOTH",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                  minimumPrice: 25,
+                  maximumPrice: 50,
+                },
                 treatment: {
                   patient: {
                     fullName: "Patrick Mahomes",

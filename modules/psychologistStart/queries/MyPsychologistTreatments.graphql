@@ -7,9 +7,20 @@ query MyPsychologistTreatments {
       frequency
       phase
       duration
-      price
+      priceRange {
+        name
+        minimumPrice
+        maximumPrice
+      }
       patient {
         fullName
+      }
+    }
+    priceRangeOfferings {
+      priceRange {
+        name
+        minimumPrice
+        maximumPrice
       }
     }
   }

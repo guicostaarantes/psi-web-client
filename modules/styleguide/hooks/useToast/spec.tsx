@@ -76,7 +76,7 @@ test("add and remove toasts between unrelated components", async () => {
 
   fireEvent.click(rmv1);
 
-  act(jest.runOnlyPendingTimers);
+  act((jest.runOnlyPendingTimers as unknown) as () => Promise<void>);
 
   await waitFor(() => {
     rmv1 = screen.queryByText("removeToast1");

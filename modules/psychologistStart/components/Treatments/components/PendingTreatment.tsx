@@ -11,7 +11,6 @@ interface PendingTreatmentProps {
   frequency: number;
   phase: number;
   duration: number;
-  price: number;
 }
 
 const PendingTreatment = ({
@@ -19,7 +18,6 @@ const PendingTreatment = ({
   frequency,
   phase,
   duration,
-  price,
 }: PendingTreatmentProps) => {
   const [deleteTreatment, { loading }] = useDeleteTreatmentMutation({
     awaitRefetchQueries: true,
@@ -31,11 +29,6 @@ const PendingTreatment = ({
   };
 
   const durationInMinutes = Math.floor(duration / 60);
-
-  const priceInCurrency = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(price);
 
   return (
     <>
@@ -49,7 +42,6 @@ const PendingTreatment = ({
             <div className="text">
               Duração de cada sessão: {durationInMinutes} minutos
             </div>
-            <div>Valor cobrado por sessão: {priceInCurrency}</div>
           </div>
           <div className="buttons">
             <Button

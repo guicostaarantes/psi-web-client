@@ -68,7 +68,7 @@ export type CreateTreatmentInput = {
   frequency: Scalars["Int"];
   phase: Scalars["Int"];
   duration: Scalars["Int"];
-  price: Scalars["Int"];
+  priceRangeName: Scalars["String"];
 };
 
 export type CreateUserInput = {
@@ -89,7 +89,7 @@ export type EditAppointmentByPatientInput = {
 export type EditAppointmentByPsychologistInput = {
   start: Scalars["Int"];
   end: Scalars["Int"];
-  price: Scalars["Int"];
+  priceRangeName: Scalars["String"];
   reason: Scalars["String"];
 };
 
@@ -153,6 +153,8 @@ export type Mutation = {
   interruptTreatmentByPsychologist?: Maybe<Scalars["Boolean"]>;
   /** The finalizeTreatment mutation allows a user to choose a treatment under their psychologist profile and finalize it. */
   finalizeTreatment?: Maybe<Scalars["Boolean"]>;
+  /** The setTreatmentPriceRanges mutation allows a user to change the possible treatment price ranges. */
+  setTreatmentPriceRanges?: Maybe<Scalars["Boolean"]>;
   /** The updateTreatment mutation allows a user to update a treatment if it is owned by their psychologist profile. */
   updateTreatment?: Maybe<Scalars["Boolean"]>;
 };
@@ -249,6 +251,7 @@ export type MutationSetTranslationsArgs = {
 
 export type MutationAssignTreatmentArgs = {
   id: Scalars["ID"];
+  priceRangeName: Scalars["String"];
 };
 
 export type MutationCreateTreatmentArgs = {
@@ -273,6 +276,10 @@ export type MutationFinalizeTreatmentArgs = {
   id: Scalars["ID"];
 };
 
+export type MutationSetTreatmentPriceRangesArgs = {
+  input: Array<SetTreatmentPriceRangesInput>;
+};
+
 export type MutationUpdateTreatmentArgs = {
   id: Scalars["ID"];
   input: UpdateTreatmentInput;
@@ -283,7 +290,7 @@ export type PatientAppointment = {
   id: Scalars["ID"];
   start: Scalars["Int"];
   end: Scalars["Int"];
-  price: Scalars["Int"];
+  priceRange?: Maybe<TreatmentPriceRange>;
   status: AppointmentStatus;
   reason: Scalars["String"];
   link: Scalars["String"];
@@ -309,7 +316,7 @@ export type PatientTreatment = {
   frequency: Scalars["Int"];
   phase: Scalars["Int"];
   duration: Scalars["Int"];
-  price: Scalars["Int"];
+  priceRange?: Maybe<TreatmentPriceRange>;
   status: TreatmentStatus;
   psychologist: PublicPsychologistProfile;
 };
@@ -326,7 +333,7 @@ export type PsychologistAppointment = {
   id: Scalars["ID"];
   start: Scalars["Int"];
   end: Scalars["Int"];
-  price: Scalars["Int"];
+  priceRange?: Maybe<TreatmentPriceRange>;
   status: AppointmentStatus;
   reason: Scalars["String"];
   link: Scalars["String"];
@@ -343,6 +350,7 @@ export type PsychologistProfile = {
   characteristics: Array<CharacteristicChoice>;
   preferences: Array<Preference>;
   treatments: Array<PsychologistTreatment>;
+  priceRangeOfferings: Array<TreatmentPriceRangeOffering>;
   appointments: Array<PsychologistAppointment>;
 };
 
@@ -352,7 +360,7 @@ export type PsychologistTreatment = {
   frequency: Scalars["Int"];
   phase: Scalars["Int"];
   duration: Scalars["Int"];
-  price: Scalars["Int"];
+  priceRange?: Maybe<TreatmentPriceRange>;
   status: TreatmentStatus;
   patient?: Maybe<PublicPatientProfile>;
 };
@@ -373,6 +381,7 @@ export type PublicPsychologistProfile = {
   fullName: Scalars["String"];
   likeName: Scalars["String"];
   pendingTreatments: Array<PsychologistTreatment>;
+  priceRangeOfferings: Array<TreatmentPriceRangeOffering>;
 };
 
 export type Query = {
@@ -459,6 +468,13 @@ export type SetProfileCharacteristicInput = {
   possibleValues: Array<Scalars["String"]>;
 };
 
+export type SetTreatmentPriceRangesInput = {
+  name: Scalars["String"];
+  minimumPrice: Scalars["Int"];
+  maximumPrice: Scalars["Int"];
+  eligibleFor: Scalars["String"];
+};
+
 export type Token = {
   __typename?: "Token";
   token: Scalars["String"];
@@ -477,6 +493,20 @@ export type TranslationInput = {
   value: Scalars["String"];
 };
 
+export type TreatmentPriceRange = {
+  __typename?: "TreatmentPriceRange";
+  name: Scalars["String"];
+  minimumPrice: Scalars["Int"];
+  maximumPrice: Scalars["Int"];
+  eligibleFor: Scalars["String"];
+};
+
+export type TreatmentPriceRangeOffering = {
+  __typename?: "TreatmentPriceRangeOffering";
+  id: Scalars["ID"];
+  priceRange?: Maybe<TreatmentPriceRange>;
+};
+
 export enum TreatmentStatus {
   Pending = "PENDING",
   Active = "ACTIVE",
@@ -489,7 +519,7 @@ export type UpdateTreatmentInput = {
   frequency: Scalars["Int"];
   phase: Scalars["Int"];
   duration: Scalars["Int"];
-  price: Scalars["Int"];
+  priceRangeName?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateUserInput = {
@@ -556,6 +586,7 @@ export type ResetPasswordMutation = {
 
 export type AssignTreatmentMutationVariables = Exact<{
   id: Scalars["ID"];
+  priceRangeName: Scalars["String"];
 }>;
 
 export type AssignTreatmentMutation = {
@@ -617,7 +648,7 @@ export type MyPatientAppointmentsQuery = {
       status: AppointmentStatus;
       start: number;
       end: number;
-      price: number;
+      priceRange?: Maybe<{ __typename?: "TreatmentPriceRange"; name: string }>;
       treatment: {
         __typename?: "PatientTreatment";
         psychologist: {
@@ -658,7 +689,16 @@ export type MyPatientTopAffinitiesQuery = {
         frequency: number;
         phase: number;
         duration: number;
-        price: number;
+      }>;
+      priceRangeOfferings: Array<{
+        __typename?: "TreatmentPriceRangeOffering";
+        id: string;
+        priceRange?: Maybe<{
+          __typename?: "TreatmentPriceRange";
+          name: string;
+          minimumPrice: number;
+          maximumPrice: number;
+        }>;
       }>;
     }>;
   }>;
@@ -838,7 +878,7 @@ export type CreateTreatmentMutationVariables = Exact<{
   frequency: Scalars["Int"];
   phase: Scalars["Int"];
   duration: Scalars["Int"];
-  price: Scalars["Int"];
+  priceRangeName: Scalars["String"];
 }>;
 
 export type CreateTreatmentMutation = {
@@ -899,7 +939,12 @@ export type MyPsychologistAppointmentsQuery = {
       status: AppointmentStatus;
       start: number;
       end: number;
-      price: number;
+      priceRange?: Maybe<{
+        __typename?: "TreatmentPriceRange";
+        name: string;
+        minimumPrice: number;
+        maximumPrice: number;
+      }>;
       treatment: {
         __typename?: "PsychologistTreatment";
         patient?: Maybe<{
@@ -940,10 +985,24 @@ export type MyPsychologistTreatmentsQuery = {
       frequency: number;
       phase: number;
       duration: number;
-      price: number;
+      priceRange?: Maybe<{
+        __typename?: "TreatmentPriceRange";
+        name: string;
+        minimumPrice: number;
+        maximumPrice: number;
+      }>;
       patient?: Maybe<{
         __typename?: "PublicPatientProfile";
         fullName: string;
+      }>;
+    }>;
+    priceRangeOfferings: Array<{
+      __typename?: "TreatmentPriceRangeOffering";
+      priceRange?: Maybe<{
+        __typename?: "TreatmentPriceRange";
+        name: string;
+        minimumPrice: number;
+        maximumPrice: number;
       }>;
     }>;
   }>;
@@ -1158,8 +1217,8 @@ export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<
   ResetPasswordMutationVariables
 >;
 export const AssignTreatmentDocument = gql`
-  mutation AssignTreatment($id: ID!) {
-    assignTreatment(id: $id)
+  mutation AssignTreatment($id: ID!, $priceRangeName: String!) {
+    assignTreatment(id: $id, priceRangeName: $priceRangeName)
   }
 `;
 export type AssignTreatmentMutationFn = Apollo.MutationFunction<
@@ -1181,6 +1240,7 @@ export type AssignTreatmentMutationFn = Apollo.MutationFunction<
  * const [assignTreatmentMutation, { data, loading, error }] = useAssignTreatmentMutation({
  *   variables: {
  *      id: // value for 'id'
+ *      priceRangeName: // value for 'priceRangeName'
  *   },
  * });
  */
@@ -1407,7 +1467,9 @@ export const MyPatientAppointmentsDocument = gql`
         status
         start
         end
-        price
+        priceRange {
+          name
+        }
         treatment {
           psychologist {
             likeName
@@ -1536,7 +1598,14 @@ export const MyPatientTopAffinitiesDocument = gql`
           frequency
           phase
           duration
-          price
+        }
+        priceRangeOfferings {
+          id
+          priceRange {
+            name
+            minimumPrice
+            maximumPrice
+          }
         }
       }
     }
@@ -2224,14 +2293,14 @@ export const CreateTreatmentDocument = gql`
     $frequency: Int!
     $phase: Int!
     $duration: Int!
-    $price: Int!
+    $priceRangeName: String!
   ) {
     createTreatment(
       input: {
         frequency: $frequency
         phase: $phase
         duration: $duration
-        price: $price
+        priceRangeName: $priceRangeName
       }
     )
   }
@@ -2257,7 +2326,7 @@ export type CreateTreatmentMutationFn = Apollo.MutationFunction<
  *      frequency: // value for 'frequency'
  *      phase: // value for 'phase'
  *      duration: // value for 'duration'
- *      price: // value for 'price'
+ *      priceRangeName: // value for 'priceRangeName'
  *   },
  * });
  */
@@ -2483,7 +2552,11 @@ export const MyPsychologistAppointmentsDocument = gql`
         status
         start
         end
-        price
+        priceRange {
+          name
+          minimumPrice
+          maximumPrice
+        }
         treatment {
           patient {
             fullName
@@ -2611,9 +2684,20 @@ export const MyPsychologistTreatmentsDocument = gql`
         frequency
         phase
         duration
-        price
+        priceRange {
+          name
+          minimumPrice
+          maximumPrice
+        }
         patient {
           fullName
+        }
+      }
+      priceRangeOfferings {
+        priceRange {
+          name
+          minimumPrice
+          maximumPrice
         }
       }
     }

@@ -8,7 +8,14 @@ query MyPatientTopAffinities {
         frequency
         phase
         duration
-        price
+      }
+      priceRangeOfferings {
+        id
+        priceRange {
+          name
+          minimumPrice
+          maximumPrice
+        }
       }
     }
   }

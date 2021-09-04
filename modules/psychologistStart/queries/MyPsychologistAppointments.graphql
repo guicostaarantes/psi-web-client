@@ -6,7 +6,11 @@ query MyPsychologistAppointments {
       status
       start
       end
-      price
+      priceRange {
+        name
+        minimumPrice
+        maximumPrice
+      }
       treatment {
         patient {
           fullName
