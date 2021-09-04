@@ -88,6 +88,11 @@ const mocks = [
             type: "MULTIPLE",
             possibleValues: ["vision", "hearing", "locomotion"],
           },
+          {
+            name: "income",
+            type: "SINGLE",
+            possibleValues: ["D", "C", "B", "A"],
+          },
         ],
         psychologistCharacteristics: [
           {
@@ -111,7 +116,7 @@ const mocks = [
   },
 ];
 
-test("PatientDataComponent renders with data from database", async () => {
+test("PsychologistDataComponent renders with data from database", async () => {
   render(
     <MockedProvider mocks={mocks}>
       <PsychologistDataComponent />

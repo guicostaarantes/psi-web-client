@@ -1,7 +1,7 @@
 import { useState } from "@hookstate/core";
 import { format, parse } from "date-fns";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
@@ -80,7 +80,13 @@ const PsychologistDataComponent = () => {
   const { characteristics, messages } = useCharacteristics();
 
   const chars = characteristics?.psychologistCharacteristics || [];
-  const preferences = characteristics?.patientCharacteristics || [];
+  const preferences = useMemo(
+    () =>
+      (characteristics?.patientCharacteristics || []).filter(
+        (pref) => pref.name !== "income",
+      ),
+    [characteristics],
+  );
 
   // Load current characteristic choices and fill the fields
   useEffect(() => {
