@@ -89,7 +89,7 @@ test("should not render if no future appointments", async () => {
   await waitFor(() => {
     screen.getByText("Você está em tratamento com Tom Brady");
     screen.getByText(
-      "Em breve o sistema irá agendar uma nova consulta baseada no horário semanal definido para o seu tratamento. Você também receberá os detalhes por email quando essa consulta for marcada.",
+      "Em breve o sistema irá agendar uma nova consulta baseada no horário definido para o seu tratamento. Você também receberá os detalhes por email quando essa consulta for marcada.",
     );
   });
 });

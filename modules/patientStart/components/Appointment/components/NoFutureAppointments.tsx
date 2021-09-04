@@ -18,8 +18,8 @@ const NoFutureAppointments = () => {
       </Paragraph>
       <Paragraph>
         Em breve o sistema irá agendar uma nova consulta baseada no horário
-        semanal definido para o seu tratamento. Você também receberá os detalhes
-        por email quando essa consulta for marcada.
+        definido para o seu tratamento. Você também receberá os detalhes por
+        email quando essa consulta for marcada.
       </Paragraph>
     </Card>
   );
