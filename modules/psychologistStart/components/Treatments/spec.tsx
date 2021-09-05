@@ -2,7 +2,10 @@ import { MockedProvider } from "@apollo/client/testing";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import PsychologistTreatments from "@psi/psychologistStart/components/Treatments";
-import { MyPsychologistTreatmentsDocument } from "@psi/shared/graphql";
+import {
+  MyPsychologistTreatmentsDocument,
+  TreatmentPriceRangesDocument,
+} from "@psi/shared/graphql";
 
 const mocks = [
   {
@@ -49,6 +52,41 @@ const mocks = [
             },
           ],
         },
+      },
+    },
+  },
+  {
+    request: {
+      query: TreatmentPriceRangesDocument,
+    },
+    result: {
+      data: {
+        treatmentPriceRanges: [
+          {
+            name: "free",
+            minimumPrice: 0,
+            maximumPrice: 0,
+            eligibleFor: "D",
+          },
+          {
+            name: "low",
+            minimumPrice: 25,
+            maximumPrice: 50,
+            eligibleFor: "D,C",
+          },
+          {
+            name: "medium",
+            minimumPrice: 50,
+            maximumPrice: 100,
+            eligibleFor: "D,C,B",
+          },
+          {
+            name: "high",
+            minimumPrice: 100,
+            maximumPrice: 200,
+            eligibleFor: "D,C,B,A",
+          },
+        ],
       },
     },
   },

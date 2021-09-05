@@ -1,12 +1,14 @@
 import { useState } from "@hookstate/core";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import treatmentFrequencies from "@psi/shared/constants/treatmentFrequencies";
 import weekdayOptions from "@psi/shared/constants/weekdayOptions";
 import {
   MyPsychologistTreatmentsDocument,
   useCreateTreatmentMutation,
+  useTreatmentPriceRangesQuery,
 } from "@psi/shared/graphql";
+import formatValueRange from "@psi/shared/utils/formatValueRange";
 import getABWeek from "@psi/shared/utils/getABWeek";
 import getPhases from "@psi/shared/utils/getPhases";
 import Button from "@psi/styleguide/components/Button";
@@ -28,6 +30,8 @@ const NewTreatmentButton = () => {
   const priceRangeRef = useRef(null);
 
   const modalOpen = useState(false);
+
+  const { data: priceRangesData } = useTreatmentPriceRangesQuery();
 
   const [createTreatment, { loading, error }] = useCreateTreatmentMutation({
     awaitRefetchQueries: true,
@@ -72,6 +76,15 @@ const NewTreatmentButton = () => {
       // empty
     }
   };
+
+  const priceRangesOptions = useMemo(
+    () =>
+      priceRangesData?.treatmentPriceRanges.map((pr) => ({
+        label: `Preço ${formatValueRange(pr.minimumPrice, pr.maximumPrice)}`,
+        value: pr.name,
+      })),
+    [priceRangesData],
+  );
 
   useEffect(() => {
     if (error) {
@@ -140,9 +153,10 @@ const NewTreatmentButton = () => {
             label="Duração da sessão (minutos)"
             reference={durationRef}
           />
-          <Input
-            name="price"
-            label="Preço da sessão (reais)"
+          <Select
+            name="priceRangeName"
+            label="Valor cobrado por sessão"
+            options={priceRangesOptions}
             reference={priceRangeRef}
           />
           <div className="buttons">

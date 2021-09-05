@@ -412,6 +412,8 @@ export type Query = {
   time: Scalars["Int"];
   /** The translations query allows a user to get translated translations by language and keys. */
   translations: Array<Translation>;
+  /** The treatmentPriceRanges query allows a user to retrieve the possible treatment price ranges. */
+  treatmentPriceRanges: Array<TreatmentPriceRange>;
 };
 
 export type QueryAuthenticateUserArgs = {
@@ -495,7 +497,7 @@ export type TranslationInput = {
 
 export type TreatmentPriceRange = {
   __typename?: "TreatmentPriceRange";
-  name: Scalars["String"];
+  name: Scalars["ID"];
   minimumPrice: Scalars["Int"];
   maximumPrice: Scalars["Int"];
   eligibleFor: Scalars["String"];
@@ -1005,6 +1007,21 @@ export type MyPsychologistTreatmentsQuery = {
         maximumPrice: number;
       }>;
     }>;
+  }>;
+};
+
+export type TreatmentPriceRangesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type TreatmentPriceRangesQuery = {
+  __typename?: "Query";
+  treatmentPriceRanges: Array<{
+    __typename?: "TreatmentPriceRange";
+    name: string;
+    minimumPrice: number;
+    maximumPrice: number;
+    eligibleFor: string;
   }>;
 };
 
@@ -2752,6 +2769,66 @@ export type MyPsychologistTreatmentsLazyQueryHookResult = ReturnType<
 export type MyPsychologistTreatmentsQueryResult = Apollo.QueryResult<
   MyPsychologistTreatmentsQuery,
   MyPsychologistTreatmentsQueryVariables
+>;
+export const TreatmentPriceRangesDocument = gql`
+  query TreatmentPriceRanges {
+    treatmentPriceRanges {
+      name
+      minimumPrice
+      maximumPrice
+      eligibleFor
+    }
+  }
+`;
+
+/**
+ * __useTreatmentPriceRangesQuery__
+ *
+ * To run a query within a React component, call `useTreatmentPriceRangesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTreatmentPriceRangesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTreatmentPriceRangesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTreatmentPriceRangesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    TreatmentPriceRangesQuery,
+    TreatmentPriceRangesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    TreatmentPriceRangesQuery,
+    TreatmentPriceRangesQueryVariables
+  >(TreatmentPriceRangesDocument, options);
+}
+export function useTreatmentPriceRangesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    TreatmentPriceRangesQuery,
+    TreatmentPriceRangesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    TreatmentPriceRangesQuery,
+    TreatmentPriceRangesQueryVariables
+  >(TreatmentPriceRangesDocument, options);
+}
+export type TreatmentPriceRangesQueryHookResult = ReturnType<
+  typeof useTreatmentPriceRangesQuery
+>;
+export type TreatmentPriceRangesLazyQueryHookResult = ReturnType<
+  typeof useTreatmentPriceRangesLazyQuery
+>;
+export type TreatmentPriceRangesQueryResult = Apollo.QueryResult<
+  TreatmentPriceRangesQuery,
+  TreatmentPriceRangesQueryVariables
 >;
 export const GetServerTimeDocument = gql`
   query GetServerTime {
