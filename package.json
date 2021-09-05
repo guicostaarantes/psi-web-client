@@ -9,7 +9,7 @@
     "lint": "tsc --noEmit && eslint .",
     "new-component": "hygen component new",
     "new-page": "hygen page new",
-    "test": "jest",
+    "test": "jest --runInBand",
     "start": "next start",
     "graphql-generate": "graphql-codegen --config codegen.yml; eslint ./modules/shared/graphql.ts --fix"
   },
