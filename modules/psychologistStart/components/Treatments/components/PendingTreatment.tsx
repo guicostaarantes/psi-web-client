@@ -1,9 +1,5 @@
-import {
-  MyPsychologistTreatmentsDocument,
-  useDeleteTreatmentMutation,
-} from "@psi/shared/graphql";
+import DeletePendingTreatmentButton from "@psi/psychologistStart/components/Treatments/components/DeletePendingTreatmentButton";
 import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
-import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 
 interface PendingTreatmentProps {
@@ -19,15 +15,6 @@ const PendingTreatment = ({
   phase,
   duration,
 }: PendingTreatmentProps) => {
-  const [deleteTreatment, { loading }] = useDeleteTreatmentMutation({
-    awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPsychologistTreatmentsDocument }],
-  });
-
-  const handleDeleteClick = () => {
-    deleteTreatment({ variables: { id } });
-  };
-
   const durationInMinutes = Math.floor(duration / 60);
 
   return (
@@ -44,13 +31,7 @@ const PendingTreatment = ({
             </div>
           </div>
           <div className="buttons">
-            <Button
-              color="secondary"
-              loading={loading}
-              onClick={handleDeleteClick}
-            >
-              Excluir
-            </Button>
+            <DeletePendingTreatmentButton treatmentId={id} />
           </div>
         </div>
       </Card>

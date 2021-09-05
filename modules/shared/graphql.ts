@@ -260,6 +260,7 @@ export type MutationCreateTreatmentArgs = {
 
 export type MutationDeleteTreatmentArgs = {
   id: Scalars["ID"];
+  priceRangeName: Scalars["String"];
 };
 
 export type MutationInterruptTreatmentByPatientArgs = {
@@ -890,6 +891,7 @@ export type CreateTreatmentMutation = {
 
 export type DeleteTreatmentMutationVariables = Exact<{
   id: Scalars["ID"];
+  priceRangeName: Scalars["String"];
 }>;
 
 export type DeleteTreatmentMutation = {
@@ -2368,8 +2370,8 @@ export type CreateTreatmentMutationOptions = Apollo.BaseMutationOptions<
   CreateTreatmentMutationVariables
 >;
 export const DeleteTreatmentDocument = gql`
-  mutation DeleteTreatment($id: ID!) {
-    deleteTreatment(id: $id)
+  mutation DeleteTreatment($id: ID!, $priceRangeName: String!) {
+    deleteTreatment(id: $id, priceRangeName: $priceRangeName)
   }
 `;
 export type DeleteTreatmentMutationFn = Apollo.MutationFunction<
@@ -2391,6 +2393,7 @@ export type DeleteTreatmentMutationFn = Apollo.MutationFunction<
  * const [deleteTreatmentMutation, { data, loading, error }] = useDeleteTreatmentMutation({
  *   variables: {
  *      id: // value for 'id'
+ *      priceRangeName: // value for 'priceRangeName'
  *   },
  * });
  */
