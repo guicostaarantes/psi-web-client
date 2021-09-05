@@ -1,3 +1,4 @@
+import Empty from "@psi/shared/components/Empty";
 import { useMyPatientTreatmentsQuery } from "@psi/shared/graphql";
 import Card from "@psi/styleguide/components/Card";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
@@ -9,7 +10,7 @@ const NoFutureAppointments = () => {
     (tr) => tr.status === "ACTIVE",
   );
 
-  if (!activeTreatment) return null;
+  if (!activeTreatment) return <Empty />;
 
   return (
     <Card>

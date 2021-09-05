@@ -4,7 +4,6 @@ import { format } from "date-fns";
 import CancelAppointmentModal from "@psi/patientStart/components/Appointment/components/CancelAppointmentModal";
 import EditAppointmentModal from "@psi/patientStart/components/Appointment/components/EditAppointmentModal";
 import NoFutureAppointments from "@psi/patientStart/components/Appointment/components/NoFutureAppointments";
-import Empty from "@psi/shared/components/Empty";
 import {
   MyPatientAppointmentsDocument,
   useConfirmAppointmentByPatientMutation,
@@ -50,23 +49,19 @@ const Appointment = () => {
   if (loading) return null;
 
   const futureAppointment = data?.myPatientProfile?.appointments?.find(
-    (a) => a.end > serverTime,
+    (a) =>
+      a.end > serverTime &&
+      ![
+        "TREATMENT_INTERRUPTED_BY_PATIENT",
+        "TREATMENT_INTERRUPTED_BY_PSYCHOLOGIST",
+        "TREATMENT_FINALIZED",
+      ].includes(a.status),
   );
 
   if (!futureAppointment) return <NoFutureAppointments />;
 
   const psyName = futureAppointment.treatment?.psychologist?.likeName;
   const status = futureAppointment.status;
-
-  if (
-    [
-      "TREATMENT_INTERRUPTED_BY_PATIENT",
-      "TREATMENT_INTERRUPTED_BY_PSYCHOLOGIST",
-      "TREATMENT_FINALIZED",
-    ].includes(status)
-  ) {
-    return <Empty />;
-  }
 
   const canConfirm = [
     "CREATED",
