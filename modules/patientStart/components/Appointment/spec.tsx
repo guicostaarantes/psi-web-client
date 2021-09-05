@@ -35,7 +35,9 @@ test("should not render if no future appointments", async () => {
                 start: yesterday,
                 end: laterYesterday,
                 status: "CONFIRMED_BY_BOTH",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                },
                 treatment: {
                   psychologist: {
                     likeName: "Tom Brady",
@@ -87,7 +89,7 @@ test("should not render if no future appointments", async () => {
   await waitFor(() => {
     screen.getByText("Você está em tratamento com Tom Brady");
     screen.getByText(
-      "Em breve o sistema irá agendar uma nova consulta baseada no horário semanal definido para o seu tratamento. Você também receberá os detalhes por email quando essa consulta for marcada.",
+      "Em breve o sistema irá agendar uma nova consulta baseada no horário definido para o seu tratamento. Você também receberá os detalhes por email quando essa consulta for marcada.",
     );
   });
 });
@@ -108,7 +110,9 @@ test("should render message and confirm button for CREATED status", async () => 
                 start: tomorrow,
                 end: laterTomorrow,
                 status: "CREATED",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                },
                 treatment: {
                   psychologist: {
                     likeName: "Tom Brady",
@@ -151,7 +155,9 @@ test("should render message and confirm button for CONFIRMED_BY_PSYCHOLOGIST sta
                 start: tomorrow,
                 end: laterTomorrow,
                 status: "CONFIRMED_BY_PSYCHOLOGIST",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                },
                 treatment: {
                   psychologist: {
                     likeName: "Tom Brady",
@@ -195,7 +201,9 @@ test("should render message for CONFIRMED_BY_PATIENT status", async () => {
                 start: tomorrow,
                 end: laterTomorrow,
                 status: "CONFIRMED_BY_PATIENT",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                },
                 treatment: {
                   psychologist: {
                     likeName: "Tom Brady",
@@ -240,7 +248,9 @@ test("should render message for CONFIRMED_BY_BOTH status", async () => {
                 start: tomorrow,
                 end: laterTomorrow,
                 status: "CONFIRMED_BY_BOTH",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                },
                 treatment: {
                   psychologist: {
                     likeName: "Tom Brady",
@@ -283,7 +293,9 @@ test("should render message and confirm button for EDITED_BY_PSYCHOLOGIST status
                 start: tomorrow,
                 end: laterTomorrow,
                 status: "EDITED_BY_PSYCHOLOGIST",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                },
                 treatment: {
                   psychologist: {
                     likeName: "Tom Brady",
@@ -327,7 +339,9 @@ test("should render message for EDITED_BY_PATIENT status", async () => {
                 start: tomorrow,
                 end: laterTomorrow,
                 status: "EDITED_BY_PATIENT",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                },
                 treatment: {
                   psychologist: {
                     likeName: "Tom Brady",
@@ -370,7 +384,9 @@ test("should render message for CANCELED_BY_PSYCHOLOGIST status", async () => {
                 start: tomorrow,
                 end: laterTomorrow,
                 status: "CANCELED_BY_PSYCHOLOGIST",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                },
                 treatment: {
                   psychologist: {
                     likeName: "Tom Brady",
@@ -413,7 +429,9 @@ test("should render message for CANCELED_BY_PATIENT status", async () => {
                 start: tomorrow,
                 end: laterTomorrow,
                 status: "CANCELED_BY_PATIENT",
-                price: 25,
+                priceRange: {
+                  name: "low",
+                },
                 treatment: {
                   psychologist: {
                     likeName: "Tom Brady",

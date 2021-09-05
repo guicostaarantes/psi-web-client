@@ -1,6 +1,7 @@
 import ActiveTreatment from "@psi/psychologistStart/components/Treatments/components/ActiveTreatment";
 import NewTreatmentButton from "@psi/psychologistStart/components/Treatments/components/NewTreatmentButton";
 import PendingTreatment from "@psi/psychologistStart/components/Treatments/components/PendingTreatment";
+import PriceRangeOffering from "@psi/psychologistStart/components/Treatments/components/PriceRangeOffering";
 import { useMyPsychologistTreatmentsQuery } from "@psi/shared/graphql";
 import Card from "@psi/styleguide/components/Card";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
@@ -17,6 +18,29 @@ const PsychologistTreatments = () => {
     (tr) => tr.status === "PENDING",
   );
 
+  const priceRangeOfferings = data?.myPsychologistProfile?.priceRangeOfferings
+    .reduce(
+      (
+        final: {
+          name: string;
+          minimumPrice: number;
+          maximumPrice: number;
+          count: number;
+        }[],
+        pro,
+      ) => {
+        const index = final.findIndex((i) => i.name === pro.priceRange.name);
+        if (index === -1) {
+          final.push({ ...pro.priceRange, count: 1 });
+        } else {
+          final[index].count += 1;
+        }
+        return final;
+      },
+      [],
+    )
+    .sort((a, b) => (a.minimumPrice < b.minimumPrice ? -1 : 1));
+
   return (
     <>
       {activeTreatments?.length ? (
@@ -29,7 +53,7 @@ const PsychologistTreatments = () => {
               frequency={tr.frequency}
               phase={tr.phase}
               duration={tr.duration}
-              price={tr.price}
+              priceRange={tr.priceRange}
               patient={tr.patient}
             />
           ))}
@@ -47,7 +71,16 @@ const PsychologistTreatments = () => {
                   frequency={tr.frequency}
                   phase={tr.phase}
                   duration={tr.duration}
-                  price={tr.price}
+                />
+              ))}
+              <MediumTitle center>Ofertas de preços aos pacientes</MediumTitle>
+              {priceRangeOfferings.map((pro) => (
+                <PriceRangeOffering
+                  key={pro.name}
+                  name={pro.name}
+                  minimumPrice={pro.minimumPrice}
+                  maximumPrice={pro.maximumPrice}
+                  count={pro.count}
                 />
               ))}
             </>

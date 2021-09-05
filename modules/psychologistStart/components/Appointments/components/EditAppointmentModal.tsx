@@ -32,7 +32,7 @@ const EditAppointmentModal = ({
   const dateRef = useRef(null);
   const timeRef = useRef(null);
   const durationRef = useRef(null);
-  const priceRef = useRef(null);
+  const priceRangeRef = useRef(null);
   const reasonRef = useRef(null);
 
   const { addToast } = useToast();
@@ -89,7 +89,7 @@ const EditAppointmentModal = ({
           input: {
             start: dateStart + timeStart + timezoneCompensation,
             end: dateStart + timeStart + timezoneCompensation + duration,
-            price: priceRef.current.value,
+            priceRangeName: priceRangeRef.current.value,
             reason: reasonRef.current.value,
           },
         },
@@ -126,8 +126,8 @@ const EditAppointmentModal = ({
         />
         <Input
           name="price"
-          label="Preço da sessão (reais)"
-          reference={priceRef}
+          label="Faixa de preço por sessão"
+          reference={priceRangeRef}
         />
         <TextArea
           name="reason"

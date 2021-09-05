@@ -5,9 +5,22 @@ import PsychologistDataComponent from "@psi/profiles/components/PsychologistData
 import {
   GetCharacteristicsDocument,
   MyPsychologistProfileDocument,
+  MyUserDocument,
 } from "@psi/shared/graphql";
 
 const mocks = [
+  {
+    request: { query: MyUserDocument },
+    result: {
+      data: {
+        myUser: {
+          id: "70d99987-385f-4ab5-b9b1-09c09374d5aa",
+          email: "peyton.manning@psi.com.br",
+          role: "PSYCHOLOGIST",
+        },
+      },
+    },
+  },
   {
     request: {
       query: MyPsychologistProfileDocument,
@@ -75,6 +88,11 @@ const mocks = [
             type: "MULTIPLE",
             possibleValues: ["vision", "hearing", "locomotion"],
           },
+          {
+            name: "income",
+            type: "SINGLE",
+            possibleValues: ["D", "C", "B", "A"],
+          },
         ],
         psychologistCharacteristics: [
           {
@@ -98,7 +116,7 @@ const mocks = [
   },
 ];
 
-test("PatientDataComponent renders with data from database", async () => {
+test("PsychologistDataComponent renders with data from database", async () => {
   render(
     <MockedProvider mocks={mocks}>
       <PsychologistDataComponent />

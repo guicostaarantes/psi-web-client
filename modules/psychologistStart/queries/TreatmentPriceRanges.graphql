@@ -1,0 +1,8 @@
+query TreatmentPriceRanges {
+  treatmentPriceRanges {
+    name
+    minimumPrice
+    maximumPrice
+    eligibleFor
+  }
+}

@@ -6,7 +6,9 @@ query MyPatientAppointments {
       status
       start
       end
-      price
+      priceRange {
+        name
+      }
       treatment {
         psychologist {
           likeName

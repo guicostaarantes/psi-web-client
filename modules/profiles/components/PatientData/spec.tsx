@@ -5,9 +5,22 @@ import PatientDataComponent from "@psi/profiles/components/PatientData";
 import {
   GetCharacteristicsDocument,
   MyPatientProfileDocument,
+  MyUserDocument,
 } from "@psi/shared/graphql";
 
 const mocks = [
+  {
+    request: { query: MyUserDocument },
+    result: {
+      data: {
+        myUser: {
+          id: "6c82b9eb-722a-48f5-9418-0fcd3fbbca47",
+          email: "tom.brady@psi.com.br",
+          role: "PATIENT",
+        },
+      },
+    },
+  },
   {
     request: {
       query: MyPatientProfileDocument,

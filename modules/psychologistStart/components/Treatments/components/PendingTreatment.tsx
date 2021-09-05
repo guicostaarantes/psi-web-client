@@ -1,9 +1,5 @@
-import {
-  MyPsychologistTreatmentsDocument,
-  useDeleteTreatmentMutation,
-} from "@psi/shared/graphql";
+import DeletePendingTreatmentButton from "@psi/psychologistStart/components/Treatments/components/DeletePendingTreatmentButton";
 import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
-import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 
 interface PendingTreatmentProps {
@@ -11,7 +7,6 @@ interface PendingTreatmentProps {
   frequency: number;
   phase: number;
   duration: number;
-  price: number;
 }
 
 const PendingTreatment = ({
@@ -19,23 +14,8 @@ const PendingTreatment = ({
   frequency,
   phase,
   duration,
-  price,
 }: PendingTreatmentProps) => {
-  const [deleteTreatment, { loading }] = useDeleteTreatmentMutation({
-    awaitRefetchQueries: true,
-    refetchQueries: [{ query: MyPsychologistTreatmentsDocument }],
-  });
-
-  const handleDeleteClick = () => {
-    deleteTreatment({ variables: { id } });
-  };
-
   const durationInMinutes = Math.floor(duration / 60);
-
-  const priceInCurrency = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(price);
 
   return (
     <>
@@ -49,16 +29,9 @@ const PendingTreatment = ({
             <div className="text">
               Duração de cada sessão: {durationInMinutes} minutos
             </div>
-            <div>Valor cobrado por sessão: {priceInCurrency}</div>
           </div>
           <div className="buttons">
-            <Button
-              color="secondary"
-              loading={loading}
-              onClick={handleDeleteClick}
-            >
-              Excluir
-            </Button>
+            <DeletePendingTreatmentButton treatmentId={id} />
           </div>
         </div>
       </Card>

@@ -6,7 +6,7 @@
     "build": "yarn install && next build",
     "export": "next export",
     "dev": "yarn install && next dev --port 7007",
-    "lint": "eslint .",
+    "lint": "tsc --noEmit && eslint .",
     "new-component": "hygen component new",
     "new-page": "hygen page new",
     "test": "jest",
