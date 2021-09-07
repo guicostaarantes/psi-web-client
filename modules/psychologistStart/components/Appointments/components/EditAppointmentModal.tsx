@@ -1,15 +1,18 @@
 import { parse } from "date-fns";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useEffect } from "react";
 
 import {
   MyPsychologistAppointmentsDocument,
   useEditAppointmentByPsychologistMutation,
+  useTreatmentPriceRangesQuery,
 } from "@psi/shared/graphql";
+import formatValueRange from "@psi/shared/utils/formatValueRange";
 import Button from "@psi/styleguide/components/Button";
 import DateInput from "@psi/styleguide/components/DateInput";
 import Input from "@psi/styleguide/components/Input";
 import Modal from "@psi/styleguide/components/Modal";
+import Select from "@psi/styleguide/components/Select";
 import TextArea from "@psi/styleguide/components/TextArea";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import {
@@ -45,6 +48,8 @@ const EditAppointmentModal = ({
     refetchQueries: [{ query: MyPsychologistAppointmentsDocument }],
   });
 
+  const { data: priceRangesData } = useTreatmentPriceRangesQuery();
+
   useEffect(() => {
     if (error) {
       if (error.message === "appointment cannot be scheduled to the past") {
@@ -68,6 +73,15 @@ const EditAppointmentModal = ({
       onClose();
     }
   }, [error, data]);
+
+  const priceRangesOptions = useMemo(
+    () =>
+      priceRangesData?.treatmentPriceRanges.map((pr) => ({
+        label: `Preço ${formatValueRange(pr.minimumPrice, pr.maximumPrice)}`,
+        value: pr.name,
+      })),
+    [priceRangesData],
+  );
 
   const handleEditClick = async () => {
     const dateStart =
@@ -124,9 +138,10 @@ const EditAppointmentModal = ({
           label="Duração da sessão (minutos)"
           reference={durationRef}
         />
-        <Input
-          name="price"
-          label="Faixa de preço por sessão"
+        <Select
+          name="priceRangeName"
+          label="Valor cobrado por sessão"
+          options={priceRangesOptions}
           reference={priceRangeRef}
         />
         <TextArea

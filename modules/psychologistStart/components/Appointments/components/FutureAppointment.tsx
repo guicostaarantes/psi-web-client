@@ -8,6 +8,7 @@ import {
   MyPsychologistAppointmentsDocument,
   useConfirmAppointmentByPsychologistMutation,
 } from "@psi/shared/graphql";
+import formatValueRange from "@psi/shared/utils/formatValueRange";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import useToast from "@psi/styleguide/hooks/useToast";
@@ -16,6 +17,8 @@ interface FutureAppointmentProps {
   id: string;
   patientName: string;
   start: number;
+  minimumPrice: number;
+  maximumPrice: number;
   status: AppointmentStatus;
 }
 
@@ -23,6 +26,8 @@ const FutureAppointment = ({
   id,
   patientName,
   start,
+  minimumPrice,
+  maximumPrice,
   status,
 }: FutureAppointmentProps) => {
   const { addToast } = useToast();
@@ -103,6 +108,10 @@ const FutureAppointment = ({
             <div className="text">Paciente: {patientName}</div>
             <div className="text">
               Data: {format(1000 * start, "dd/MM/yyyy' às 'HH:mm")}
+            </div>
+            <div className="text">
+              Valor a ser cobrado:{" "}
+              {formatValueRange(minimumPrice, maximumPrice)}
             </div>
             <div className="text">Status: {statusSentence}</div>
           </div>

@@ -30,6 +30,8 @@ const Appointments = () => {
             id={ap.id}
             patientName={ap.treatment.patient.fullName}
             start={ap.start}
+            minimumPrice={ap.priceRange.minimumPrice}
+            maximumPrice={ap.priceRange.maximumPrice}
             status={ap.status}
           />
         ))}
