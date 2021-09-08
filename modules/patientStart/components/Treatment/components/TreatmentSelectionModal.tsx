@@ -72,7 +72,9 @@ const TreatmentSelectionModal = ({
   };
 
   const topAffinities =
-    data?.myPatientTopAffinities?.filter((aff) => aff.psychologist) || [];
+    data?.myPatientTopAffinities?.filter(
+      (aff) => aff.psychologist?.priceRangeOfferings?.length,
+    ) || [];
 
   const possiblePriceRanges: Record<
     string,
