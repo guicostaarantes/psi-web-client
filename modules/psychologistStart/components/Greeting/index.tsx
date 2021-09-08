@@ -14,7 +14,7 @@ const PsychologistGreeting = () => {
   const likeName = data?.myPsychologistProfile?.likeName;
 
   const handleMyProfileClick = () => {
-    router.push("/psicologo");
+    router.push("/perfil");
   };
 
   const handleLogoutClick = () => {

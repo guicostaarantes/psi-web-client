@@ -14,7 +14,7 @@ const PatientGreeting = () => {
   const likeName = data?.myPatientProfile?.likeName;
 
   const handleMyProfileClick = () => {
-    router.push("/paciente");
+    router.push("/perfil");
   };
 
   const handleLogoutClick = () => {
