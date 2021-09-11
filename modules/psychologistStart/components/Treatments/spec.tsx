@@ -100,7 +100,7 @@ test("should render", async () => {
   );
 
   await waitFor(() => {
-    const patientName = screen.getByText("Paciente: Tom Brady");
+    screen.getByText("Paciente: Tom Brady");
     screen.getByText("Horário das sessões: às segundas-feiras às 15:00");
     screen.getByText("Duração de cada sessão: 50 minutos");
     screen.getByText("Valor cobrado por sessão: entre 25 e 50 reais");
@@ -111,8 +111,6 @@ test("should render", async () => {
     const newTreatmentButton = screen.getByText(
       "Quero tratar um novo paciente",
     );
-
-    expect(patientName).toBeInTheDocument();
 
     fireEvent.click(newTreatmentButton);
     const createTreatmentButton = screen.getAllByText("Criar tratamento");
