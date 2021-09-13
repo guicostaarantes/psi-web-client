@@ -5,6 +5,8 @@ query MyPsychologistProfile {
     likeName
     birthDate
     city
+    bio
+    avatar
     characteristics {
       name
       type

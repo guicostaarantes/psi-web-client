@@ -33,6 +33,7 @@ const mocks = [
           likeName: "Tom Brady",
           birthDate: 239457600,
           city: "Boston - MA",
+          avatar: "abcd1234",
           characteristics: [
             {
               name: "has-consulted-before",

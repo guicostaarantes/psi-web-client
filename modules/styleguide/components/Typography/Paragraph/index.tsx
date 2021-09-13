@@ -23,6 +23,7 @@ const Paragraph = ({
         p {
           color: ${theme.backgroundColorTextForeground};
           font-weight: 400;
+          white-space: pre-wrap;
           ${center ? "text-align: center;" : ""}
           ${noMarginBottom ? "margin-bottom: 0;" : ""}
           ${noMarginTop ? "margin-top: 0;" : ""}

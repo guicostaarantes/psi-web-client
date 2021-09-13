@@ -156,7 +156,7 @@ const NewTreatmentButton = () => {
           <Select
             name="priceRangeName"
             label="Valor cobrado por sessão"
-            options={priceRangesOptions}
+            options={priceRangesOptions || []}
             reference={priceRangeRef}
           />
           <div className="buttons">

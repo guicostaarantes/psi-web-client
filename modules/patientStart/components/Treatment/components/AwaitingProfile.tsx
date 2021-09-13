@@ -8,7 +8,7 @@ const AwaitingProfile = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/paciente");
+    router.push("/perfil");
   };
 
   return (

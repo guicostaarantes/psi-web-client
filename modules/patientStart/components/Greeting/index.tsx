@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import { useMyPatientLikeNameQuery } from "@psi/shared/graphql";
+import { useMyPatientGreetingQuery } from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Image from "@psi/styleguide/components/Image";
@@ -9,12 +9,13 @@ import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 const PatientGreeting = () => {
   const router = useRouter();
 
-  const { data } = useMyPatientLikeNameQuery();
+  const { data } = useMyPatientGreetingQuery();
 
   const likeName = data?.myPatientProfile?.likeName;
+  const avatar = data?.myPatientProfile?.avatar;
 
   const handleMyProfileClick = () => {
-    router.push("/paciente");
+    router.push("/perfil");
   };
 
   const handleLogoutClick = () => {
@@ -28,7 +29,16 @@ const PatientGreeting = () => {
         <div className="content">
           <div className="greeting-content">
             <div className="image-wrapper">
-              <Image circle label={`Avatar de ${likeName}`} src="avatar.webp" />
+              <Image
+                circle
+                label={`Avatar de ${likeName}`}
+                authSrc={
+                  avatar
+                    ? `${process.env.NEXT_PUBLIC_PSI_STATIC_URI}/${avatar}`
+                    : ""
+                }
+                src="avatar.webp"
+              />
             </div>
             <MediumTitle>Oi {likeName}</MediumTitle>
           </div>

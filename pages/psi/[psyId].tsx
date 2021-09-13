@@ -1,17 +1,19 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
-import PsychologistDataComponent from "@psi/profiles/components/PsychologistData";
+import PsychologistProfile from "@psi/profiles/components/PsychologistProfile";
 import LoadingPage from "@psi/shared/components/LoadingPage";
 import NotFoundPage from "@psi/shared/components/NotFoundPage";
-import { Role } from "@psi/shared/graphql";
 import Container from "@psi/styleguide/components/Layout/Container";
 
-const Psychologist = () => {
+const PsychologistProfilePage = () => {
   const { pageStatus } = usePagePermission({
     requiresAuth: true,
-    requiresRole: [Role.Coordinator, Role.Psychologist],
   });
+
+  const router = useRouter();
+  const { psyId } = router.query;
 
   if (pageStatus === "loading") {
     return <LoadingPage />;
@@ -25,15 +27,15 @@ const Psychologist = () => {
     return (
       <>
         <Head>
-          <title>Perfil do psicólogo | PSI</title>
+          <title>Perfil do paciente | PSI</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Container>
-          <PsychologistDataComponent />
+          <PsychologistProfile id={psyId as string} />
         </Container>
       </>
     );
   }
 };
 
-export default Psychologist;
+export default PsychologistProfilePage;
