@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import usePagePermission from "@psi/auth/hooks/usePagePermission";
+import PsychologistProfile from "@psi/profiles/components/PsychologistProfile";
 import LoadingPage from "@psi/shared/components/LoadingPage";
 import NotFoundPage from "@psi/shared/components/NotFoundPage";
 import Container from "@psi/styleguide/components/Layout/Container";
@@ -29,7 +30,9 @@ const PsychologistProfilePage = () => {
           <title>Perfil do paciente | PSI</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <Container>{psyId}</Container>
+        <Container>
+          <PsychologistProfile id={psyId as string} />
+        </Container>
       </>
     );
   }

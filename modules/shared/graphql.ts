@@ -829,6 +829,23 @@ export type MyPsychologistProfileQuery = {
   }>;
 };
 
+export type PsychologistProfileQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type PsychologistProfileQuery = {
+  __typename?: "Query";
+  psychologistProfile?: Maybe<{
+    __typename?: "PublicPsychologistProfile";
+    id: string;
+    fullName: string;
+    likeName: string;
+    city: string;
+    bio: string;
+    avatar: string;
+  }>;
+};
+
 export type SetMyPatientCharacteristicChoicesAndPreferencesMutationVariables = Exact<{
   choiceInput:
     | Array<SetMyProfileCharacteristicChoiceInput>
@@ -2031,6 +2048,69 @@ export type MyPsychologistProfileLazyQueryHookResult = ReturnType<
 export type MyPsychologistProfileQueryResult = Apollo.QueryResult<
   MyPsychologistProfileQuery,
   MyPsychologistProfileQueryVariables
+>;
+export const PsychologistProfileDocument = gql`
+  query PsychologistProfile($id: ID!) {
+    psychologistProfile(id: $id) {
+      id
+      fullName
+      likeName
+      city
+      bio
+      avatar
+    }
+  }
+`;
+
+/**
+ * __usePsychologistProfileQuery__
+ *
+ * To run a query within a React component, call `usePsychologistProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePsychologistProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePsychologistProfileQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePsychologistProfileQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    PsychologistProfileQuery,
+    PsychologistProfileQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    PsychologistProfileQuery,
+    PsychologistProfileQueryVariables
+  >(PsychologistProfileDocument, options);
+}
+export function usePsychologistProfileLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    PsychologistProfileQuery,
+    PsychologistProfileQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    PsychologistProfileQuery,
+    PsychologistProfileQueryVariables
+  >(PsychologistProfileDocument, options);
+}
+export type PsychologistProfileQueryHookResult = ReturnType<
+  typeof usePsychologistProfileQuery
+>;
+export type PsychologistProfileLazyQueryHookResult = ReturnType<
+  typeof usePsychologistProfileLazyQuery
+>;
+export type PsychologistProfileQueryResult = Apollo.QueryResult<
+  PsychologistProfileQuery,
+  PsychologistProfileQueryVariables
 >;
 export const SetMyPatientCharacteristicChoicesAndPreferencesDocument = gql`
   mutation SetMyPatientCharacteristicChoicesAndPreferences(

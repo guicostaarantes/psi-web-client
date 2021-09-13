@@ -1,0 +1,10 @@
+query PsychologistProfile($id: ID!) {
+  psychologistProfile(id: $id) {
+    id
+    fullName
+    likeName
+    city
+    bio
+    avatar
+  }
+}
