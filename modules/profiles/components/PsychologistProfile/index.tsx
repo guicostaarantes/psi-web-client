@@ -1,3 +1,4 @@
+import StartTreatmentCard from "@psi/profiles/components/PsychologistProfile/components/StartTreatmentCard";
 import { usePsychologistProfileQuery } from "@psi/shared/graphql";
 import Card from "@psi/styleguide/components/Card";
 import Image from "@psi/styleguide/components/Image";
@@ -29,6 +30,7 @@ const PsychologistProfile = ({ id }: PsychologistProfileProps) => {
         <MediumTitle noMarginTop>Sobre mim</MediumTitle>
         <Paragraph noMarginBottom>{bio}</Paragraph>
       </Card>
+      <StartTreatmentCard psyId={id} likeName={likeName} />
       <style jsx>{`
         .center {
           align-items: center;
