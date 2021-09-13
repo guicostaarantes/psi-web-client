@@ -6,6 +6,7 @@ import {
   MyPatientTreatmentsDocument,
   TreatmentPriceRange,
   useAssignTreatmentMutation,
+  useMyPatientProfileQuery,
   useMyPatientTopAffinitiesQuery,
 } from "@psi/shared/graphql";
 import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
@@ -30,6 +31,7 @@ const StartTreatmentCard = ({ likeName, psyId }: StartTreatmentCardProps) => {
   const router = useRouter();
 
   const { data } = useMyPatientTopAffinitiesQuery();
+  const { data: patientData } = useMyPatientProfileQuery();
 
   const selectedTreatment = useState("");
   const selectedPriceRange = useState("");
@@ -69,10 +71,19 @@ const StartTreatmentCard = ({ likeName, psyId }: StartTreatmentCardProps) => {
     data?.myPatientTopAffinities.find((psy) => psy.psychologist.id === psyId) ||
     {};
 
+  const income = patientData?.myPatientProfile?.characteristics.find(
+    (char) => char.name === "income",
+  )?.selectedValues[0];
+
   const possiblePriceRanges: Array<Partial<TreatmentPriceRange>> = [];
 
   psychologist?.priceRangeOfferings.forEach((pro) => {
-    if (!possiblePriceRanges.some((ppr) => ppr.name === pro.priceRange.name)) {
+    const eligibleFor = pro?.priceRange.eligibleFor.split(",");
+
+    if (
+      eligibleFor.includes(income) &&
+      !possiblePriceRanges.some((ppr) => ppr.name === pro.priceRange.name)
+    ) {
       possiblePriceRanges.push(pro.priceRange);
     }
   });

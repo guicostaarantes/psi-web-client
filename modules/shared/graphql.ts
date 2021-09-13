@@ -713,6 +713,7 @@ export type MyPatientTopAffinitiesQuery = {
           name: string;
           minimumPrice: number;
           maximumPrice: number;
+          eligibleFor: string;
         }>;
       }>;
     }>;
@@ -1658,6 +1659,7 @@ export const MyPatientTopAffinitiesDocument = gql`
             name
             minimumPrice
             maximumPrice
+            eligibleFor
           }
         }
       }
