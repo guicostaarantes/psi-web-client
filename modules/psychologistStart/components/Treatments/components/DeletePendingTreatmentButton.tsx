@@ -45,8 +45,8 @@ const DeletePendingTreatmentButton = ({
       const index = final.findIndex((i) => i.name === pro.priceRange.name);
       if (index === -1) {
         final.push(pro.priceRange);
-        return final;
       }
+      return final;
     }, [])
     .sort((a, b) => (a.minimumPrice < b.minimumPrice ? -1 : 1));
 
