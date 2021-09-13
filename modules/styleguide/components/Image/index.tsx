@@ -1,14 +1,14 @@
 import fetch from "cross-fetch";
 import { BaseHTMLAttributes, useEffect, useRef } from "react";
 interface ImageProps extends BaseHTMLAttributes<HTMLDivElement> {
-  auth?: boolean;
+  authSrc?: string;
   circle?: boolean;
   label: string;
   src: string;
 }
 
 const Image = ({
-  auth = false,
+  authSrc = "",
   circle = false,
   label,
   src,
@@ -17,10 +17,9 @@ const Image = ({
   const imgRef = useRef<HTMLImageElement>();
 
   useEffect(() => {
-    if (auth && src) {
-      const token = localStorage.getItem("token");
-      fetch(`${process.env.NEXT_PUBLIC_PSI_STATIC_URI}/${src}`, {
-        headers: { authorization: token },
+    if (authSrc) {
+      fetch(authSrc, {
+        headers: { authorization: localStorage.getItem("token") },
       })
         .then((res) => res.blob())
         .then((blob) =>
@@ -29,17 +28,11 @@ const Image = ({
             : null,
         );
     }
-  }, [auth, src]);
+  }, [authSrc]);
 
   return (
     <>
-      <img
-        ref={imgRef}
-        src={auth ? null : src}
-        alt={label}
-        title={label}
-        {...rest}
-      />
+      <img ref={imgRef} src={src} alt={label} title={label} {...rest} />
       <style jsx>{`
         img {
           ${circle ? "border-radius: 50%;" : ""}

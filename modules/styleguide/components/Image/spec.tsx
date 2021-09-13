@@ -26,9 +26,16 @@ test("Image fetches with token if auth=true", async () => {
     }),
   );
 
-  render(<Image auth src="1234abcd" label="fetched image" />);
+  render(
+    <Image
+      authSrc="http://localhost/static/1234abcd"
+      src="fallback.jpg"
+      label="fetched image"
+    />,
+  );
 
   const image = screen.getByAltText("fetched image") as HTMLImageElement;
+  expect(image.src).toEqual("http://localhost/fallback.jpg");
 
   await waitFor(() => {
     expect(mockedFetch).toBeCalledTimes(1);

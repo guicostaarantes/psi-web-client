@@ -20,7 +20,16 @@ const PsychologistProfile = ({ id }: PsychologistProfileProps) => {
       <Card>
         <div className="center">
           <div className="image-wrapper">
-            <Image auth circle label={`Avatar de ${likeName}`} src={avatar} />
+            <Image
+              circle
+              label={`Avatar de ${likeName}`}
+              authSrc={
+                avatar
+                  ? `${process.env.NEXT_PUBLIC_PSI_STATIC_URI}/${avatar}`
+                  : ""
+              }
+              src="avatar.webp"
+            />
           </div>
           <MainTitle noMarginBottom>{likeName}</MainTitle>
           <Paragraph noMarginBottom>{fullName}</Paragraph>
