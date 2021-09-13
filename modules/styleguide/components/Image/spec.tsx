@@ -1,6 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import fetch from "cross-fetch";
 
 import Image from "@psi/styleguide/components/Image";
+
+jest.mock("cross-fetch");
+const mockedFetch = (fetch as unknown) as jest.Mock;
+global.URL.createObjectURL = jest.fn((a) => `blob:${a}`);
 
 test("Image renders", () => {
   render(
@@ -12,4 +17,21 @@ test("Image renders", () => {
   const image = screen.getByAltText("example image");
 
   expect(image).toBeInTheDocument();
+});
+
+test("Image fetches with token if auth=true", async () => {
+  mockedFetch.mockImplementationOnce((src) =>
+    Promise.resolve({
+      blob: () => Promise.resolve(src),
+    }),
+  );
+
+  render(<Image auth src="1234abcd" label="fetched image" />);
+
+  const image = screen.getByAltText("fetched image") as HTMLImageElement;
+
+  await waitFor(() => {
+    expect(mockedFetch).toBeCalledTimes(1);
+    expect(image.src).toEqual("blob:http://localhost/static/1234abcd");
+  });
 });

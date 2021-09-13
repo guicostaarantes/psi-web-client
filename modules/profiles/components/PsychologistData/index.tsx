@@ -20,6 +20,7 @@ import DateInput from "@psi/styleguide/components/DateInput";
 import Input from "@psi/styleguide/components/Input";
 import Col from "@psi/styleguide/components/Layout/Col";
 import Row from "@psi/styleguide/components/Layout/Row";
+import TextArea from "@psi/styleguide/components/TextArea";
 import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import { BIRTH_DATE_FORMAT } from "@psi/styleguide/constants/locale";
@@ -40,6 +41,7 @@ const PsychologistDataComponent = () => {
   const likeNameRef = useRef<HTMLInputElement>(null);
   const birthDateRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
+  const bioRef = useRef<HTMLTextAreaElement>(null);
   const birthDateInitialValue = useState<string>("");
 
   const choices = useState<Record<string, unknown>>({});
@@ -66,6 +68,7 @@ const PsychologistDataComponent = () => {
       likeNameRef.current.value =
         profileData.myPsychologistProfile?.likeName || "";
       cityRef.current.value = profileData.myPsychologistProfile?.city || "";
+      bioRef.current.value = profileData.myPsychologistProfile?.bio || "";
 
       const birthDate = Number(profileData.myPsychologistProfile?.birthDate)
         ? new Date(1000 * Number(profileData.myPsychologistProfile.birthDate))
@@ -159,6 +162,7 @@ const PsychologistDataComponent = () => {
           ),
         ) / 1000,
       city: cityRef.current.value,
+      bio: bioRef.current.value,
     };
 
     // Checking if profileInput is invalid
@@ -166,7 +170,8 @@ const PsychologistDataComponent = () => {
       profileInput.fullName === "" ||
       profileInput.likeName === "" ||
       profileInput.city === "" ||
-      isNaN(profileInput.birthDate)
+      isNaN(profileInput.birthDate) ||
+      profileInput.bio === ""
     ) {
       addToast({
         header: "Verifique as informações",
@@ -298,6 +303,11 @@ const PsychologistDataComponent = () => {
             />
           </Col>
         </Row>
+        <TextArea
+          name="bio"
+          label="Fale sobre você para seus potenciais pacientes"
+          reference={bioRef}
+        />
       </Card>
       <Card>
         <MediumTitle center noMarginTop>

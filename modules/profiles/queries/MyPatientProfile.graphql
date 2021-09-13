@@ -5,6 +5,7 @@ query MyPatientProfile {
     likeName
     birthDate
     city
+    avatar
     characteristics {
       name
       type

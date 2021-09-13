@@ -33,6 +33,8 @@ const mocks = [
           likeName: "Peyton Manning",
           birthDate: 196527600,
           city: "Indianapolis - IN",
+          bio: "Hi, my name is Peyton Manning",
+          avatar: "abcd1234",
           characteristics: [
             {
               name: "black",
@@ -133,16 +135,21 @@ test("PsychologistDataComponent renders with data from database", async () => {
   const city = screen.getByLabelText(
     "Cidade em que reside",
   ) as HTMLInputElement;
+  const bio = screen.getByLabelText(
+    "Fale sobre você para seus potenciais pacientes",
+  ) as HTMLTextAreaElement;
 
   expect(fullName).toBeInTheDocument();
   expect(likeName).toBeInTheDocument();
   expect(birthDate).toBeInTheDocument();
   expect(city).toBeInTheDocument();
+  expect(bio).toBeInTheDocument();
 
   await waitFor(() => {
     expect(fullName.value).toBe("Peyton Williams Manning");
     expect(likeName.value).toBe("Peyton Manning");
     expect(birthDate.value).toBe("24/03/1976");
     expect(city.value).toBe("Indianapolis - IN");
+    expect(bio.value).toBe("Hi, my name is Peyton Manning");
   });
 });

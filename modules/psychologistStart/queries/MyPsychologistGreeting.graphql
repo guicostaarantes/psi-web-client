@@ -1,6 +1,7 @@
-query MyPsychologistLikeName {
+query MyPsychologistGreeting {
   myPsychologistProfile {
     id
     likeName
+    avatar
   }
 }

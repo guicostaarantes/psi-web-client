@@ -4,19 +4,20 @@ import { render, screen, waitFor } from "@testing-library/react";
 import Home from "@psi/psychologistStart/components/Home";
 import {
   MyPsychologistAppointmentsDocument,
-  MyPsychologistLikeNameDocument,
+  MyPsychologistGreetingDocument,
 } from "@psi/shared/graphql";
 
 const mocks = [
   {
     request: {
-      query: MyPsychologistLikeNameDocument,
+      query: MyPsychologistGreetingDocument,
     },
     result: {
       data: {
         myPsychologistProfile: {
           id: "fb01ceb9-0d6e-4f3d-87af-3e178681e05a",
           likeName: "Peyton Manning",
+          avatar: "1234abcd",
         },
       },
     },

@@ -1,23 +1,14 @@
-import { useState } from "@hookstate/core";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { DeepPartial } from "utility-types";
 
 import {
-  MyPatientAppointmentsDocument,
-  MyPatientTreatmentsDocument,
   TreatmentPriceRange,
-  useAssignTreatmentMutation,
   useMyPatientTopAffinitiesQuery,
 } from "@psi/shared/graphql";
-import formatHourFromFrequencyAndPhase from "@psi/shared/utils/formatHourFromFrequencyAndPhase";
-import formatValueRange from "@psi/shared/utils/formatValueRange";
 import Button from "@psi/styleguide/components/Button";
-import Card from "@psi/styleguide/components/Card";
 import Modal from "@psi/styleguide/components/Modal";
-import Radio from "@psi/styleguide/components/Radio";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
-import useToast from "@psi/styleguide/hooks/useToast";
 
 interface TreatmentSelectionModalProps {
   onClose: () => void;
@@ -28,48 +19,13 @@ const TreatmentSelectionModal = ({
   onClose,
   open,
 }: TreatmentSelectionModalProps) => {
-  const { addToast } = useToast();
+  const router = useRouter();
 
   const { loading, data } = useMyPatientTopAffinitiesQuery({
     fetchPolicy: "no-cache",
   });
 
-  const [
-    assignTreatment,
-    { loading: assignLoading, error },
-  ] = useAssignTreatmentMutation({
-    awaitRefetchQueries: true,
-    refetchQueries: [
-      { query: MyPatientAppointmentsDocument },
-      { query: MyPatientTreatmentsDocument },
-    ],
-  });
-
-  useEffect(() => {
-    if (error) {
-      addToast({
-        header: "Erro ao iniciar tratamento",
-        message:
-          "Isso pode ter acontecido pois o tratamento escolhido foi selecionado recentemente por outro paciente. Escolha outro horário. Se o erro persistir, tente novamente mais tarde.",
-      });
-    }
-  }, [error]);
-
-  const selectedTreatment = useState("");
-  const selectedPriceRange = useState("");
-
-  const handleAssignClick = async () => {
-    try {
-      await assignTreatment({
-        variables: {
-          id: selectedTreatment.value,
-          priceRangeName: selectedPriceRange.value,
-        },
-      });
-    } catch (err) {
-      // empty
-    }
-  };
+  const handleVisitPsyProfile = (id: string) => () => router.push(`/psi/${id}`);
 
   const topAffinities =
     data?.myPatientTopAffinities?.filter(
@@ -111,8 +67,8 @@ const TreatmentSelectionModal = ({
           </Paragraph>
         ) : topAffinities.length ? (
           <Paragraph>
-            Escolha um dos psicólogos e horários abaixo para iniciar o
-            tratamento.
+            Estes são os psicólogos que possuem maior sinergia com o seu perfil.
+            Clique nos botões para ver os seus perfis, horários e valores.
           </Paragraph>
         ) : (
           <Paragraph>
@@ -122,53 +78,17 @@ const TreatmentSelectionModal = ({
           </Paragraph>
         )}
         {topAffinities.map((aff) => (
-          <Card floating key={aff.psychologist.id}>
+          <div key={aff.psychologist.id} className="buttons">
             <MediumTitle>{aff.psychologist.fullName}</MediumTitle>
-            <div>Selecione um horário:</div>
-            <div className="radio-group">
-              {aff.psychologist.pendingTreatments.map((tr) => (
-                <div key={tr.id}>
-                  <Radio
-                    name={tr.id}
-                    value={tr.id}
-                    label={`Sessões ${formatHourFromFrequencyAndPhase(
-                      tr.frequency,
-                      tr.phase,
-                    )}`}
-                    checked={tr.id === selectedTreatment.value}
-                    onChange={() => selectedTreatment.set(tr.id)}
-                  />
-                </div>
-              ))}
-            </div>
-            <div>Selecione um custo:</div>
-            <div className="radio-group">
-              {possiblePriceRanges[aff.psychologist.id].map((ppr) => (
-                <div key={ppr.name}>
-                  <Radio
-                    name={ppr.name}
-                    value={ppr.name}
-                    label={`Preço ${formatValueRange(
-                      ppr.minimumPrice,
-                      ppr.maximumPrice,
-                    )}`}
-                    checked={ppr.name === selectedPriceRange.value}
-                    onChange={() => selectedPriceRange.set(ppr.name)}
-                  />
-                </div>
-              ))}
-            </div>
-          </Card>
+            <Button
+              color="primary"
+              onClick={handleVisitPsyProfile(aff.psychologist.id)}
+            >
+              Ver perfil
+            </Button>
+          </div>
         ))}
         <div className="buttons">
-          <Button
-            color="primary"
-            disabled={!selectedTreatment.value || !selectedPriceRange.value}
-            loading={assignLoading}
-            onClick={handleAssignClick}
-          >
-            Iniciar tratamento
-          </Button>
           <Button color="secondary" onClick={onClose}>
             Voltar
           </Button>

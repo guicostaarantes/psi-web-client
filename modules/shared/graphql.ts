@@ -16,6 +16,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Upload: File;
 };
 
 export type Affinity = {
@@ -305,6 +306,7 @@ export type PatientProfile = {
   likeName: Scalars["String"];
   birthDate: Scalars["Int"];
   city: Scalars["String"];
+  avatar: Scalars["String"];
   characteristics: Array<CharacteristicChoice>;
   preferences: Array<Preference>;
   treatments: Array<PatientTreatment>;
@@ -348,6 +350,8 @@ export type PsychologistProfile = {
   likeName: Scalars["String"];
   birthDate: Scalars["Int"];
   city: Scalars["String"];
+  bio: Scalars["String"];
+  avatar: Scalars["String"];
   characteristics: Array<CharacteristicChoice>;
   preferences: Array<Preference>;
   treatments: Array<PsychologistTreatment>;
@@ -373,6 +377,7 @@ export type PublicPatientProfile = {
   likeName: Scalars["String"];
   birthDate: Scalars["Int"];
   city: Scalars["String"];
+  avatar: Scalars["String"];
   characteristics: Array<CharacteristicChoice>;
 };
 
@@ -381,6 +386,9 @@ export type PublicPsychologistProfile = {
   id: Scalars["ID"];
   fullName: Scalars["String"];
   likeName: Scalars["String"];
+  city: Scalars["String"];
+  bio: Scalars["String"];
+  avatar: Scalars["String"];
   pendingTreatments: Array<PsychologistTreatment>;
   priceRangeOfferings: Array<TreatmentPriceRangeOffering>;
 };
@@ -535,6 +543,7 @@ export type UpsertMyPatientProfileInput = {
   likeName: Scalars["String"];
   birthDate: Scalars["Int"];
   city: Scalars["String"];
+  avatar?: Maybe<Scalars["Upload"]>;
 };
 
 export type UpsertMyPsychologistProfileInput = {
@@ -542,6 +551,8 @@ export type UpsertMyPsychologistProfileInput = {
   likeName: Scalars["String"];
   birthDate: Scalars["Int"];
   city: Scalars["String"];
+  bio: Scalars["String"];
+  avatar?: Maybe<Scalars["Upload"]>;
 };
 
 export type User = {
@@ -663,14 +674,15 @@ export type MyPatientAppointmentsQuery = {
   }>;
 };
 
-export type MyPatientLikeNameQueryVariables = Exact<{ [key: string]: never }>;
+export type MyPatientGreetingQueryVariables = Exact<{ [key: string]: never }>;
 
-export type MyPatientLikeNameQuery = {
+export type MyPatientGreetingQuery = {
   __typename?: "Query";
   myPatientProfile?: Maybe<{
     __typename?: "PatientProfile";
     id: string;
     likeName: string;
+    avatar: string;
   }>;
 };
 
@@ -771,6 +783,7 @@ export type MyPatientProfileQuery = {
     likeName: string;
     birthDate: number;
     city: string;
+    avatar: string;
     characteristics: Array<{
       __typename?: "CharacteristicChoice";
       name: string;
@@ -799,6 +812,8 @@ export type MyPsychologistProfileQuery = {
     likeName: string;
     birthDate: number;
     city: string;
+    bio: string;
+    avatar: string;
     characteristics: Array<{
       __typename?: "CharacteristicChoice";
       name: string;
@@ -960,16 +975,17 @@ export type MyPsychologistAppointmentsQuery = {
   }>;
 };
 
-export type MyPsychologistLikeNameQueryVariables = Exact<{
+export type MyPsychologistGreetingQueryVariables = Exact<{
   [key: string]: never;
 }>;
 
-export type MyPsychologistLikeNameQuery = {
+export type MyPsychologistGreetingQuery = {
   __typename?: "Query";
   myPsychologistProfile?: Maybe<{
     __typename?: "PsychologistProfile";
     id: string;
     likeName: string;
+    avatar: string;
   }>;
 };
 
@@ -1548,63 +1564,64 @@ export type MyPatientAppointmentsQueryResult = Apollo.QueryResult<
   MyPatientAppointmentsQuery,
   MyPatientAppointmentsQueryVariables
 >;
-export const MyPatientLikeNameDocument = gql`
-  query MyPatientLikeName {
+export const MyPatientGreetingDocument = gql`
+  query MyPatientGreeting {
     myPatientProfile {
       id
       likeName
+      avatar
     }
   }
 `;
 
 /**
- * __useMyPatientLikeNameQuery__
+ * __useMyPatientGreetingQuery__
  *
- * To run a query within a React component, call `useMyPatientLikeNameQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyPatientLikeNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMyPatientGreetingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyPatientGreetingQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMyPatientLikeNameQuery({
+ * const { data, loading, error } = useMyPatientGreetingQuery({
  *   variables: {
  *   },
  * });
  */
-export function useMyPatientLikeNameQuery(
+export function useMyPatientGreetingQuery(
   baseOptions?: Apollo.QueryHookOptions<
-    MyPatientLikeNameQuery,
-    MyPatientLikeNameQueryVariables
+    MyPatientGreetingQuery,
+    MyPatientGreetingQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
-    MyPatientLikeNameQuery,
-    MyPatientLikeNameQueryVariables
-  >(MyPatientLikeNameDocument, options);
+    MyPatientGreetingQuery,
+    MyPatientGreetingQueryVariables
+  >(MyPatientGreetingDocument, options);
 }
-export function useMyPatientLikeNameLazyQuery(
+export function useMyPatientGreetingLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    MyPatientLikeNameQuery,
-    MyPatientLikeNameQueryVariables
+    MyPatientGreetingQuery,
+    MyPatientGreetingQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
-    MyPatientLikeNameQuery,
-    MyPatientLikeNameQueryVariables
-  >(MyPatientLikeNameDocument, options);
+    MyPatientGreetingQuery,
+    MyPatientGreetingQueryVariables
+  >(MyPatientGreetingDocument, options);
 }
-export type MyPatientLikeNameQueryHookResult = ReturnType<
-  typeof useMyPatientLikeNameQuery
+export type MyPatientGreetingQueryHookResult = ReturnType<
+  typeof useMyPatientGreetingQuery
 >;
-export type MyPatientLikeNameLazyQueryHookResult = ReturnType<
-  typeof useMyPatientLikeNameLazyQuery
+export type MyPatientGreetingLazyQueryHookResult = ReturnType<
+  typeof useMyPatientGreetingLazyQuery
 >;
-export type MyPatientLikeNameQueryResult = Apollo.QueryResult<
-  MyPatientLikeNameQuery,
-  MyPatientLikeNameQueryVariables
+export type MyPatientGreetingQueryResult = Apollo.QueryResult<
+  MyPatientGreetingQuery,
+  MyPatientGreetingQueryVariables
 >;
 export const MyPatientTopAffinitiesDocument = gql`
   query MyPatientTopAffinities {
@@ -1878,6 +1895,7 @@ export const MyPatientProfileDocument = gql`
       likeName
       birthDate
       city
+      avatar
       characteristics {
         name
         type
@@ -1949,6 +1967,8 @@ export const MyPsychologistProfileDocument = gql`
       likeName
       birthDate
       city
+      bio
+      avatar
       characteristics {
         name
         type
@@ -2636,63 +2656,64 @@ export type MyPsychologistAppointmentsQueryResult = Apollo.QueryResult<
   MyPsychologistAppointmentsQuery,
   MyPsychologistAppointmentsQueryVariables
 >;
-export const MyPsychologistLikeNameDocument = gql`
-  query MyPsychologistLikeName {
+export const MyPsychologistGreetingDocument = gql`
+  query MyPsychologistGreeting {
     myPsychologistProfile {
       id
       likeName
+      avatar
     }
   }
 `;
 
 /**
- * __useMyPsychologistLikeNameQuery__
+ * __useMyPsychologistGreetingQuery__
  *
- * To run a query within a React component, call `useMyPsychologistLikeNameQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyPsychologistLikeNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMyPsychologistGreetingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyPsychologistGreetingQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMyPsychologistLikeNameQuery({
+ * const { data, loading, error } = useMyPsychologistGreetingQuery({
  *   variables: {
  *   },
  * });
  */
-export function useMyPsychologistLikeNameQuery(
+export function useMyPsychologistGreetingQuery(
   baseOptions?: Apollo.QueryHookOptions<
-    MyPsychologistLikeNameQuery,
-    MyPsychologistLikeNameQueryVariables
+    MyPsychologistGreetingQuery,
+    MyPsychologistGreetingQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
-    MyPsychologistLikeNameQuery,
-    MyPsychologistLikeNameQueryVariables
-  >(MyPsychologistLikeNameDocument, options);
+    MyPsychologistGreetingQuery,
+    MyPsychologistGreetingQueryVariables
+  >(MyPsychologistGreetingDocument, options);
 }
-export function useMyPsychologistLikeNameLazyQuery(
+export function useMyPsychologistGreetingLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    MyPsychologistLikeNameQuery,
-    MyPsychologistLikeNameQueryVariables
+    MyPsychologistGreetingQuery,
+    MyPsychologistGreetingQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
-    MyPsychologistLikeNameQuery,
-    MyPsychologistLikeNameQueryVariables
-  >(MyPsychologistLikeNameDocument, options);
+    MyPsychologistGreetingQuery,
+    MyPsychologistGreetingQueryVariables
+  >(MyPsychologistGreetingDocument, options);
 }
-export type MyPsychologistLikeNameQueryHookResult = ReturnType<
-  typeof useMyPsychologistLikeNameQuery
+export type MyPsychologistGreetingQueryHookResult = ReturnType<
+  typeof useMyPsychologistGreetingQuery
 >;
-export type MyPsychologistLikeNameLazyQueryHookResult = ReturnType<
-  typeof useMyPsychologistLikeNameLazyQuery
+export type MyPsychologistGreetingLazyQueryHookResult = ReturnType<
+  typeof useMyPsychologistGreetingLazyQuery
 >;
-export type MyPsychologistLikeNameQueryResult = Apollo.QueryResult<
-  MyPsychologistLikeNameQuery,
-  MyPsychologistLikeNameQueryVariables
+export type MyPsychologistGreetingQueryResult = Apollo.QueryResult<
+  MyPsychologistGreetingQuery,
+  MyPsychologistGreetingQueryVariables
 >;
 export const MyPsychologistTreatmentsDocument = gql`
   query MyPsychologistTreatments {

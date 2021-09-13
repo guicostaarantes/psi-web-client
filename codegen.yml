@@ -1,6 +1,9 @@
 overwrite: true
 schema: "http://localhost:7070/gql"
 documents: "modules/**/*.graphql"
+config:
+  scalars:
+    Upload: "File"
 generates:
   ./modules/shared/graphql.ts:
     plugins:

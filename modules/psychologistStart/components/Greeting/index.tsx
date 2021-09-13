@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import { useMyPsychologistLikeNameQuery } from "@psi/shared/graphql";
+import { useMyPsychologistGreetingQuery } from "@psi/shared/graphql";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import Image from "@psi/styleguide/components/Image";
@@ -9,9 +9,10 @@ import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 const PsychologistGreeting = () => {
   const router = useRouter();
 
-  const { data } = useMyPsychologistLikeNameQuery();
+  const { data } = useMyPsychologistGreetingQuery();
 
   const likeName = data?.myPsychologistProfile?.likeName;
+  const avatar = data?.myPsychologistProfile?.avatar;
 
   const handleMyProfileClick = () => {
     router.push("/perfil");
@@ -28,7 +29,7 @@ const PsychologistGreeting = () => {
         <div className="content">
           <div className="greeting-content">
             <div className="image-wrapper">
-              <Image circle label={`Avatar de ${likeName}`} src="avatar.webp" />
+              <Image auth circle label={`Avatar de ${likeName}`} src={avatar} />
             </div>
             <MediumTitle>Oi {likeName}</MediumTitle>
           </div>
