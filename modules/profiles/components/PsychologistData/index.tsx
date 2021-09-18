@@ -42,6 +42,7 @@ const PsychologistDataComponent = () => {
   const birthDateRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
   const bioRef = useRef<HTMLTextAreaElement>(null);
+  const avatarRef = useRef<HTMLInputElement>(null);
   const birthDateInitialValue = useState<string>("");
 
   const choices = useState<Record<string, unknown>>({});
@@ -163,6 +164,7 @@ const PsychologistDataComponent = () => {
         ) / 1000,
       city: cityRef.current.value,
       bio: bioRef.current.value,
+      avatar: avatarRef.current.files?.[0] || null,
     };
 
     // Checking if profileInput is invalid
@@ -279,6 +281,7 @@ const PsychologistDataComponent = () => {
         <MediumTitle center noMarginTop>
           Dados do psicólogo
         </MediumTitle>
+        <input name="avatar" type="file" ref={avatarRef} />
         <Input name="fullName" label="Nome completo" reference={fullNameRef} />
         <Input
           name="likeName"

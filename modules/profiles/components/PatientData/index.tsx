@@ -40,6 +40,7 @@ const PatientDataComponent = () => {
   const likeNameRef = useRef<HTMLInputElement>(null);
   const birthDateRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
+  const avatarRef = useRef<HTMLInputElement>(null);
   const birthDateInitialValue = useState<string>("");
 
   const choices = useState<Record<string, unknown>>({});
@@ -149,6 +150,7 @@ const PatientDataComponent = () => {
           ),
         ) / 1000,
       city: cityRef.current.value,
+      avatar: avatarRef.current.files?.[0] || null,
     };
 
     // Checking if profileInput is invalid
@@ -264,6 +266,7 @@ const PatientDataComponent = () => {
         <MediumTitle center noMarginTop>
           Dados do paciente
         </MediumTitle>
+        <input name="avatar" type="file" ref={avatarRef} />
         <Input name="fullName" label="Nome completo" reference={fullNameRef} />
         <Input
           name="likeName"
