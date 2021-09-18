@@ -14,6 +14,7 @@ import {
   useSetMyPatientCharacteristicChoicesAndPreferencesMutation,
   useUpsertMyPatientProfileMutation,
 } from "@psi/shared/graphql";
+import AvatarInput from "@psi/styleguide/components/AvatarInput";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import DateInput from "@psi/styleguide/components/DateInput";
@@ -266,7 +267,7 @@ const PatientDataComponent = () => {
         <MediumTitle center noMarginTop>
           Dados do paciente
         </MediumTitle>
-        <input name="avatar" type="file" ref={avatarRef} />
+        <AvatarInput name="avatar" label="Avatar" reference={avatarRef} />
         <Input name="fullName" label="Nome completo" reference={fullNameRef} />
         <Input
           name="likeName"
