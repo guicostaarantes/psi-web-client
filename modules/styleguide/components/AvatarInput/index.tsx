@@ -55,6 +55,42 @@ const AvatarInput = ({
     uploadedFileLink.set(URL.createObjectURL(files[0]));
   };
 
+  const download = (url, filename) => {
+    fetch(url)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+      })
+      .catch(console.error);
+  };
+
+  const handleConfirm = () => {
+    const canvas = document.createElement("canvas");
+    const { centerX, centerY, diameter } = croppedDimensions.value;
+    const radius = diameter / 2;
+    const canvasSize = 300;
+
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
+    canvas
+      .getContext("2d")
+      .drawImage(
+        modalImageRef.current,
+        centerX - radius,
+        centerY - radius,
+        centerX + radius,
+        centerY + radius,
+        0,
+        0,
+        canvasSize,
+        canvasSize,
+      );
+    download(canvas.toDataURL("image/jpeg"), "test.jpg");
+  };
+
   return (
     <>
       <div className="center">
@@ -88,6 +124,7 @@ const AvatarInput = ({
             <img className="image-foreground" src={uploadedFileLink.value} />
           </div>
         </div>
+        <button onClick={handleConfirm}>Confirmar</button>
       </Modal>
       <style jsx>{`
         img {
@@ -122,11 +159,13 @@ const AvatarInput = ({
           border: dashed 1px blue;
           border-radius: 50%;
           height: ${croppedDimensions.value.diameter}px;
-          left: ${croppedDimensions.value.centerX -
+          left: ${-1 +
+          croppedDimensions.value.centerX -
           croppedDimensions.value.diameter / 2}px;
           overflow: hidden;
           position: absolute;
-          top: ${croppedDimensions.value.centerY -
+          top: ${-1 +
+          croppedDimensions.value.centerY -
           croppedDimensions.value.diameter / 2}px;
           width: ${croppedDimensions.value.diameter}px;
         }
