@@ -2,11 +2,12 @@ import { useState } from "@hookstate/core";
 import {
   ChangeEvent,
   InputHTMLAttributes,
-  LegacyRef,
+  RefObject,
   useEffect,
   useRef,
 } from "react";
 
+import useResizeObserver from "@psi/shared/hooks/useResizeObserver";
 import Image from "@psi/styleguide/components/Image";
 import Modal from "@psi/styleguide/components/Modal";
 
@@ -15,7 +16,7 @@ interface AvatarInputProps
   currentAvatar: JSX.Element;
   name: string;
   label: string;
-  reference?: LegacyRef<HTMLInputElement>;
+  reference?: RefObject<HTMLInputElement>;
 }
 
 const AvatarInput = ({
@@ -27,25 +28,29 @@ const AvatarInput = ({
 }: AvatarInputProps) => {
   const modalOpen = useState(false);
 
-  const imageDimensions = useState({ height: 0, width: 0 });
   const croppedDimensions = useState({ centerX: 0, centerY: 0, diameter: 0 });
+  const ratio = useState(0);
 
   const uploadedFileLink = useState("");
   const croppedFileLink = useState("");
 
   const modalImageRef = useRef<HTMLImageElement>();
+  const imageSize = useResizeObserver(modalImageRef.current);
+
+  useEffect(() => {
+    ratio.set(imageSize.height / modalImageRef.current?.naturalHeight);
+  }, [imageSize]);
 
   useEffect(() => {
     setTimeout(() => {
-      const { height, width } =
-        modalImageRef.current?.getBoundingClientRect() || {};
-      imageDimensions.set({ height, width });
+      const height = modalImageRef.current?.naturalHeight || 0;
+      const width = modalImageRef.current?.naturalWidth || 0;
       croppedDimensions.set({
-        centerX: width / 2,
-        centerY: height / 2,
-        diameter: Math.min(height, width),
+        centerX: Math.floor(width / 2),
+        centerY: Math.floor(height / 2),
+        diameter: Math.floor(0.9 * Math.min(height, width)),
       });
-    }, 0);
+    }, 100);
   }, [modalOpen.value]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -55,23 +60,11 @@ const AvatarInput = ({
     uploadedFileLink.set(URL.createObjectURL(files[0]));
   };
 
-  const download = (url, filename) => {
-    fetch(url)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        link.click();
-      })
-      .catch(console.error);
-  };
-
   const handleConfirm = () => {
     const canvas = document.createElement("canvas");
     const { centerX, centerY, diameter } = croppedDimensions.value;
-    const radius = diameter / 2;
-    const canvasSize = 300;
+    const radius = Math.floor(diameter / 2);
+    const canvasSize = 600;
 
     canvas.width = canvasSize;
     canvas.height = canvasSize;
@@ -81,14 +74,24 @@ const AvatarInput = ({
         modalImageRef.current,
         centerX - radius,
         centerY - radius,
-        centerX + radius,
-        centerY + radius,
+        diameter,
+        diameter,
         0,
         0,
         canvasSize,
         canvasSize,
       );
-    download(canvas.toDataURL("image/jpeg"), "test.jpg");
+
+    canvas.toBlob((blob) => {
+      const file = new File([blob], "upload.webp", {
+        lastModified: 0,
+        type: "image/webp",
+      });
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      reference.current.files = dataTransfer.files;
+      croppedFileLink.set(URL.createObjectURL(file));
+    }, "image/webp");
   };
 
   return (
@@ -132,11 +135,11 @@ const AvatarInput = ({
         }
         .background-opacity {
           background-color: #0009;
-          height: ${imageDimensions.value.height}px;
+          height: ${imageSize.height}px;
           left: 0;
           position: absolute;
           top: 0;
-          width: ${imageDimensions.value.width}px;
+          width: ${imageSize.width}px;
         }
         .center {
           align-items: center;
@@ -147,9 +150,9 @@ const AvatarInput = ({
           position: relative;
         }
         .image-foreground {
-          left: -${croppedDimensions.value.centerX - croppedDimensions.value.diameter / 2}px;
+          left: -${(croppedDimensions.value.centerX - croppedDimensions.value.diameter / 2) * ratio.value}px;
           position: absolute;
-          top: -${croppedDimensions.value.centerY - croppedDimensions.value.diameter / 2}px;
+          top: -${(croppedDimensions.value.centerY - croppedDimensions.value.diameter / 2) * ratio.value}px;
         }
         .image-wrapper {
           height: 5rem;
@@ -158,16 +161,18 @@ const AvatarInput = ({
         .preview-circle {
           border: dashed 1px blue;
           border-radius: 50%;
-          height: ${croppedDimensions.value.diameter}px;
+          height: ${croppedDimensions.value.diameter * ratio.value}px;
           left: ${-1 +
-          croppedDimensions.value.centerX -
-          croppedDimensions.value.diameter / 2}px;
+          (croppedDimensions.value.centerX -
+            croppedDimensions.value.diameter / 2) *
+            ratio.value}px;
           overflow: hidden;
           position: absolute;
           top: ${-1 +
-          croppedDimensions.value.centerY -
-          croppedDimensions.value.diameter / 2}px;
-          width: ${croppedDimensions.value.diameter}px;
+          (croppedDimensions.value.centerY -
+            croppedDimensions.value.diameter / 2) *
+            ratio.value}px;
+          width: ${croppedDimensions.value.diameter * ratio.value}px;
         }
       `}</style>
     </>
