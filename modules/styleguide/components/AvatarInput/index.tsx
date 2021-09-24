@@ -41,17 +41,15 @@ const AvatarInput = ({
     ratio.set(imageSize.height / modalImageRef.current?.naturalHeight);
   }, [imageSize]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      const height = modalImageRef.current?.naturalHeight || 0;
-      const width = modalImageRef.current?.naturalWidth || 0;
-      croppedDimensions.set({
-        centerX: Math.floor(width / 2),
-        centerY: Math.floor(height / 2),
-        diameter: Math.floor(0.9 * Math.min(height, width)),
-      });
-    }, 100);
-  }, [modalOpen.value]);
+  const handleImageLoad = () => {
+    const height = modalImageRef.current?.naturalHeight || 0;
+    const width = modalImageRef.current?.naturalWidth || 0;
+    croppedDimensions.set({
+      centerX: Math.floor(width / 2),
+      centerY: Math.floor(height / 2),
+      diameter: Math.floor(0.9 * Math.min(height, width)),
+    });
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -121,7 +119,11 @@ const AvatarInput = ({
         title="Cortar imagem"
       >
         <div className="image-container">
-          <img ref={modalImageRef} src={uploadedFileLink.value} />
+          <img
+            ref={modalImageRef}
+            src={uploadedFileLink.value}
+            onLoad={handleImageLoad}
+          />
           <div className="background-opacity"></div>
           <div className="preview-circle">
             <img className="image-foreground" src={uploadedFileLink.value} />
