@@ -14,6 +14,7 @@ import Modal from "@psi/styleguide/components/Modal";
 interface AvatarInputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "placeholder"> {
   currentAvatar: JSX.Element;
+  finalSize?: number;
   name: string;
   label: string;
   reference?: RefObject<HTMLInputElement>;
@@ -21,6 +22,7 @@ interface AvatarInputProps
 
 const AvatarInput = ({
   currentAvatar,
+  finalSize = 600,
   label,
   name,
   reference,
@@ -62,10 +64,9 @@ const AvatarInput = ({
     const canvas = document.createElement("canvas");
     const { centerX, centerY, diameter } = croppedDimensions.value;
     const radius = Math.floor(diameter / 2);
-    const canvasSize = 600;
 
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
+    canvas.width = finalSize;
+    canvas.height = finalSize;
     canvas
       .getContext("2d")
       .drawImage(
@@ -76,8 +77,8 @@ const AvatarInput = ({
         diameter,
         0,
         0,
-        canvasSize,
-        canvasSize,
+        finalSize,
+        finalSize,
       );
 
     canvas.toBlob((blob) => {
