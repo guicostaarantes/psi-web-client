@@ -8,6 +8,7 @@ import {
 } from "react";
 
 import useResizeObserver from "@psi/shared/hooks/useResizeObserver";
+import Button from "@psi/styleguide/components/Button";
 import Image from "@psi/styleguide/components/Image";
 import Modal from "@psi/styleguide/components/Modal";
 
@@ -60,6 +61,12 @@ const AvatarInput = ({
     uploadedFileLink.set(URL.createObjectURL(files[0]));
   };
 
+  const handleUndo = () => {
+    reference.current.value = "";
+    uploadedFileLink.set("");
+    croppedFileLink.set("");
+  };
+
   const handleConfirm = () => {
     const canvas = document.createElement("canvas");
     const { centerX, centerY, diameter } = croppedDimensions.value;
@@ -95,25 +102,34 @@ const AvatarInput = ({
 
   return (
     <>
-      <div className="center">
-        <div className="image-wrapper">{currentAvatar}</div>
+      <div className="wrapper">
         {croppedFileLink.value ? (
           <div className="image-wrapper">
             <Image circle label="Novo avatar" src={croppedFileLink.value} />
           </div>
-        ) : null}
+        ) : (
+          <div className="image-wrapper">{currentAvatar}</div>
+        )}
+        {croppedFileLink.value ? (
+          <Button color="secondary" onClick={handleUndo}>
+            Desfazer
+          </Button>
+        ) : (
+          <Button color="primary" onClick={() => reference.current.click()}>
+            {label}
+          </Button>
+        )}
+        <input
+          aria-label={label}
+          id={name}
+          name={name}
+          onChange={handleChange}
+          placeholder={label}
+          ref={reference}
+          type="file"
+          {...rest}
+        />
       </div>
-      <input
-        aria-label={label}
-        id={name}
-        name={name}
-        onChange={handleChange}
-        placeholder={label}
-        ref={reference}
-        type="file"
-        {...rest}
-      />
-      <label htmlFor={name}>{label}</label>
       <Modal
         open={modalOpen.value}
         onClose={() => modalOpen.set(false)}
@@ -136,6 +152,9 @@ const AvatarInput = ({
         img {
           height: 70vh;
         }
+        input {
+          display: none;
+        }
         .background-opacity {
           background-color: #0009;
           height: ${imageSize.height}px;
@@ -143,11 +162,6 @@ const AvatarInput = ({
           position: absolute;
           top: 0;
           width: ${imageSize.width}px;
-        }
-        .center {
-          align-items: center;
-          display: flex;
-          flex-direction: column;
         }
         .image-container {
           position: relative;
@@ -176,6 +190,11 @@ const AvatarInput = ({
             croppedDimensions.value.diameter / 2) *
             ratio.value}px;
           width: ${croppedDimensions.value.diameter * ratio.value}px;
+        }
+        .wrapper {
+          align-items: center;
+          display: flex;
+          gap: 1rem;
         }
       `}</style>
     </>

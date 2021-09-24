@@ -297,7 +297,7 @@ const PsychologistDataComponent = () => {
             />
           }
           name="avatar"
-          label="Avatar"
+          label="Modificar Avatar"
           reference={avatarRef}
         />
         <Input name="fullName" label="Nome completo" reference={fullNameRef} />
