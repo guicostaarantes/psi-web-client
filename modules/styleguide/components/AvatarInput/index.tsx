@@ -17,7 +17,7 @@ interface AvatarInputProps
   finalSize?: number;
   name: string;
   label: string;
-  reference?: RefObject<HTMLInputElement>;
+  reference: RefObject<HTMLInputElement>;
 }
 
 const AvatarInput = ({
