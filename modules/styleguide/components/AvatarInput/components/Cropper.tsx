@@ -3,6 +3,7 @@ import {
   forwardRef,
   ForwardRefRenderFunction,
   RefObject,
+  useCallback,
   useEffect,
   useImperativeHandle,
 } from "react";
@@ -57,49 +58,65 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
     ratio.set(imageSize.height / imageRef.current?.naturalHeight);
   }, [imageSize]);
 
-  const handleMouseDown = ({ clientX, clientY }) => {
-    const { centerX, centerY } = croppedDimensions.value;
-    drag.set({
-      isDragging: true,
-      initialClientX: clientX,
-      initialClientY: clientY,
-      initialCenterX: centerX,
-      initialCenterY: centerY,
-    });
-  };
+  const handleMouseDown = useCallback(
+    (event) => {
+      const clientX =
+        event.clientX || event.nativeEvent.changedTouches?.[0]?.clientX || 0;
+      const clientY =
+        event.clientY || event.nativeEvent.changedTouches?.[0]?.clientY || 0;
 
-  const handleMouseMove = ({ clientX, clientY }) => {
-    if (drag.value.isDragging) {
-      const {
-        initialClientX,
-        initialClientY,
-        initialCenterX,
-        initialCenterY,
-      } = drag.value;
-
-      const height = imageRef.current?.naturalHeight || 0;
-      const width = imageRef.current?.naturalWidth || 0;
-
-      const diameter = croppedDimensions.value.diameter;
-      const radius = diameter / 2;
-
-      croppedDimensions.set({
-        centerX: valueBetween({
-          value: initialCenterX + (clientX - initialClientX) / ratio.value,
-          min: radius,
-          max: width - radius,
-        }),
-        centerY: valueBetween({
-          value: initialCenterY + (clientY - initialClientY) / ratio.value,
-          min: radius,
-          max: height - radius,
-        }),
-        diameter,
+      const { centerX, centerY } = croppedDimensions.value;
+      drag.set({
+        isDragging: true,
+        initialClientX: clientX,
+        initialClientY: clientY,
+        initialCenterX: centerX,
+        initialCenterY: centerY,
       });
-    }
-  };
+    },
+    [croppedDimensions.value],
+  );
 
-  const handleMouseUpLeave = () => {
+  const handleMouseMove = useCallback(
+    (event) => {
+      const clientX =
+        event.clientX || event.nativeEvent.changedTouches?.[0]?.clientX || 0;
+      const clientY =
+        event.clientY || event.nativeEvent.changedTouches?.[0]?.clientY || 0;
+
+      if (drag.value.isDragging) {
+        const {
+          initialClientX,
+          initialClientY,
+          initialCenterX,
+          initialCenterY,
+        } = drag.value;
+
+        const height = imageRef.current?.naturalHeight || 0;
+        const width = imageRef.current?.naturalWidth || 0;
+
+        const diameter = croppedDimensions.value.diameter;
+        const radius = diameter / 2;
+
+        croppedDimensions.set({
+          centerX: valueBetween({
+            value: initialCenterX + (clientX - initialClientX) / ratio.value,
+            min: radius,
+            max: width - radius,
+          }),
+          centerY: valueBetween({
+            value: initialCenterY + (clientY - initialClientY) / ratio.value,
+            min: radius,
+            max: height - radius,
+          }),
+          diameter,
+        });
+      }
+    },
+    [drag.value, croppedDimensions.value],
+  );
+
+  const handleMouseUpLeave = useCallback(() => {
     drag.set({
       isDragging: false,
       initialClientX: 0,
@@ -107,7 +124,7 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
       initialCenterX: 0,
       initialCenterY: 0,
     });
-  };
+  }, []);
 
   return (
     <>
@@ -118,6 +135,9 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUpLeave}
         onMouseLeave={handleMouseUpLeave}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleMouseMove}
+        onTouchEnd={handleMouseUpLeave}
       >
         <img
           className="foreground"
