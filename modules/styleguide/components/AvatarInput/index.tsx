@@ -80,6 +80,7 @@ const AvatarInput = ({
         dataTransfer.items.add(file);
         reference.current.files = dataTransfer.files;
         croppedFileLink.set(URL.createObjectURL(file));
+        modalOpen.set(false);
       }, "image/webp");
     }
   };
@@ -123,7 +124,14 @@ const AvatarInput = ({
           <img ref={modalImageRef} src={uploadedFileLink.value} />
           <Cropper ref={cropperRef} imageRef={modalImageRef} />
         </div>
-        <button onClick={handleConfirm}>Confirmar</button>
+        <div className="buttons">
+          <Button color="primary" onClick={handleConfirm}>
+            Confirmar
+          </Button>
+          <Button color="secondary" onClick={() => modalOpen.set(false)}>
+            Cancelar
+          </Button>
+        </div>
       </Modal>
       <style jsx>{`
         img {
@@ -131,6 +139,12 @@ const AvatarInput = ({
         }
         input {
           display: none;
+        }
+        .buttons {
+          align-items: center;
+          display: flex;
+          gap: 0.5rem;
+          justify-content: flex-end;
         }
         .image-container {
           position: relative;
