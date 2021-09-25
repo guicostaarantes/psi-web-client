@@ -8,6 +8,7 @@ import {
 } from "react";
 
 import useResizeObserver from "@psi/shared/hooks/useResizeObserver";
+import valueBetween from "@psi/styleguide/utils/valueBetween";
 
 export interface CropperRef {
   getDimensions: () => {
@@ -34,11 +35,13 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
   const croppedDimensions = useState({ centerX: 0, centerY: 0, diameter: 0 });
   const ratio = useState(0);
 
-  const isDragging = useState(false);
-  const dragOriginX = useState(0);
-  const dragOriginY = useState(0);
-  const croppedOriginX = useState(0);
-  const croppedOriginY = useState(0);
+  const drag = useState({
+    isDragging: false,
+    initialClientX: 0,
+    initialClientY: 0,
+    initialCenterX: 0,
+    initialCenterY: 0,
+  });
 
   const handleImageLoad = () => {
     const height = imageRef.current?.naturalHeight || 0;
@@ -55,38 +58,67 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
   }, [imageSize]);
 
   const handleMouseDown = ({ clientX, clientY }) => {
-    isDragging.set(true);
-    dragOriginX.set(clientX);
-    dragOriginY.set(clientY);
-    croppedOriginX.set(croppedDimensions.value.centerX);
-    croppedOriginY.set(croppedDimensions.value.centerY);
+    const { centerX, centerY } = croppedDimensions.value;
+    drag.set({
+      isDragging: true,
+      initialClientX: clientX,
+      initialClientY: clientY,
+      initialCenterX: centerX,
+      initialCenterY: centerY,
+    });
   };
 
   const handleMouseMove = ({ clientX, clientY }) => {
-    if (isDragging.value) {
+    if (drag.value.isDragging) {
+      const {
+        initialClientX,
+        initialClientY,
+        initialCenterX,
+        initialCenterY,
+      } = drag.value;
+
+      const height = imageRef.current?.naturalHeight || 0;
+      const width = imageRef.current?.naturalWidth || 0;
+
+      const diameter = croppedDimensions.value.diameter;
+      const radius = diameter / 2;
+
       croppedDimensions.set({
-        centerX:
-          croppedOriginX.value + (clientX - dragOriginX.value) / ratio.value,
-        centerY:
-          croppedOriginY.value + (clientY - dragOriginY.value) / ratio.value,
-        diameter: croppedDimensions.value.diameter,
+        centerX: valueBetween({
+          value: initialCenterX + (clientX - initialClientX) / ratio.value,
+          min: radius,
+          max: width - radius,
+        }),
+        centerY: valueBetween({
+          value: initialCenterY + (clientY - initialClientY) / ratio.value,
+          min: radius,
+          max: height - radius,
+        }),
+        diameter,
       });
     }
   };
 
   const handleMouseUpLeave = () => {
-    isDragging.set(false);
+    drag.set({
+      isDragging: false,
+      initialClientX: 0,
+      initialClientY: 0,
+      initialCenterX: 0,
+      initialCenterY: 0,
+    });
   };
 
   return (
-    <div
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUpLeave}
-      onMouseLeave={handleMouseUpLeave}
-    >
+    <>
       <div className="background"></div>
-      <div className="preview">
+      <div
+        className="preview"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUpLeave}
+        onMouseLeave={handleMouseUpLeave}
+      >
         <img
           className="foreground"
           draggable={false}
@@ -101,6 +133,7 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           left: 0;
           position: absolute;
           top: 0;
+          user-select: none;
           width: ${imageSize.width}px;
         }
         .foreground {
@@ -108,6 +141,7 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           left: -${(croppedDimensions.value.centerX - croppedDimensions.value.diameter / 2) * ratio.value}px;
           position: absolute;
           top: -${(croppedDimensions.value.centerY - croppedDimensions.value.diameter / 2) * ratio.value}px;
+          user-select: none;
           width: ${imageSize.width}px;
         }
         .preview {
@@ -127,7 +161,7 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           width: ${croppedDimensions.value.diameter * ratio.value}px;
         }
       `}</style>
-    </div>
+    </>
   );
 };
 
