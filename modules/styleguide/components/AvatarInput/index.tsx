@@ -1,13 +1,10 @@
 import { useState } from "@hookstate/core";
-import {
-  ChangeEvent,
-  InputHTMLAttributes,
-  RefObject,
-  useEffect,
-  useRef,
-} from "react";
+import { ChangeEvent, InputHTMLAttributes, RefObject, useRef } from "react";
+import React from "react";
 
-import useResizeObserver from "@psi/shared/hooks/useResizeObserver";
+import Cropper, {
+  CropperRef,
+} from "@psi/styleguide/components/AvatarInput/components/Cropper";
 import Button from "@psi/styleguide/components/Button";
 import Image from "@psi/styleguide/components/Image";
 import Modal from "@psi/styleguide/components/Modal";
@@ -31,28 +28,11 @@ const AvatarInput = ({
 }: AvatarInputProps) => {
   const modalOpen = useState(false);
 
-  const croppedDimensions = useState({ centerX: 0, centerY: 0, diameter: 0 });
-  const ratio = useState(0);
-
   const uploadedFileLink = useState("");
   const croppedFileLink = useState("");
 
   const modalImageRef = useRef<HTMLImageElement>();
-  const imageSize = useResizeObserver(modalImageRef.current);
-
-  useEffect(() => {
-    ratio.set(imageSize.height / modalImageRef.current?.naturalHeight);
-  }, [imageSize]);
-
-  const handleImageLoad = () => {
-    const height = modalImageRef.current?.naturalHeight || 0;
-    const width = modalImageRef.current?.naturalWidth || 0;
-    croppedDimensions.set({
-      centerX: Math.floor(width / 2),
-      centerY: Math.floor(height / 2),
-      diameter: Math.floor(0.9 * Math.min(height, width)),
-    });
-  };
+  const cropperRef = useRef<CropperRef>();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -68,36 +48,40 @@ const AvatarInput = ({
   };
 
   const handleConfirm = () => {
-    const canvas = document.createElement("canvas");
-    const { centerX, centerY, diameter } = croppedDimensions.value;
-    const radius = Math.floor(diameter / 2);
-
-    canvas.width = finalSize;
-    canvas.height = finalSize;
-    canvas
-      .getContext("2d")
-      .drawImage(
-        modalImageRef.current,
-        centerX - radius,
-        centerY - radius,
+    if (cropperRef.current) {
+      const canvas = document.createElement("canvas");
+      const {
+        centerX,
+        centerY,
         diameter,
-        diameter,
-        0,
-        0,
-        finalSize,
-        finalSize,
-      );
-
-    canvas.toBlob((blob) => {
-      const file = new File([blob], "upload.webp", {
-        lastModified: 0,
-        type: "image/webp",
-      });
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(file);
-      reference.current.files = dataTransfer.files;
-      croppedFileLink.set(URL.createObjectURL(file));
-    }, "image/webp");
+      } = cropperRef.current?.getDimensions();
+      const radius = Math.floor(diameter / 2);
+      canvas.width = finalSize;
+      canvas.height = finalSize;
+      canvas
+        .getContext("2d")
+        .drawImage(
+          modalImageRef.current,
+          centerX - radius,
+          centerY - radius,
+          diameter,
+          diameter,
+          0,
+          0,
+          finalSize,
+          finalSize,
+        );
+      canvas.toBlob((blob) => {
+        const file = new File([blob], "upload.webp", {
+          lastModified: 0,
+          type: "image/webp",
+        });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        reference.current.files = dataTransfer.files;
+        croppedFileLink.set(URL.createObjectURL(file));
+      }, "image/webp");
+    }
   };
 
   return (
@@ -136,15 +120,8 @@ const AvatarInput = ({
         title="Cortar imagem"
       >
         <div className="image-container">
-          <img
-            ref={modalImageRef}
-            src={uploadedFileLink.value}
-            onLoad={handleImageLoad}
-          />
-          <div className="background-opacity"></div>
-          <div className="preview-circle">
-            <img className="image-foreground" src={uploadedFileLink.value} />
-          </div>
+          <img ref={modalImageRef} src={uploadedFileLink.value} />
+          <Cropper ref={cropperRef} imageRef={modalImageRef} />
         </div>
         <button onClick={handleConfirm}>Confirmar</button>
       </Modal>
@@ -155,41 +132,12 @@ const AvatarInput = ({
         input {
           display: none;
         }
-        .background-opacity {
-          background-color: #0009;
-          height: ${imageSize.height}px;
-          left: 0;
-          position: absolute;
-          top: 0;
-          width: ${imageSize.width}px;
-        }
         .image-container {
           position: relative;
-        }
-        .image-foreground {
-          left: -${(croppedDimensions.value.centerX - croppedDimensions.value.diameter / 2) * ratio.value}px;
-          position: absolute;
-          top: -${(croppedDimensions.value.centerY - croppedDimensions.value.diameter / 2) * ratio.value}px;
         }
         .image-wrapper {
           height: 5rem;
           width: 5rem;
-        }
-        .preview-circle {
-          border: dashed 1px blue;
-          border-radius: 50%;
-          height: ${croppedDimensions.value.diameter * ratio.value}px;
-          left: ${-1 +
-          (croppedDimensions.value.centerX -
-            croppedDimensions.value.diameter / 2) *
-            ratio.value}px;
-          overflow: hidden;
-          position: absolute;
-          top: ${-1 +
-          (croppedDimensions.value.centerY -
-            croppedDimensions.value.diameter / 2) *
-            ratio.value}px;
-          width: ${croppedDimensions.value.diameter * ratio.value}px;
         }
         .wrapper {
           align-items: center;
