@@ -135,7 +135,9 @@ const AvatarInput = ({
       </Modal>
       <style jsx>{`
         img {
-          height: 70vh;
+          max-height: 70vh;
+          max-width: 70vw;
+          object-fit: cover;
         }
         input {
           display: none;
