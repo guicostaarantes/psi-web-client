@@ -18,6 +18,7 @@ import AvatarInput from "@psi/styleguide/components/AvatarInput";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import DateInput from "@psi/styleguide/components/DateInput";
+import Image from "@psi/styleguide/components/Image";
 import Input from "@psi/styleguide/components/Input";
 import Col from "@psi/styleguide/components/Layout/Col";
 import Row from "@psi/styleguide/components/Layout/Row";
@@ -267,7 +268,23 @@ const PatientDataComponent = () => {
         <MediumTitle center noMarginTop>
           Dados do paciente
         </MediumTitle>
-        <AvatarInput name="avatar" label="Avatar" reference={avatarRef} />
+        <AvatarInput
+          currentAvatar={
+            <Image
+              circle
+              label="Avatar atual"
+              authSrc={
+                profileData?.myPatientProfile?.avatar
+                  ? `${process.env.NEXT_PUBLIC_PSI_STATIC_URI}/${profileData.myPatientProfile.avatar}`
+                  : ""
+              }
+              src="avatar.webp"
+            />
+          }
+          name="avatar"
+          label="Modificar Avatar"
+          reference={avatarRef}
+        />
         <Input name="fullName" label="Nome completo" reference={fullNameRef} />
         <Input
           name="likeName"
