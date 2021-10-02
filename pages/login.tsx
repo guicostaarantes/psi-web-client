@@ -16,7 +16,7 @@ const LoginPage = () => {
         <title>PSI web client</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container fluid>
+      <Container>
         <ViewportHigh center>
           <LoginComponent />
         </ViewportHigh>

@@ -11,7 +11,7 @@ const NewAccountPage = () => {
         <title>Nova conta | PSI</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container fluid>
+      <Container>
         <ViewportHigh center>
           <NewAccountComponent />
         </ViewportHigh>
