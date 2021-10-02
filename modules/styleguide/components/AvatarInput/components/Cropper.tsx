@@ -7,6 +7,7 @@ import {
   useEffect,
   useImperativeHandle,
 } from "react";
+import { FiMaximize2 } from "react-icons/fi";
 
 import useResizeObserver from "@psi/shared/hooks/useResizeObserver";
 import valueBetween from "@psi/styleguide/utils/valueBetween";
@@ -38,6 +39,7 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
 
   const drag = useState({
     isDragging: false,
+    isResizing: false,
     initialClientX: 0,
     initialClientY: 0,
     initialCenterX: 0,
@@ -68,6 +70,27 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
       const { centerX, centerY } = croppedDimensions.value;
       drag.set({
         isDragging: true,
+        isResizing: false,
+        initialClientX: clientX,
+        initialClientY: clientY,
+        initialCenterX: centerX,
+        initialCenterY: centerY,
+      });
+    },
+    [croppedDimensions.value],
+  );
+
+  const handleResizeMouseDown = useCallback(
+    (event) => {
+      const clientX =
+        event.clientX || event.nativeEvent.changedTouches?.[0]?.clientX || 0;
+      const clientY =
+        event.clientY || event.nativeEvent.changedTouches?.[0]?.clientY || 0;
+
+      const { centerX, centerY } = croppedDimensions.value;
+      drag.set({
+        isDragging: false,
+        isResizing: true,
         initialClientX: clientX,
         initialClientY: clientY,
         initialCenterX: centerX,
@@ -112,6 +135,38 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           diameter,
         });
       }
+
+      if (drag.value.isResizing) {
+        const { initialCenterX, initialCenterY } = drag.value;
+
+        const { top, left } = imageRef.current.getBoundingClientRect();
+
+        const height = imageRef.current?.naturalHeight || 0;
+        const width = imageRef.current?.naturalWidth || 0;
+
+        croppedDimensions.set({
+          centerX: initialCenterX,
+          centerY: initialCenterY,
+          diameter: valueBetween({
+            value:
+              2 *
+              Math.pow(
+                Math.pow((clientX - left) / ratio.value - initialCenterX, 2) +
+                  Math.pow((clientY - top) / ratio.value - initialCenterY, 2),
+                0.5,
+              ),
+            min: 40,
+            max:
+              2 *
+              Math.min(
+                initialCenterX,
+                initialCenterY,
+                width - initialCenterX,
+                height - initialCenterY,
+              ),
+          }),
+        });
+      }
     },
     [drag.value, croppedDimensions.value],
   );
@@ -119,6 +174,7 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
   const handleMouseUpLeave = useCallback(() => {
     drag.set({
       isDragging: false,
+      isResizing: false,
       initialClientX: 0,
       initialClientY: 0,
       initialCenterX: 0,
@@ -145,6 +201,18 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           onLoad={handleImageLoad}
           src={imageRef.current?.src}
         />
+      </div>
+      <div
+        className="resizer"
+        onMouseDown={handleResizeMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUpLeave}
+        onMouseLeave={handleMouseUpLeave}
+        onTouchStart={handleResizeMouseDown}
+        onTouchMove={handleMouseMove}
+        onTouchEnd={handleMouseUpLeave}
+      >
+        <FiMaximize2 size={28} />
       </div>
       <style jsx>{`
         .background {
@@ -179,6 +247,18 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
             croppedDimensions.value.diameter / 2) *
             ratio.value}px;
           width: ${croppedDimensions.value.diameter * ratio.value}px;
+        }
+        .resizer {
+          display: flex;
+          left: ${-14 +
+          (croppedDimensions.value.centerX +
+            (croppedDimensions.value.diameter / 2) * 0.707) *
+            ratio.value}px;
+          position: absolute;
+          top: ${-14 +
+          (croppedDimensions.value.centerY -
+            (croppedDimensions.value.diameter / 2) * 0.707) *
+            ratio.value}px;
         }
       `}</style>
     </>
