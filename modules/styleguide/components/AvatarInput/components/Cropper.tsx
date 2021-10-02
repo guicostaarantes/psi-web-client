@@ -148,13 +148,14 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           centerX: initialCenterX,
           centerY: initialCenterY,
           diameter: valueBetween({
-            value:
+            value: Math.floor(
               2 *
-              Math.pow(
-                Math.pow((clientX - left) / ratio.value - initialCenterX, 2) +
-                  Math.pow((clientY - top) / ratio.value - initialCenterY, 2),
-                0.5,
-              ),
+                Math.pow(
+                  Math.pow((clientX - left) / ratio.value - initialCenterX, 2) +
+                    Math.pow((clientY - top) / ratio.value - initialCenterY, 2),
+                  0.5,
+                ),
+            ),
             min: 40,
             max:
               2 *
