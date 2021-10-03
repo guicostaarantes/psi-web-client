@@ -11,6 +11,11 @@ import { FiMaximize2, FiMove } from "react-icons/fi";
 import useResizeObserver from "@psi/shared/hooks/useResizeObserver";
 import valueBetween from "@psi/styleguide/utils/valueBetween";
 
+const HALF_ICON_SIZE = 14;
+const ICON_PADDING = 4;
+const CIRCLE_THICKNESS = 2;
+const CIRCLE_COLOR = "#f00";
+
 export interface CropperRef {
   getDimensions: () => {
     centerX: number;
@@ -168,96 +173,127 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
 
   return (
     <>
-      <div className="background"></div>
-      <div className="preview">
+      <div
+        className="background"
+        style={{ height: imageSize.height, width: imageSize.width }}
+      ></div>
+      <div
+        className="preview"
+        style={{
+          borderColor: CIRCLE_COLOR,
+          borderWidth: CIRCLE_THICKNESS,
+          height: croppedDimensions.value.diameter * ratio.value,
+          left:
+            (croppedDimensions.value.centerX -
+              croppedDimensions.value.diameter / 2) *
+              ratio.value -
+            CIRCLE_THICKNESS,
+          top:
+            (croppedDimensions.value.centerY -
+              croppedDimensions.value.diameter / 2) *
+              ratio.value -
+            CIRCLE_THICKNESS,
+          width: croppedDimensions.value.diameter * ratio.value,
+        }}
+      >
         <img
           className="foreground"
           draggable={false}
           onLoad={handleImageLoad}
           src={imageRef.current?.src}
+          style={{
+            height: imageSize.height,
+            left:
+              -(
+                croppedDimensions.value.centerX -
+                croppedDimensions.value.diameter / 2
+              ) * ratio.value,
+            top:
+              -(
+                croppedDimensions.value.centerY -
+                croppedDimensions.value.diameter / 2
+              ) * ratio.value,
+            width: imageSize.width,
+          }}
         />
       </div>
       <div
         className="dragger"
         onMouseDown={handleDragStart}
         onTouchStart={handleDragStart}
+        style={{
+          backgroundColor: CIRCLE_COLOR,
+          left:
+            (croppedDimensions.value.centerX -
+              (croppedDimensions.value.diameter / 2) * 0.707) *
+              ratio.value -
+            HALF_ICON_SIZE -
+            ICON_PADDING,
+          padding: ICON_PADDING,
+          top:
+            (croppedDimensions.value.centerY +
+              (croppedDimensions.value.diameter / 2) * 0.707) *
+              ratio.value -
+            HALF_ICON_SIZE -
+            ICON_PADDING,
+        }}
       >
-        <FiMove size={28} />
+        <FiMove size={2 * HALF_ICON_SIZE} />
       </div>
       <div
         className="resizer"
         onMouseDown={handleResizeStart}
         onTouchStart={handleResizeStart}
+        style={{
+          backgroundColor: CIRCLE_COLOR,
+          left:
+            (croppedDimensions.value.centerX +
+              (croppedDimensions.value.diameter / 2) * 0.707) *
+              ratio.value -
+            HALF_ICON_SIZE -
+            ICON_PADDING,
+          padding: ICON_PADDING,
+          top:
+            (croppedDimensions.value.centerY -
+              (croppedDimensions.value.diameter / 2) * 0.707) *
+              ratio.value -
+            HALF_ICON_SIZE -
+            ICON_PADDING,
+        }}
       >
-        <FiMaximize2 size={28} />
+        <FiMaximize2 size={2 * HALF_ICON_SIZE} />
       </div>
       <style jsx>{`
         .background {
           background-color: #0009;
-          height: ${imageSize.height}px;
           left: 0;
           position: absolute;
           top: 0;
           user-select: none;
-          width: ${imageSize.width}px;
         }
         .dragger {
-          background-color: blue;
           border-radius: 50%;
           color: white;
           display: flex;
-          left: ${-18 +
-          (croppedDimensions.value.centerX -
-            (croppedDimensions.value.diameter / 2) * 0.707) *
-            ratio.value}px;
-          padding: 4px;
           position: absolute;
-          top: ${-18 +
-          (croppedDimensions.value.centerY +
-            (croppedDimensions.value.diameter / 2) * 0.707) *
-            ratio.value}px;
           touch-action: none;
           user-select: none;
         }
         .foreground {
-          height: ${imageSize.height}px;
-          left: -${(croppedDimensions.value.centerX - croppedDimensions.value.diameter / 2) * ratio.value}px;
           position: absolute;
-          top: -${(croppedDimensions.value.centerY - croppedDimensions.value.diameter / 2) * ratio.value}px;
           user-select: none;
-          width: ${imageSize.width}px;
         }
         .preview {
-          border: dashed 2px blue;
+          border: dashed;
           border-radius: 50%;
-          height: ${croppedDimensions.value.diameter * ratio.value}px;
-          left: ${-2 +
-          (croppedDimensions.value.centerX -
-            croppedDimensions.value.diameter / 2) *
-            ratio.value}px;
           overflow: hidden;
           position: absolute;
-          top: ${-2 +
-          (croppedDimensions.value.centerY -
-            croppedDimensions.value.diameter / 2) *
-            ratio.value}px;
-          width: ${croppedDimensions.value.diameter * ratio.value}px;
         }
         .resizer {
-          background-color: blue;
           border-radius: 50%;
           color: white;
           display: flex;
-          left: ${-18 +
-          (croppedDimensions.value.centerX +
-            (croppedDimensions.value.diameter / 2) * 0.707) *
-            ratio.value}px;
-          padding: 4px;
           position: absolute;
-          top: ${-18 +
-          (croppedDimensions.value.centerY -
-            (croppedDimensions.value.diameter / 2) * 0.707) *
-            ratio.value}px;
           touch-action: none;
           user-select: none;
         }
