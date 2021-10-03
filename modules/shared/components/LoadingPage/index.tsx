@@ -11,7 +11,7 @@ const LoadingPage = () => {
         <title>PSI</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container fluid>
+      <Container>
         <ViewportHigh center>
           <CircleSpinner size="3rem" />
         </ViewportHigh>

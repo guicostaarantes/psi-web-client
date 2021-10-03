@@ -17,7 +17,7 @@ const NotFoundPage = () => {
         <title>Página não encontrada | PSI</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container fluid>
+      <Container>
         <ViewportHigh center>
           <Card>
             <MainTitle center>Página não encontrada</MainTitle>

@@ -14,9 +14,11 @@ import {
   useSetMyPsychologistCharacteristicChoicesAndPreferencesMutation,
   useUpsertMyPsychologistProfileMutation,
 } from "@psi/shared/graphql";
+import AvatarInput from "@psi/styleguide/components/AvatarInput";
 import Button from "@psi/styleguide/components/Button";
 import Card from "@psi/styleguide/components/Card";
 import DateInput from "@psi/styleguide/components/DateInput";
+import Image from "@psi/styleguide/components/Image";
 import Input from "@psi/styleguide/components/Input";
 import Col from "@psi/styleguide/components/Layout/Col";
 import Row from "@psi/styleguide/components/Layout/Row";
@@ -42,6 +44,7 @@ const PsychologistDataComponent = () => {
   const birthDateRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
   const bioRef = useRef<HTMLTextAreaElement>(null);
+  const avatarRef = useRef<HTMLInputElement>(null);
   const birthDateInitialValue = useState<string>("");
 
   const choices = useState<Record<string, unknown>>({});
@@ -163,6 +166,7 @@ const PsychologistDataComponent = () => {
         ) / 1000,
       city: cityRef.current.value,
       bio: bioRef.current.value,
+      avatar: avatarRef.current.files?.[0] || null,
     };
 
     // Checking if profileInput is invalid
@@ -279,6 +283,23 @@ const PsychologistDataComponent = () => {
         <MediumTitle center noMarginTop>
           Dados do psicólogo
         </MediumTitle>
+        <AvatarInput
+          currentAvatar={
+            <Image
+              circle
+              label="Avatar atual"
+              authSrc={
+                profileData?.myPsychologistProfile?.avatar
+                  ? `${process.env.NEXT_PUBLIC_PSI_STATIC_URI}/${profileData.myPsychologistProfile.avatar}`
+                  : ""
+              }
+              src="avatar.webp"
+            />
+          }
+          name="avatar"
+          label="Modificar Avatar"
+          reference={avatarRef}
+        />
         <Input name="fullName" label="Nome completo" reference={fullNameRef} />
         <Input
           name="likeName"

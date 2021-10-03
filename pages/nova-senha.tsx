@@ -11,7 +11,7 @@ const ResetPasswordPage = () => {
         <title>Nova senha | PSI</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container fluid>
+      <Container>
         <ViewportHigh center>
           <ResetPasswordComponent />
         </ViewportHigh>

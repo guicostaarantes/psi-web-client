@@ -1,15 +1,11 @@
-import {
-  ApolloClient,
-  ApolloProvider,
-  HttpLink,
-  InMemoryCache,
-} from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { createUploadLink } from "apollo-upload-client";
 
 import ToastContainer from "@psi/styleguide/components/Toast";
 import useTheme from "@psi/styleguide/hooks/useTheme";
 
-const httpLink = new HttpLink({
+const httpLink = createUploadLink({
   uri: process.env.NEXT_PUBLIC_PSI_GRAPHQL_URI,
 });
 
