@@ -3,7 +3,6 @@ import {
   forwardRef,
   ForwardRefRenderFunction,
   RefObject,
-  useCallback,
   useEffect,
   useImperativeHandle,
 } from "react";
@@ -37,15 +36,6 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
   const croppedDimensions = useState({ centerX: 0, centerY: 0, diameter: 0 });
   const ratio = useState(0);
 
-  const drag = useState({
-    isDragging: false,
-    isResizing: false,
-    initialClientX: 0,
-    initialClientY: 0,
-    initialCenterX: 0,
-    initialCenterY: 0,
-  });
-
   const handleImageLoad = () => {
     const height = imageRef.current?.naturalHeight || 0;
     const width = imageRef.current?.naturalWidth || 0;
@@ -60,128 +50,121 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
     ratio.set(imageSize.height / imageRef.current?.naturalHeight);
   }, [imageSize]);
 
-  const handleMouseDown = useCallback(
-    (event) => {
-      const clientX =
-        event.clientX || event.nativeEvent.changedTouches?.[0]?.clientX || 0;
-      const clientY =
-        event.clientY || event.nativeEvent.changedTouches?.[0]?.clientY || 0;
+  const handleDragStart = (startEvent) => {
+    const initialClientX =
+      startEvent.clientX ||
+      startEvent.nativeEvent.changedTouches?.[0]?.clientX ||
+      0;
+    const initialClientY =
+      startEvent.clientY ||
+      startEvent.nativeEvent.changedTouches?.[0]?.clientY ||
+      0;
 
-      const { centerX, centerY } = croppedDimensions.value;
-      drag.set({
-        isDragging: true,
-        isResizing: false,
-        initialClientX: clientX,
-        initialClientY: clientY,
-        initialCenterX: centerX,
-        initialCenterY: centerY,
+    const {
+      centerX: initialCenterX,
+      centerY: initialCenterY,
+    } = croppedDimensions.value;
+
+    const height = imageRef.current?.naturalHeight || 0;
+    const width = imageRef.current?.naturalWidth || 0;
+
+    const diameter = croppedDimensions.value.diameter;
+    const radius = diameter / 2;
+
+    const moveListener = (moveEvent) => {
+      const clientX =
+        moveEvent.clientX || moveEvent.changedTouches?.[0]?.clientX || 0;
+      const clientY =
+        moveEvent.clientY || moveEvent.changedTouches?.[0]?.clientY || 0;
+
+      croppedDimensions.set({
+        centerX: valueBetween({
+          value: initialCenterX + (clientX - initialClientX) / ratio.value,
+          min: radius,
+          max: width - radius,
+        }),
+        centerY: valueBetween({
+          value: initialCenterY + (clientY - initialClientY) / ratio.value,
+          min: radius,
+          max: height - radius,
+        }),
+        diameter,
       });
-    },
-    [croppedDimensions.value],
-  );
+    };
 
-  const handleResizeMouseDown = useCallback(
-    (event) => {
-      const clientX =
-        event.clientX || event.nativeEvent.changedTouches?.[0]?.clientX || 0;
-      const clientY =
-        event.clientY || event.nativeEvent.changedTouches?.[0]?.clientY || 0;
+    document.addEventListener("mousemove", moveListener);
+    document.addEventListener("touchmove", moveListener);
 
-      const { centerX, centerY } = croppedDimensions.value;
-      drag.set({
-        isDragging: false,
-        isResizing: true,
-        initialClientX: clientX,
-        initialClientY: clientY,
-        initialCenterX: centerX,
-        initialCenterY: centerY,
-      });
-    },
-    [croppedDimensions.value],
-  );
-
-  const handleMouseMove = useCallback(
-    (event) => {
-      const clientX =
-        event.clientX || event.nativeEvent.changedTouches?.[0]?.clientX || 0;
-      const clientY =
-        event.clientY || event.nativeEvent.changedTouches?.[0]?.clientY || 0;
-
-      if (drag.value.isDragging) {
-        const {
-          initialClientX,
-          initialClientY,
-          initialCenterX,
-          initialCenterY,
-        } = drag.value;
-
-        const height = imageRef.current?.naturalHeight || 0;
-        const width = imageRef.current?.naturalWidth || 0;
-
-        const diameter = croppedDimensions.value.diameter;
-        const radius = diameter / 2;
-
-        croppedDimensions.set({
-          centerX: valueBetween({
-            value: initialCenterX + (clientX - initialClientX) / ratio.value,
-            min: radius,
-            max: width - radius,
-          }),
-          centerY: valueBetween({
-            value: initialCenterY + (clientY - initialClientY) / ratio.value,
-            min: radius,
-            max: height - radius,
-          }),
-          diameter,
-        });
-      }
-
-      if (drag.value.isResizing) {
-        const { initialCenterX, initialCenterY } = drag.value;
-
-        const { top, left } = imageRef.current.getBoundingClientRect();
-
-        const height = imageRef.current?.naturalHeight || 0;
-        const width = imageRef.current?.naturalWidth || 0;
-
-        croppedDimensions.set({
-          centerX: initialCenterX,
-          centerY: initialCenterY,
-          diameter: valueBetween({
-            value: Math.floor(
-              2 *
-                Math.pow(
-                  Math.pow((clientX - left) / ratio.value - initialCenterX, 2) +
-                    Math.pow((clientY - top) / ratio.value - initialCenterY, 2),
-                  0.5,
-                ),
-            ),
-            min: 40,
-            max:
-              2 *
-              Math.min(
-                initialCenterX,
-                initialCenterY,
-                width - initialCenterX,
-                height - initialCenterY,
-              ),
-          }),
-        });
-      }
-    },
-    [drag.value, croppedDimensions.value],
-  );
-
-  const handleMouseUpLeave = useCallback(() => {
-    drag.set({
-      isDragging: false,
-      isResizing: false,
-      initialClientX: 0,
-      initialClientY: 0,
-      initialCenterX: 0,
-      initialCenterY: 0,
+    document.addEventListener("mouseup", function mouseUp() {
+      document.removeEventListener("mousemove", moveListener);
+      document.removeEventListener("touchmove", moveListener);
+      document.removeEventListener("mouseup", mouseUp);
     });
-  }, []);
+
+    document.addEventListener("touchend", function touchEnd() {
+      document.removeEventListener("mousemove", moveListener);
+      document.removeEventListener("touchmove", moveListener);
+      document.removeEventListener("touchend", touchEnd);
+    });
+  };
+
+  const handleResizeStart = () => {
+    const {
+      centerX: initialCenterX,
+      centerY: initialCenterY,
+    } = croppedDimensions.value;
+
+    const { top, left } = imageRef.current.getBoundingClientRect();
+
+    const height = imageRef.current?.naturalHeight || 0;
+    const width = imageRef.current?.naturalWidth || 0;
+
+    const moveListener = (moveEvent) => {
+      const clientX =
+        moveEvent.clientX || moveEvent.changedTouches?.[0]?.clientX || 0;
+      const clientY =
+        moveEvent.clientY || moveEvent.changedTouches?.[0]?.clientY || 0;
+
+      croppedDimensions.set({
+        centerX: initialCenterX,
+        centerY: initialCenterY,
+        diameter: valueBetween({
+          value: Math.floor(
+            2 *
+              Math.pow(
+                Math.pow((clientX - left) / ratio.value - initialCenterX, 2) +
+                  Math.pow((clientY - top) / ratio.value - initialCenterY, 2),
+                0.5,
+              ),
+          ),
+          min: 40,
+          max:
+            2 *
+            Math.min(
+              initialCenterX,
+              initialCenterY,
+              width - initialCenterX,
+              height - initialCenterY,
+            ),
+        }),
+      });
+    };
+
+    document.addEventListener("mousemove", moveListener);
+    document.addEventListener("touchmove", moveListener);
+
+    document.addEventListener("mouseup", function mouseUp() {
+      document.removeEventListener("mousemove", moveListener);
+      document.removeEventListener("touchmove", moveListener);
+      document.removeEventListener("mouseup", mouseUp);
+    });
+
+    document.addEventListener("touchend", function touchEnd() {
+      document.removeEventListener("mousemove", moveListener);
+      document.removeEventListener("touchmove", moveListener);
+      document.removeEventListener("touchend", touchEnd);
+    });
+  };
 
   return (
     <>
@@ -196,25 +179,15 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
       </div>
       <div
         className="dragger"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUpLeave}
-        onMouseLeave={handleMouseUpLeave}
-        onTouchStart={handleMouseDown}
-        onTouchMove={handleMouseMove}
-        onTouchEnd={handleMouseUpLeave}
+        onMouseDown={handleDragStart}
+        onTouchStart={handleDragStart}
       >
         <FiMove size={28} />
       </div>
       <div
         className="resizer"
-        onMouseDown={handleResizeMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUpLeave}
-        onMouseLeave={handleMouseUpLeave}
-        onTouchStart={handleResizeMouseDown}
-        onTouchMove={handleMouseMove}
-        onTouchEnd={handleMouseUpLeave}
+        onMouseDown={handleResizeStart}
+        onTouchStart={handleResizeStart}
       >
         <FiMaximize2 size={28} />
       </div>
@@ -243,6 +216,8 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           (croppedDimensions.value.centerY +
             (croppedDimensions.value.diameter / 2) * 0.707) *
             ratio.value}px;
+          touch-action: none;
+          user-select: none;
         }
         .foreground {
           height: ${imageSize.height}px;
@@ -283,6 +258,8 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           (croppedDimensions.value.centerY -
             (croppedDimensions.value.diameter / 2) * 0.707) *
             ratio.value}px;
+          touch-action: none;
+          user-select: none;
         }
       `}</style>
     </>
