@@ -7,7 +7,7 @@ import {
   useEffect,
   useImperativeHandle,
 } from "react";
-import { FiMaximize2 } from "react-icons/fi";
+import { FiMaximize2, FiMove } from "react-icons/fi";
 
 import useResizeObserver from "@psi/shared/hooks/useResizeObserver";
 import valueBetween from "@psi/styleguide/utils/valueBetween";
@@ -186,8 +186,16 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
   return (
     <>
       <div className="background"></div>
+      <div className="preview">
+        <img
+          className="foreground"
+          draggable={false}
+          onLoad={handleImageLoad}
+          src={imageRef.current?.src}
+        />
+      </div>
       <div
-        className="preview"
+        className="dragger"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUpLeave}
@@ -196,12 +204,7 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
         onTouchMove={handleMouseMove}
         onTouchEnd={handleMouseUpLeave}
       >
-        <img
-          className="foreground"
-          draggable={false}
-          onLoad={handleImageLoad}
-          src={imageRef.current?.src}
-        />
+        <FiMove size={28} />
       </div>
       <div
         className="resizer"
@@ -225,6 +228,22 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           user-select: none;
           width: ${imageSize.width}px;
         }
+        .dragger {
+          background-color: blue;
+          border-radius: 50%;
+          color: white;
+          display: flex;
+          left: ${-18 +
+          (croppedDimensions.value.centerX -
+            (croppedDimensions.value.diameter / 2) * 0.707) *
+            ratio.value}px;
+          padding: 4px;
+          position: absolute;
+          top: ${-18 +
+          (croppedDimensions.value.centerY +
+            (croppedDimensions.value.diameter / 2) * 0.707) *
+            ratio.value}px;
+        }
         .foreground {
           height: ${imageSize.height}px;
           left: -${(croppedDimensions.value.centerX - croppedDimensions.value.diameter / 2) * ratio.value}px;
@@ -234,29 +253,33 @@ const Cropper: ForwardRefRenderFunction<CropperRef, CropperProps> = (
           width: ${imageSize.width}px;
         }
         .preview {
-          border: dashed 1px blue;
+          border: dashed 2px blue;
           border-radius: 50%;
           height: ${croppedDimensions.value.diameter * ratio.value}px;
-          left: ${-1 +
+          left: ${-2 +
           (croppedDimensions.value.centerX -
             croppedDimensions.value.diameter / 2) *
             ratio.value}px;
           overflow: hidden;
           position: absolute;
-          top: ${-1 +
+          top: ${-2 +
           (croppedDimensions.value.centerY -
             croppedDimensions.value.diameter / 2) *
             ratio.value}px;
           width: ${croppedDimensions.value.diameter * ratio.value}px;
         }
         .resizer {
+          background-color: blue;
+          border-radius: 50%;
+          color: white;
           display: flex;
-          left: ${-14 +
+          left: ${-18 +
           (croppedDimensions.value.centerX +
             (croppedDimensions.value.diameter / 2) * 0.707) *
             ratio.value}px;
+          padding: 4px;
           position: absolute;
-          top: ${-14 +
+          top: ${-18 +
           (croppedDimensions.value.centerY -
             (croppedDimensions.value.diameter / 2) * 0.707) *
             ratio.value}px;
