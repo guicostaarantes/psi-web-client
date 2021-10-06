@@ -1,26 +1,21 @@
 export const HAPPINESS_OPTIONS = [
   {
-    label: "dislike very much",
-    src: "https://twemoji.maxcdn.com/2/svg/1f616.svg",
-    value: -3,
-  },
-  {
-    label: "dislike",
-    src: "https://twemoji.maxcdn.com/2/svg/1f61f.svg",
+    label: "Neutro",
+    src: "https://twemoji.maxcdn.com/2/svg/1f642.svg",
     value: -1,
   },
   {
-    label: "neutral",
-    src: "https://twemoji.maxcdn.com/2/svg/1f914.svg",
+    label: "Contente",
+    src: "https://twemoji.maxcdn.com/2/svg/1f600.svg",
     value: 0,
   },
   {
-    label: "like",
-    src: "https://twemoji.maxcdn.com/2/svg/1f600.svg",
+    label: "Feliz",
+    src: "https://twemoji.maxcdn.com/2/svg/1f601.svg",
     value: 1,
   },
   {
-    label: "like very much",
+    label: "Encantado",
     src: "https://twemoji.maxcdn.com/2/svg/1f929.svg",
     value: 3,
   },
