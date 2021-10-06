@@ -11,9 +11,9 @@ interface EmojiRadioProps {
   }[];
 }
 
-const MARGIN = 0.2;
-const ICON_WIDTH = 1.5;
-const ZOOM_ICON_WIDTH = 2.5;
+const MARGIN = 0.4;
+const ICON_WIDTH = 2;
+const ZOOM_ICON_WIDTH = 3;
 
 const EmojiRadio = ({
   checkedValue,
