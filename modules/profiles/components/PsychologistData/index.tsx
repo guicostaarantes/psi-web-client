@@ -43,6 +43,9 @@ const PsychologistDataComponent = () => {
   const likeNameRef = useRef<HTMLInputElement>(null);
   const birthDateRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
+  const crpRef = useRef<HTMLInputElement>(null); // TODO: send to server
+  const whatsappRef = useRef<HTMLInputElement>(null); // TODO: send to server
+  const instagramRef = useRef<HTMLInputElement>(null); // TODO: send to server
   const bioRef = useRef<HTMLTextAreaElement>(null);
   const avatarRef = useRef<HTMLInputElement>(null);
   const birthDateInitialValue = useState<string>("");
@@ -321,6 +324,41 @@ const PsychologistDataComponent = () => {
               name="city"
               label="Cidade em que reside"
               reference={cityRef}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} md={4}>
+            <Input
+              maskProps={{
+                mask: "99/9999999",
+                maskChar: null,
+              }}
+              name="crp"
+              label="CRP"
+              reference={crpRef}
+            />
+          </Col>
+          <Col xs={12} md={4}>
+            <Input
+              maskProps={{
+                mask: "(99) 99999-9999",
+              }}
+              name="whatsapp"
+              label="Whatsapp profisssional"
+              reference={whatsappRef}
+            />
+          </Col>
+          <Col xs={12} md={4}>
+            <Input
+              maskProps={{
+                formatChars: { "*": "[0-9a-z._]" },
+                mask: "@********************************",
+                maskChar: null,
+              }}
+              name="instagram"
+              label="Instagram profissional"
+              reference={instagramRef}
             />
           </Col>
         </Row>
