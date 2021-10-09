@@ -5,6 +5,9 @@ query MyPsychologistProfile {
     likeName
     birthDate
     city
+    crp
+    whatsapp
+    instagram
     bio
     avatar
     characteristics {

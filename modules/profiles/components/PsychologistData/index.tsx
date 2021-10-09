@@ -43,9 +43,9 @@ const PsychologistDataComponent = () => {
   const likeNameRef = useRef<HTMLInputElement>(null);
   const birthDateRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
-  const crpRef = useRef<HTMLInputElement>(null); // TODO: send to server
-  const whatsappRef = useRef<HTMLInputElement>(null); // TODO: send to server
-  const instagramRef = useRef<HTMLInputElement>(null); // TODO: send to server
+  const crpRef = useRef<HTMLInputElement>(null);
+  const whatsappRef = useRef<HTMLInputElement>(null);
+  const instagramRef = useRef<HTMLInputElement>(null);
   const bioRef = useRef<HTMLTextAreaElement>(null);
   const avatarRef = useRef<HTMLInputElement>(null);
   const birthDateInitialValue = useState<string>("");
@@ -74,6 +74,12 @@ const PsychologistDataComponent = () => {
       likeNameRef.current.value =
         profileData.myPsychologistProfile?.likeName || "";
       cityRef.current.value = profileData.myPsychologistProfile?.city || "";
+      crpRef.current.value = profileData.myPsychologistProfile?.crp || "";
+      console.log(crpRef.current, profileData.myPsychologistProfile?.crp);
+      whatsappRef.current.value =
+        profileData.myPsychologistProfile?.whatsapp || "";
+      instagramRef.current.value =
+        profileData.myPsychologistProfile?.instagram || "";
       bioRef.current.value = profileData.myPsychologistProfile?.bio || "";
 
       const birthDate = Number(profileData.myPsychologistProfile?.birthDate)
@@ -168,6 +174,9 @@ const PsychologistDataComponent = () => {
           ),
         ) / 1000,
       city: cityRef.current.value,
+      crp: crpRef.current.value,
+      whatsapp: whatsappRef.current.value,
+      instagram: instagramRef.current.value,
       bio: bioRef.current.value,
       avatar: avatarRef.current.files?.[0] || null,
     };
@@ -177,6 +186,9 @@ const PsychologistDataComponent = () => {
       profileInput.fullName === "" ||
       profileInput.likeName === "" ||
       profileInput.city === "" ||
+      profileInput.crp === "" ||
+      profileInput.whatsapp === "" ||
+      profileInput.instagram === "" ||
       isNaN(profileInput.birthDate) ||
       profileInput.bio === ""
     ) {
