@@ -32,14 +32,13 @@ const Input = ({
     <>
       <div>
         {maskProps ? (
-          <InputMask {...maskProps}>
+          <InputMask ref={reference} {...maskProps}>
             {() => (
               <input
                 aria-label={label}
                 id={name}
                 name={name}
                 placeholder={label}
-                ref={reference}
                 type={type || "text"}
                 {...rest}
               />
