@@ -25,6 +25,7 @@ import Row from "@psi/styleguide/components/Layout/Row";
 import TextArea from "@psi/styleguide/components/TextArea";
 import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
+import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import { BIRTH_DATE_FORMAT } from "@psi/styleguide/constants/locale";
 import useToast from "@psi/styleguide/hooks/useToast";
 
@@ -298,6 +299,10 @@ const PsychologistDataComponent = () => {
         <MediumTitle center noMarginTop>
           Dados do psicólogo
         </MediumTitle>
+        <Paragraph center light>
+          Os dados dessa seção serão acessíveis aos coordenadores do projeto e a
+          pacientes que visitarem o seu perfil.
+        </Paragraph>
         <AvatarInput
           currentAvatar={
             <Image
@@ -374,16 +379,6 @@ const PsychologistDataComponent = () => {
             />
           </Col>
         </Row>
-        <TextArea
-          name="bio"
-          label="Fale sobre você para seus potenciais pacientes"
-          reference={bioRef}
-        />
-      </Card>
-      <Card>
-        <MediumTitle center noMarginTop>
-          Características do psicólogo
-        </MediumTitle>
         {chars
           .filter(
             (char) =>
@@ -396,11 +391,21 @@ const PsychologistDataComponent = () => {
               choice={choices[char.name]}
             />
           ))}
+        <TextArea
+          name="bio"
+          label="Fale sobre você para seus potenciais pacientes"
+          reference={bioRef}
+        />
       </Card>
       <Card>
         <MediumTitle center noMarginTop>
           Preferências do psicólogo
         </MediumTitle>
+        <Paragraph center light>
+          Os dados dessa seção são totalmente confidenciais e só serão usados
+          pelo nosso algoritmo para encontrar pacientes com maior
+          compatibilidade.
+        </Paragraph>
         {preferences.map((pref) => (
           <PreferenceChooserComponent
             key={pref.name}

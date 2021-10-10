@@ -24,6 +24,7 @@ import Col from "@psi/styleguide/components/Layout/Col";
 import Row from "@psi/styleguide/components/Layout/Row";
 import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
+import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import { BIRTH_DATE_FORMAT } from "@psi/styleguide/constants/locale";
 import useToast from "@psi/styleguide/hooks/useToast";
 
@@ -268,6 +269,10 @@ const PatientDataComponent = () => {
         <MediumTitle center noMarginTop>
           Dados do paciente
         </MediumTitle>
+        <Paragraph center light>
+          Os dados dessa seção serão acessíveis aos coordenadores do projeto e
+          ao psicólogo que estiver realizando seu tratamento.
+        </Paragraph>
         <AvatarInput
           currentAvatar={
             <Image
@@ -322,11 +327,6 @@ const PatientDataComponent = () => {
               choice={choices[char.name]}
             />
           ))}
-      </Card>
-      <Card>
-        <MediumTitle center noMarginTop>
-          Características do paciente
-        </MediumTitle>
         {chars
           .filter(
             (char) =>
@@ -345,6 +345,11 @@ const PatientDataComponent = () => {
         <MediumTitle center noMarginTop>
           Preferências do paciente
         </MediumTitle>
+        <Paragraph center light>
+          Os dados dessa seção são totalmente confidenciais e só serão usados
+          pelo nosso algoritmo para encontrar psicólogos com maior
+          compatibilidade.
+        </Paragraph>
         {preferences.map((pref) => (
           <PreferenceChooserComponent
             key={pref.name}
