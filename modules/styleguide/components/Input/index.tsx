@@ -1,30 +1,60 @@
-import { InputHTMLAttributes, LegacyRef } from "react";
+import { ChangeEvent, InputHTMLAttributes, LegacyRef } from "react";
+import InputMask from "react-input-mask";
 
 import useTheme from "@psi/styleguide/hooks/useTheme";
 
 interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "placeholder"> {
-  name: string;
   label: string;
+  maskProps?: {
+    formatChars?: { [key: string]: string };
+    mask: string | Array<string | RegExp>;
+    maskChar?: string | null | undefined;
+    value?: string;
+    onChange?: (ev: ChangeEvent<HTMLInputElement>) => void;
+  };
+  name: string;
   reference?: LegacyRef<HTMLInputElement>;
-  type?: "text" | "password";
+  type?: string;
 }
 
-const Input = ({ label, name, reference, type, ...rest }: InputProps) => {
+const Input = ({
+  label,
+  maskProps,
+  name,
+  reference,
+  type,
+  ...rest
+}: InputProps) => {
   const { theme } = useTheme();
 
   return (
     <>
       <div>
-        <input
-          aria-label={label}
-          id={name}
-          name={name}
-          placeholder={label}
-          ref={reference}
-          type={type || "text"}
-          {...rest}
-        />
+        {maskProps ? (
+          <InputMask ref={reference} {...maskProps}>
+            {() => (
+              <input
+                aria-label={label}
+                id={name}
+                name={name}
+                placeholder={label}
+                type={type || "text"}
+                {...rest}
+              />
+            )}
+          </InputMask>
+        ) : (
+          <input
+            aria-label={label}
+            id={name}
+            name={name}
+            placeholder={label}
+            ref={reference}
+            type={type || "text"}
+            {...rest}
+          />
+        )}
         <label htmlFor={name}>{label}</label>
       </div>
       <style jsx>{`

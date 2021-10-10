@@ -61,6 +61,7 @@ const CharacteristicChooserComponent = ({
               .map((pv) => (
                 <CheckboxCharacteristicSelector
                   key={`${characteristic.name}:${pv}`}
+                  charName={characteristic.name}
                   choice={choice}
                   message={messages[`${prefix}:${characteristic.name}:${pv}`]}
                   pv={pv}
@@ -101,20 +102,24 @@ const RadioCharacteristicSelector = ({
 };
 
 interface CheckboxCharacteristicSelectorProps {
+  charName: string;
   choice: State<unknown>;
   message: string;
   pv: string;
 }
 
 const CheckboxCharacteristicSelector = ({
+  charName,
   choice,
   message,
   pv,
 }: CheckboxCharacteristicSelectorProps) => {
   const internalChoice = useState(choice[pv]);
 
+  const md = charName === "issues" ? 12 : 4;
+
   return (
-    <Col xs={12} md={4} key={pv} style={{ padding: "0.5rem" }}>
+    <Col xs={12} md={md} key={pv} style={{ padding: "0.5rem" }}>
       <Checkbox
         name={pv}
         label={message}

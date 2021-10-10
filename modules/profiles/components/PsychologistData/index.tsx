@@ -25,6 +25,7 @@ import Row from "@psi/styleguide/components/Layout/Row";
 import TextArea from "@psi/styleguide/components/TextArea";
 import MainTitle from "@psi/styleguide/components/Typography/MainTitle";
 import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
+import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 import { BIRTH_DATE_FORMAT } from "@psi/styleguide/constants/locale";
 import useToast from "@psi/styleguide/hooks/useToast";
 
@@ -43,6 +44,9 @@ const PsychologistDataComponent = () => {
   const likeNameRef = useRef<HTMLInputElement>(null);
   const birthDateRef = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
+  const crpRef = useRef<HTMLInputElement>(null);
+  const whatsappRef = useRef<HTMLInputElement>(null);
+  const instagramRef = useRef<HTMLInputElement>(null);
   const bioRef = useRef<HTMLTextAreaElement>(null);
   const avatarRef = useRef<HTMLInputElement>(null);
   const birthDateInitialValue = useState<string>("");
@@ -71,6 +75,12 @@ const PsychologistDataComponent = () => {
       likeNameRef.current.value =
         profileData.myPsychologistProfile?.likeName || "";
       cityRef.current.value = profileData.myPsychologistProfile?.city || "";
+      crpRef.current.value = profileData.myPsychologistProfile?.crp || "";
+      console.log(crpRef.current, profileData.myPsychologistProfile?.crp);
+      whatsappRef.current.value =
+        profileData.myPsychologistProfile?.whatsapp || "";
+      instagramRef.current.value =
+        profileData.myPsychologistProfile?.instagram || "";
       bioRef.current.value = profileData.myPsychologistProfile?.bio || "";
 
       const birthDate = Number(profileData.myPsychologistProfile?.birthDate)
@@ -165,6 +175,9 @@ const PsychologistDataComponent = () => {
           ),
         ) / 1000,
       city: cityRef.current.value,
+      crp: crpRef.current.value,
+      whatsapp: whatsappRef.current.value,
+      instagram: instagramRef.current.value,
       bio: bioRef.current.value,
       avatar: avatarRef.current.files?.[0] || null,
     };
@@ -174,6 +187,9 @@ const PsychologistDataComponent = () => {
       profileInput.fullName === "" ||
       profileInput.likeName === "" ||
       profileInput.city === "" ||
+      profileInput.crp === "" ||
+      profileInput.whatsapp === "" ||
+      profileInput.instagram === "" ||
       isNaN(profileInput.birthDate) ||
       profileInput.bio === ""
     ) {
@@ -283,6 +299,10 @@ const PsychologistDataComponent = () => {
         <MediumTitle center noMarginTop>
           Dados do psicólogo
         </MediumTitle>
+        <Paragraph center light>
+          Os dados dessa seção serão acessíveis aos coordenadores do projeto e a
+          pacientes que visitarem o seu perfil.
+        </Paragraph>
         <AvatarInput
           currentAvatar={
             <Image
@@ -324,16 +344,41 @@ const PsychologistDataComponent = () => {
             />
           </Col>
         </Row>
-        <TextArea
-          name="bio"
-          label="Fale sobre você para seus potenciais pacientes"
-          reference={bioRef}
-        />
-      </Card>
-      <Card>
-        <MediumTitle center noMarginTop>
-          Características do psicólogo
-        </MediumTitle>
+        <Row>
+          <Col xs={12} md={4}>
+            <Input
+              maskProps={{
+                mask: "99/9999999",
+                maskChar: null,
+              }}
+              name="crp"
+              label="CRP"
+              reference={crpRef}
+            />
+          </Col>
+          <Col xs={12} md={4}>
+            <Input
+              maskProps={{
+                mask: "(99) 99999-9999",
+              }}
+              name="whatsapp"
+              label="Whatsapp profisssional"
+              reference={whatsappRef}
+            />
+          </Col>
+          <Col xs={12} md={4}>
+            <Input
+              maskProps={{
+                formatChars: { "*": "[0-9a-z._]" },
+                mask: "@********************************",
+                maskChar: null,
+              }}
+              name="instagram"
+              label="Instagram profissional"
+              reference={instagramRef}
+            />
+          </Col>
+        </Row>
         {chars
           .filter(
             (char) =>
@@ -346,11 +391,21 @@ const PsychologistDataComponent = () => {
               choice={choices[char.name]}
             />
           ))}
+        <TextArea
+          name="bio"
+          label="Fale sobre você para seus potenciais pacientes"
+          reference={bioRef}
+        />
       </Card>
       <Card>
         <MediumTitle center noMarginTop>
           Preferências do psicólogo
         </MediumTitle>
+        <Paragraph center light>
+          Os dados dessa seção são totalmente confidenciais e só serão usados
+          pelo nosso algoritmo para encontrar pacientes com maior
+          compatibilidade.
+        </Paragraph>
         {preferences.map((pref) => (
           <PreferenceChooserComponent
             key={pref.name}

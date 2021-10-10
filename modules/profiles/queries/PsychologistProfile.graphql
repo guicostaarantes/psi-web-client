@@ -4,6 +4,9 @@ query PsychologistProfile($id: ID!) {
     fullName
     likeName
     city
+    crp
+    whatsapp
+    instagram
     bio
     avatar
   }

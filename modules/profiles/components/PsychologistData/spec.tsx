@@ -33,6 +33,9 @@ const mocks = [
           likeName: "Peyton Manning",
           birthDate: 196527600,
           city: "Indianapolis - IN",
+          crp: "06/123456",
+          whatsapp: "(31) 98765-4321",
+          instagram: "@peytonmanning",
           bio: "Hi, my name is Peyton Manning",
           avatar: "abcd1234",
           characteristics: [

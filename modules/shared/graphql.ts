@@ -350,6 +350,9 @@ export type PsychologistProfile = {
   likeName: Scalars["String"];
   birthDate: Scalars["Int"];
   city: Scalars["String"];
+  crp: Scalars["String"];
+  whatsapp: Scalars["String"];
+  instagram: Scalars["String"];
   bio: Scalars["String"];
   avatar: Scalars["String"];
   characteristics: Array<CharacteristicChoice>;
@@ -387,6 +390,9 @@ export type PublicPsychologistProfile = {
   fullName: Scalars["String"];
   likeName: Scalars["String"];
   city: Scalars["String"];
+  crp: Scalars["String"];
+  whatsapp: Scalars["String"];
+  instagram: Scalars["String"];
   bio: Scalars["String"];
   avatar: Scalars["String"];
   pendingTreatments: Array<PsychologistTreatment>;
@@ -551,6 +557,9 @@ export type UpsertMyPsychologistProfileInput = {
   likeName: Scalars["String"];
   birthDate: Scalars["Int"];
   city: Scalars["String"];
+  crp: Scalars["String"];
+  whatsapp: Scalars["String"];
+  instagram: Scalars["String"];
   bio: Scalars["String"];
   avatar?: Maybe<Scalars["Upload"]>;
 };
@@ -813,6 +822,9 @@ export type MyPsychologistProfileQuery = {
     likeName: string;
     birthDate: number;
     city: string;
+    crp: string;
+    whatsapp: string;
+    instagram: string;
     bio: string;
     avatar: string;
     characteristics: Array<{
@@ -842,6 +854,9 @@ export type PsychologistProfileQuery = {
     fullName: string;
     likeName: string;
     city: string;
+    crp: string;
+    whatsapp: string;
+    instagram: string;
     bio: string;
     avatar: string;
   }>;
@@ -1986,6 +2001,9 @@ export const MyPsychologistProfileDocument = gql`
       likeName
       birthDate
       city
+      crp
+      whatsapp
+      instagram
       bio
       avatar
       characteristics {
@@ -2058,6 +2076,9 @@ export const PsychologistProfileDocument = gql`
       fullName
       likeName
       city
+      crp
+      whatsapp
+      instagram
       bio
       avatar
     }
