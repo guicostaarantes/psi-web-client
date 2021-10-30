@@ -16,5 +16,10 @@ query MyPatientProfile {
       selectedValue
       weight
     }
+    agreements {
+      termName
+      termVersion
+      signedAt
+    }
   }
 }

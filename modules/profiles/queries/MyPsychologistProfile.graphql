@@ -20,5 +20,10 @@ query MyPsychologistProfile {
       selectedValue
       weight
     }
+    agreements {
+      termName
+      termVersion
+      signedAt
+    }
   }
 }

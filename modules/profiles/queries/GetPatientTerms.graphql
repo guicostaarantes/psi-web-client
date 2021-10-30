@@ -1,0 +1,7 @@
+query GetPatientTerms {
+  patientTerms {
+    name
+    version
+    active
+  }
+}

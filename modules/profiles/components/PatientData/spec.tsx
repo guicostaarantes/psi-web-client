@@ -63,6 +63,13 @@ const mocks = [
               weight: -3,
             },
           ],
+          agreements: [
+            {
+              termName: "emergency",
+              termVersion: 1,
+              signedAt: 16123456789,
+            },
+          ],
         },
       },
     },
