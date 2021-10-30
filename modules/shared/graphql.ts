@@ -1002,6 +1002,24 @@ export type UpsertMyPsychologistProfileMutation = {
   upsertMyPsychologistProfile?: Maybe<boolean>;
 };
 
+export type UpsertPatientAgreementMutationVariables = Exact<{
+  agreementInput: UpsertAgreementInput;
+}>;
+
+export type UpsertPatientAgreementMutation = {
+  __typename?: "Mutation";
+  upsertPatientAgreement?: Maybe<boolean>;
+};
+
+export type UpsertPsychologistAgreementMutationVariables = Exact<{
+  agreementInput: UpsertAgreementInput;
+}>;
+
+export type UpsertPsychologistAgreementMutation = {
+  __typename?: "Mutation";
+  upsertPsychologistAgreement?: Maybe<boolean>;
+};
+
 export type CancelAppointmentByPsychologistMutationVariables = Exact<{
   id: Scalars["ID"];
   reason: Scalars["String"];
@@ -2558,6 +2576,100 @@ export type UpsertMyPsychologistProfileMutationResult = Apollo.MutationResult<Up
 export type UpsertMyPsychologistProfileMutationOptions = Apollo.BaseMutationOptions<
   UpsertMyPsychologistProfileMutation,
   UpsertMyPsychologistProfileMutationVariables
+>;
+export const UpsertPatientAgreementDocument = gql`
+  mutation UpsertPatientAgreement($agreementInput: UpsertAgreementInput!) {
+    upsertPatientAgreement(input: $agreementInput)
+  }
+`;
+export type UpsertPatientAgreementMutationFn = Apollo.MutationFunction<
+  UpsertPatientAgreementMutation,
+  UpsertPatientAgreementMutationVariables
+>;
+
+/**
+ * __useUpsertPatientAgreementMutation__
+ *
+ * To run a mutation, you first call `useUpsertPatientAgreementMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertPatientAgreementMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertPatientAgreementMutation, { data, loading, error }] = useUpsertPatientAgreementMutation({
+ *   variables: {
+ *      agreementInput: // value for 'agreementInput'
+ *   },
+ * });
+ */
+export function useUpsertPatientAgreementMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertPatientAgreementMutation,
+    UpsertPatientAgreementMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertPatientAgreementMutation,
+    UpsertPatientAgreementMutationVariables
+  >(UpsertPatientAgreementDocument, options);
+}
+export type UpsertPatientAgreementMutationHookResult = ReturnType<
+  typeof useUpsertPatientAgreementMutation
+>;
+export type UpsertPatientAgreementMutationResult = Apollo.MutationResult<UpsertPatientAgreementMutation>;
+export type UpsertPatientAgreementMutationOptions = Apollo.BaseMutationOptions<
+  UpsertPatientAgreementMutation,
+  UpsertPatientAgreementMutationVariables
+>;
+export const UpsertPsychologistAgreementDocument = gql`
+  mutation UpsertPsychologistAgreement($agreementInput: UpsertAgreementInput!) {
+    upsertPsychologistAgreement(input: $agreementInput)
+  }
+`;
+export type UpsertPsychologistAgreementMutationFn = Apollo.MutationFunction<
+  UpsertPsychologistAgreementMutation,
+  UpsertPsychologistAgreementMutationVariables
+>;
+
+/**
+ * __useUpsertPsychologistAgreementMutation__
+ *
+ * To run a mutation, you first call `useUpsertPsychologistAgreementMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertPsychologistAgreementMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertPsychologistAgreementMutation, { data, loading, error }] = useUpsertPsychologistAgreementMutation({
+ *   variables: {
+ *      agreementInput: // value for 'agreementInput'
+ *   },
+ * });
+ */
+export function useUpsertPsychologistAgreementMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertPsychologistAgreementMutation,
+    UpsertPsychologistAgreementMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertPsychologistAgreementMutation,
+    UpsertPsychologistAgreementMutationVariables
+  >(UpsertPsychologistAgreementDocument, options);
+}
+export type UpsertPsychologistAgreementMutationHookResult = ReturnType<
+  typeof useUpsertPsychologistAgreementMutation
+>;
+export type UpsertPsychologistAgreementMutationResult = Apollo.MutationResult<UpsertPsychologistAgreementMutation>;
+export type UpsertPsychologistAgreementMutationOptions = Apollo.BaseMutationOptions<
+  UpsertPsychologistAgreementMutation,
+  UpsertPsychologistAgreementMutationVariables
 >;
 export const CancelAppointmentByPsychologistDocument = gql`
   mutation CancelAppointmentByPsychologist($id: ID!, $reason: String!) {

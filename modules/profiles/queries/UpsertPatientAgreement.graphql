@@ -1,0 +1,3 @@
+mutation UpsertPatientAgreement($agreementInput: UpsertAgreementInput!) {
+  upsertPatientAgreement(input: $agreementInput)
+}
