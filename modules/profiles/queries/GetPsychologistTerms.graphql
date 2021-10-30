@@ -1,0 +1,7 @@
+query GetPsychologistTerms {
+  psychologistTerms {
+    name
+    version
+    active
+  }
+}

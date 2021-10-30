@@ -1,0 +1,3 @@
+mutation UpsertPsychologistAgreement($agreementInput: UpsertAgreementInput!) {
+  upsertPsychologistAgreement(input: $agreementInput)
+}

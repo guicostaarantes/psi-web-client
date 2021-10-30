@@ -25,6 +25,15 @@ export type Affinity = {
   psychologist?: Maybe<PublicPsychologistProfile>;
 };
 
+export type Agreement = {
+  __typename?: "Agreement";
+  id: Scalars["ID"];
+  termName: Scalars["String"];
+  termVersion: Scalars["Int"];
+  profileId: Scalars["String"];
+  signedAt: Scalars["Int"];
+};
+
 export enum AppointmentStatus {
   Created = "CREATED",
   ConfirmedByPatient = "CONFIRMED_BY_PATIENT",
@@ -108,6 +117,12 @@ export type Mutation = {
   resetPassword?: Maybe<Scalars["Boolean"]>;
   /** The updateUser mutation allows a user to update specific information about another user. */
   updateUser?: Maybe<Scalars["Boolean"]>;
+  /** The upsertPatientAgreement mutation allows a user to create or update an agreement to a term for patients. */
+  upsertPatientAgreement?: Maybe<Scalars["Boolean"]>;
+  /** The upsertPsychologistAgreement mutation allows a user to create or update an agreement to a term for psychologists. */
+  upsertPsychologistAgreement?: Maybe<Scalars["Boolean"]>;
+  /** The upsertTerm mutation allows a user to create or update a term. */
+  upsertTerm?: Maybe<Scalars["Boolean"]>;
   /** The cancelAppointmentByPatient mutation allows a user with a patient profile to cancel the confirmation of an appointment. */
   cancelAppointmentByPatient?: Maybe<Scalars["Boolean"]>;
   /** The cancelAppointmentByPsychologist mutation allows a user with a psychologist profile to cancel the confirmation of an appointment. */
@@ -183,6 +198,18 @@ export type MutationResetPasswordArgs = {
 export type MutationUpdateUserArgs = {
   id: Scalars["ID"];
   input: UpdateUserInput;
+};
+
+export type MutationUpsertPatientAgreementArgs = {
+  input: UpsertAgreementInput;
+};
+
+export type MutationUpsertPsychologistAgreementArgs = {
+  input: UpsertAgreementInput;
+};
+
+export type MutationUpsertTermArgs = {
+  input: UpsertTermInput;
 };
 
 export type MutationCancelAppointmentByPatientArgs = {
@@ -309,6 +336,7 @@ export type PatientProfile = {
   avatar: Scalars["String"];
   characteristics: Array<CharacteristicChoice>;
   preferences: Array<Preference>;
+  agreements: Array<Agreement>;
   treatments: Array<PatientTreatment>;
   appointments: Array<PatientAppointment>;
 };
@@ -357,6 +385,7 @@ export type PsychologistProfile = {
   avatar: Scalars["String"];
   characteristics: Array<CharacteristicChoice>;
   preferences: Array<Preference>;
+  agreements: Array<Agreement>;
   treatments: Array<PsychologistTreatment>;
   priceRangeOfferings: Array<TreatmentPriceRangeOffering>;
   appointments: Array<PsychologistAppointment>;
@@ -409,6 +438,10 @@ export type Query = {
   user: User;
   /** The usersByRole query allows a user to get users that have a specified role in the application. */
   usersByRole: Array<User>;
+  /** The patientProfile query allows a user to get a patient profile from other user. */
+  patientTerms: Array<Term>;
+  /** The psychologistProfile query allows a user to get a psychologist profile from other user. */
+  psychologistTerms: Array<Term>;
   /** The patientCharacteristics query allows a user to get all possible patient characteristics. */
   patientCharacteristics: Array<Characteristic>;
   /** The psychologistCharacteristics query allows a user to get all possible psychologist characteristics. */
@@ -492,6 +525,18 @@ export type SetTreatmentPriceRangesInput = {
   eligibleFor: Scalars["String"];
 };
 
+export type Term = {
+  __typename?: "Term";
+  name: Scalars["String"];
+  version: Scalars["Int"];
+  active: Scalars["Boolean"];
+};
+
+export enum TermProfileType {
+  Patient = "PATIENT",
+  Psychologist = "PSYCHOLOGIST",
+}
+
 export type Token = {
   __typename?: "Token";
   token: Scalars["String"];
@@ -544,6 +589,12 @@ export type UpdateUserInput = {
   role: Role;
 };
 
+export type UpsertAgreementInput = {
+  termName: Scalars["String"];
+  termVersion: Scalars["Int"];
+  agreed: Scalars["Boolean"];
+};
+
 export type UpsertMyPatientProfileInput = {
   fullName: Scalars["String"];
   likeName: Scalars["String"];
@@ -562,6 +613,13 @@ export type UpsertMyPsychologistProfileInput = {
   instagram: Scalars["String"];
   bio: Scalars["String"];
   avatar?: Maybe<Scalars["Upload"]>;
+};
+
+export type UpsertTermInput = {
+  name: Scalars["String"];
+  version: Scalars["Int"];
+  profileType: TermProfileType;
+  active: Scalars["Boolean"];
 };
 
 export type User = {
@@ -782,6 +840,32 @@ export type GetCharacteristicsQuery = {
   }>;
 };
 
+export type GetPatientTermsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPatientTermsQuery = {
+  __typename?: "Query";
+  patientTerms: Array<{
+    __typename?: "Term";
+    name: string;
+    version: number;
+    active: boolean;
+  }>;
+};
+
+export type GetPsychologistTermsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetPsychologistTermsQuery = {
+  __typename?: "Query";
+  psychologistTerms: Array<{
+    __typename?: "Term";
+    name: string;
+    version: number;
+    active: boolean;
+  }>;
+};
+
 export type MyPatientProfileQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MyPatientProfileQuery = {
@@ -805,6 +889,12 @@ export type MyPatientProfileQuery = {
       characteristicName: string;
       selectedValue: string;
       weight: number;
+    }>;
+    agreements: Array<{
+      __typename?: "Agreement";
+      termName: string;
+      termVersion: number;
+      signedAt: number;
     }>;
   }>;
 };
@@ -838,6 +928,12 @@ export type MyPsychologistProfileQuery = {
       characteristicName: string;
       selectedValue: string;
       weight: number;
+    }>;
+    agreements: Array<{
+      __typename?: "Agreement";
+      termName: string;
+      termVersion: number;
+      signedAt: number;
     }>;
   }>;
 };
@@ -904,6 +1000,24 @@ export type UpsertMyPsychologistProfileMutationVariables = Exact<{
 export type UpsertMyPsychologistProfileMutation = {
   __typename?: "Mutation";
   upsertMyPsychologistProfile?: Maybe<boolean>;
+};
+
+export type UpsertPatientAgreementMutationVariables = Exact<{
+  agreementInput: UpsertAgreementInput;
+}>;
+
+export type UpsertPatientAgreementMutation = {
+  __typename?: "Mutation";
+  upsertPatientAgreement?: Maybe<boolean>;
+};
+
+export type UpsertPsychologistAgreementMutationVariables = Exact<{
+  agreementInput: UpsertAgreementInput;
+}>;
+
+export type UpsertPsychologistAgreementMutation = {
+  __typename?: "Mutation";
+  upsertPsychologistAgreement?: Maybe<boolean>;
 };
 
 export type CancelAppointmentByPsychologistMutationVariables = Exact<{
@@ -1921,6 +2035,124 @@ export type GetCharacteristicsQueryResult = Apollo.QueryResult<
   GetCharacteristicsQuery,
   GetCharacteristicsQueryVariables
 >;
+export const GetPatientTermsDocument = gql`
+  query GetPatientTerms {
+    patientTerms {
+      name
+      version
+      active
+    }
+  }
+`;
+
+/**
+ * __useGetPatientTermsQuery__
+ *
+ * To run a query within a React component, call `useGetPatientTermsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPatientTermsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPatientTermsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPatientTermsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetPatientTermsQuery,
+    GetPatientTermsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPatientTermsQuery, GetPatientTermsQueryVariables>(
+    GetPatientTermsDocument,
+    options,
+  );
+}
+export function useGetPatientTermsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPatientTermsQuery,
+    GetPatientTermsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetPatientTermsQuery,
+    GetPatientTermsQueryVariables
+  >(GetPatientTermsDocument, options);
+}
+export type GetPatientTermsQueryHookResult = ReturnType<
+  typeof useGetPatientTermsQuery
+>;
+export type GetPatientTermsLazyQueryHookResult = ReturnType<
+  typeof useGetPatientTermsLazyQuery
+>;
+export type GetPatientTermsQueryResult = Apollo.QueryResult<
+  GetPatientTermsQuery,
+  GetPatientTermsQueryVariables
+>;
+export const GetPsychologistTermsDocument = gql`
+  query GetPsychologistTerms {
+    psychologistTerms {
+      name
+      version
+      active
+    }
+  }
+`;
+
+/**
+ * __useGetPsychologistTermsQuery__
+ *
+ * To run a query within a React component, call `useGetPsychologistTermsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPsychologistTermsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPsychologistTermsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPsychologistTermsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetPsychologistTermsQuery,
+    GetPsychologistTermsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetPsychologistTermsQuery,
+    GetPsychologistTermsQueryVariables
+  >(GetPsychologistTermsDocument, options);
+}
+export function useGetPsychologistTermsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPsychologistTermsQuery,
+    GetPsychologistTermsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetPsychologistTermsQuery,
+    GetPsychologistTermsQueryVariables
+  >(GetPsychologistTermsDocument, options);
+}
+export type GetPsychologistTermsQueryHookResult = ReturnType<
+  typeof useGetPsychologistTermsQuery
+>;
+export type GetPsychologistTermsLazyQueryHookResult = ReturnType<
+  typeof useGetPsychologistTermsLazyQuery
+>;
+export type GetPsychologistTermsQueryResult = Apollo.QueryResult<
+  GetPsychologistTermsQuery,
+  GetPsychologistTermsQueryVariables
+>;
 export const MyPatientProfileDocument = gql`
   query MyPatientProfile {
     myPatientProfile {
@@ -1939,6 +2171,11 @@ export const MyPatientProfileDocument = gql`
         characteristicName
         selectedValue
         weight
+      }
+      agreements {
+        termName
+        termVersion
+        signedAt
       }
     }
   }
@@ -2015,6 +2252,11 @@ export const MyPsychologistProfileDocument = gql`
         characteristicName
         selectedValue
         weight
+      }
+      agreements {
+        termName
+        termVersion
+        signedAt
       }
     }
   }
@@ -2334,6 +2576,100 @@ export type UpsertMyPsychologistProfileMutationResult = Apollo.MutationResult<Up
 export type UpsertMyPsychologistProfileMutationOptions = Apollo.BaseMutationOptions<
   UpsertMyPsychologistProfileMutation,
   UpsertMyPsychologistProfileMutationVariables
+>;
+export const UpsertPatientAgreementDocument = gql`
+  mutation UpsertPatientAgreement($agreementInput: UpsertAgreementInput!) {
+    upsertPatientAgreement(input: $agreementInput)
+  }
+`;
+export type UpsertPatientAgreementMutationFn = Apollo.MutationFunction<
+  UpsertPatientAgreementMutation,
+  UpsertPatientAgreementMutationVariables
+>;
+
+/**
+ * __useUpsertPatientAgreementMutation__
+ *
+ * To run a mutation, you first call `useUpsertPatientAgreementMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertPatientAgreementMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertPatientAgreementMutation, { data, loading, error }] = useUpsertPatientAgreementMutation({
+ *   variables: {
+ *      agreementInput: // value for 'agreementInput'
+ *   },
+ * });
+ */
+export function useUpsertPatientAgreementMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertPatientAgreementMutation,
+    UpsertPatientAgreementMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertPatientAgreementMutation,
+    UpsertPatientAgreementMutationVariables
+  >(UpsertPatientAgreementDocument, options);
+}
+export type UpsertPatientAgreementMutationHookResult = ReturnType<
+  typeof useUpsertPatientAgreementMutation
+>;
+export type UpsertPatientAgreementMutationResult = Apollo.MutationResult<UpsertPatientAgreementMutation>;
+export type UpsertPatientAgreementMutationOptions = Apollo.BaseMutationOptions<
+  UpsertPatientAgreementMutation,
+  UpsertPatientAgreementMutationVariables
+>;
+export const UpsertPsychologistAgreementDocument = gql`
+  mutation UpsertPsychologistAgreement($agreementInput: UpsertAgreementInput!) {
+    upsertPsychologistAgreement(input: $agreementInput)
+  }
+`;
+export type UpsertPsychologistAgreementMutationFn = Apollo.MutationFunction<
+  UpsertPsychologistAgreementMutation,
+  UpsertPsychologistAgreementMutationVariables
+>;
+
+/**
+ * __useUpsertPsychologistAgreementMutation__
+ *
+ * To run a mutation, you first call `useUpsertPsychologistAgreementMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertPsychologistAgreementMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertPsychologistAgreementMutation, { data, loading, error }] = useUpsertPsychologistAgreementMutation({
+ *   variables: {
+ *      agreementInput: // value for 'agreementInput'
+ *   },
+ * });
+ */
+export function useUpsertPsychologistAgreementMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertPsychologistAgreementMutation,
+    UpsertPsychologistAgreementMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertPsychologistAgreementMutation,
+    UpsertPsychologistAgreementMutationVariables
+  >(UpsertPsychologistAgreementDocument, options);
+}
+export type UpsertPsychologistAgreementMutationHookResult = ReturnType<
+  typeof useUpsertPsychologistAgreementMutation
+>;
+export type UpsertPsychologistAgreementMutationResult = Apollo.MutationResult<UpsertPsychologistAgreementMutation>;
+export type UpsertPsychologistAgreementMutationOptions = Apollo.BaseMutationOptions<
+  UpsertPsychologistAgreementMutation,
+  UpsertPsychologistAgreementMutationVariables
 >;
 export const CancelAppointmentByPsychologistDocument = gql`
   mutation CancelAppointmentByPsychologist($id: ID!, $reason: String!) {

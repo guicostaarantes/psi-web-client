@@ -5,14 +5,20 @@ import { useEffect, useMemo, useRef } from "react";
 
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
-import { PSYCHOLOGIST_CHARACTERISTIC_PREFIX } from "@psi/profiles/constants/characteristicPrefixes";
+import Term from "@psi/profiles/components/Term";
+import {
+  PSYCHOLOGIST_CHARACTERISTIC_PREFIX,
+  PSYCHOLOGIST_TERM_PREFIX,
+} from "@psi/profiles/constants/characteristicPrefixes";
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
 import useCharacteristics from "@psi/profiles/hooks/useCharacteristics";
+import useTerms from "@psi/profiles/hooks/useTerms";
 import {
   MyPsychologistProfileDocument,
   useMyPsychologistProfileQuery,
   useSetMyPsychologistCharacteristicChoicesAndPreferencesMutation,
   useUpsertMyPsychologistProfileMutation,
+  useUpsertPsychologistAgreementMutation,
 } from "@psi/shared/graphql";
 import AvatarInput from "@psi/styleguide/components/AvatarInput";
 import Button from "@psi/styleguide/components/Button";
@@ -54,6 +60,8 @@ const PsychologistDataComponent = () => {
   const choices = useState<Record<string, unknown>>({});
 
   const weights = useState<Record<string, Record<string, number>>>({});
+
+  const agreements = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (profileError?.message && profileError.message !== "forbidden") {
@@ -104,6 +112,8 @@ const PsychologistDataComponent = () => {
     [characteristics],
   );
 
+  const { terms, messages: termMessages } = useTerms();
+
   // Load current characteristic choices and fill the fields
   useEffect(() => {
     if (!profileLoading && chars) {
@@ -151,6 +161,22 @@ const PsychologistDataComponent = () => {
     }
   }, [profileLoading, preferences]);
 
+  // Load current agreements and fill the checkboxes
+  useEffect(() => {
+    if (!profileLoading && terms) {
+      const initialAgreements = {};
+      for (const term of terms) {
+        initialAgreements[
+          term.name
+        ] = !!profileData?.myPsychologistProfile.agreements.find(
+          (agree) =>
+            agree.termName === term.name && agree.termVersion === term.version,
+        );
+      }
+      agreements.set(initialAgreements);
+    }
+  }, [profileLoading, terms.length]);
+
   const [
     upsertMyPsychologistProfile,
   ] = useUpsertMyPsychologistProfileMutation();
@@ -160,6 +186,10 @@ const PsychologistDataComponent = () => {
   ] = useSetMyPsychologistCharacteristicChoicesAndPreferencesMutation({
     refetchQueries: [{ query: MyPsychologistProfileDocument }],
   });
+
+  const [
+    upsertPsychologistAgreementMutation,
+  ] = useUpsertPsychologistAgreementMutation();
 
   const handleSave = async () => {
     // Gathering profile input information
@@ -255,20 +285,45 @@ const PsychologistDataComponent = () => {
       return;
     }
 
+    // Checking if agreements are invalid (all active ones need to be checked)
+    if (
+      Object.keys(agreements.value).some(
+        (termName) => !agreements.value[termName],
+      )
+    ) {
+      addToast({
+        header: "Verifique as informações",
+        message: "Há termos de uso que não foram lidos e acordados.",
+      });
+      return;
+    }
+
     // Sending new information to server
     try {
-      await upsertMyPsychologistProfile({
-        variables: {
-          profileInput,
-        },
-      });
-
-      await setMyPsychologistCharacteristicChoicesAndPreferences({
-        variables: {
-          choiceInput,
-          weightInput,
-        },
-      });
+      await Promise.all([
+        upsertMyPsychologistProfile({
+          variables: {
+            profileInput,
+          },
+        }),
+        setMyPsychologistCharacteristicChoicesAndPreferences({
+          variables: {
+            choiceInput,
+            weightInput,
+          },
+        }),
+        ...terms.map((term) =>
+          upsertPsychologistAgreementMutation({
+            variables: {
+              agreementInput: {
+                termName: term.name,
+                termVersion: term.version,
+                agreed: agreements.value[term.name],
+              },
+            },
+          }),
+        ),
+      ]);
 
       addToast({
         header: "Tudo certo",
@@ -411,6 +466,27 @@ const PsychologistDataComponent = () => {
             key={pref.name}
             preference={pref}
             weight={weights[pref.name]}
+          />
+        ))}
+      </Card>
+      <Card>
+        <MediumTitle center noMarginTop>
+          Termos de uso da plataforma
+        </MediumTitle>
+        <Paragraph center light>
+          Você precisa estar de acordo com os termos de uso mais recentes para
+          poder usar nossa plataforma.
+        </Paragraph>
+        {terms.map((term) => (
+          <Term
+            key={term.name}
+            name={term.name}
+            agreement={agreements[term.name]}
+            message={
+              termMessages[
+                `${PSYCHOLOGIST_TERM_PREFIX}:${term.name}:${term.version}`
+              ]
+            }
           />
         ))}
       </Card>

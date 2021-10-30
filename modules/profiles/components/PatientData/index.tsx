@@ -5,14 +5,20 @@ import { useEffect, useRef } from "react";
 
 import CharacteristicChooserComponent from "@psi/profiles/components/CharacteristicChooser";
 import PreferenceChooserComponent from "@psi/profiles/components/PreferenceChooser";
-import { PATIENT_CHARACTERISTIC_PREFIX } from "@psi/profiles/constants/characteristicPrefixes";
+import Term from "@psi/profiles/components/Term";
+import {
+  PATIENT_CHARACTERISTIC_PREFIX,
+  PATIENT_TERM_PREFIX,
+} from "@psi/profiles/constants/characteristicPrefixes";
 import { HAPPINESS_OPTIONS } from "@psi/profiles/constants/happiness";
 import useCharacteristics from "@psi/profiles/hooks/useCharacteristics";
+import useTerms from "@psi/profiles/hooks/useTerms";
 import {
   MyPatientProfileDocument,
   useMyPatientProfileQuery,
   useSetMyPatientCharacteristicChoicesAndPreferencesMutation,
   useUpsertMyPatientProfileMutation,
+  useUpsertPatientAgreementMutation,
 } from "@psi/shared/graphql";
 import AvatarInput from "@psi/styleguide/components/AvatarInput";
 import Button from "@psi/styleguide/components/Button";
@@ -50,6 +56,8 @@ const PatientDataComponent = () => {
 
   const weights = useState<Record<string, Record<string, number>>>({});
 
+  const agreements = useState<Record<string, boolean>>({});
+
   useEffect(() => {
     if (profileError?.message && profileError.message !== "forbidden") {
       addToast({
@@ -83,6 +91,8 @@ const PatientDataComponent = () => {
 
   const chars = characteristics?.patientCharacteristics || [];
   const preferences = characteristics?.psychologistCharacteristics || [];
+
+  const { terms, messages: termMessages } = useTerms();
 
   // Load current characteristic choices and fill the fields
   useEffect(() => {
@@ -131,6 +141,22 @@ const PatientDataComponent = () => {
     }
   }, [profileLoading, preferences]);
 
+  // Load current agreements and fill the checkboxes
+  useEffect(() => {
+    if (!profileLoading && terms) {
+      const initialAgreements = {};
+      for (const term of terms) {
+        initialAgreements[
+          term.name
+        ] = !!profileData?.myPatientProfile.agreements.find(
+          (agree) =>
+            agree.termName === term.name && agree.termVersion === term.version,
+        );
+      }
+      agreements.set(initialAgreements);
+    }
+  }, [profileLoading, terms.length]);
+
   const [upsertMyPatientProfile] = useUpsertMyPatientProfileMutation();
 
   const [
@@ -138,6 +164,8 @@ const PatientDataComponent = () => {
   ] = useSetMyPatientCharacteristicChoicesAndPreferencesMutation({
     refetchQueries: [{ query: MyPatientProfileDocument }],
   });
+
+  const [upsertPatientAgreementMutation] = useUpsertPatientAgreementMutation();
 
   const handleSave = async () => {
     // Gathering profile input information
@@ -225,20 +253,45 @@ const PatientDataComponent = () => {
       return;
     }
 
+    // Checking if agreements are invalid (all active ones need to be checked)
+    if (
+      Object.keys(agreements.value).some(
+        (termName) => !agreements.value[termName],
+      )
+    ) {
+      addToast({
+        header: "Verifique as informações",
+        message: "Há termos de uso que não foram lidos e acordados.",
+      });
+      return;
+    }
+
     // Sending new information to server
     try {
-      await upsertMyPatientProfile({
-        variables: {
-          profileInput,
-        },
-      });
-
-      await setMyPatientCharacteristicChoicesAndPreferences({
-        variables: {
-          choiceInput,
-          weightInput,
-        },
-      });
+      await Promise.all([
+        upsertMyPatientProfile({
+          variables: {
+            profileInput,
+          },
+        }),
+        setMyPatientCharacteristicChoicesAndPreferences({
+          variables: {
+            choiceInput,
+            weightInput,
+          },
+        }),
+        ...terms.map((term) =>
+          upsertPatientAgreementMutation({
+            variables: {
+              agreementInput: {
+                termName: term.name,
+                termVersion: term.version,
+                agreed: agreements.value[term.name],
+              },
+            },
+          }),
+        ),
+      ]);
 
       addToast({
         header: "Tudo certo",
@@ -355,6 +408,27 @@ const PatientDataComponent = () => {
             key={pref.name}
             preference={pref}
             weight={weights[pref.name]}
+          />
+        ))}
+      </Card>
+      <Card>
+        <MediumTitle center noMarginTop>
+          Termos de uso da plataforma
+        </MediumTitle>
+        <Paragraph center light>
+          Você precisa estar de acordo com os termos de uso mais recentes para
+          poder usar nossa plataforma.
+        </Paragraph>
+        {terms.map((term) => (
+          <Term
+            key={term.name}
+            name={term.name}
+            agreement={agreements[term.name]}
+            message={
+              termMessages[
+                `${PATIENT_TERM_PREFIX}:${term.name}:${term.version}`
+              ]
+            }
           />
         ))}
       </Card>
