@@ -84,7 +84,6 @@ const PsychologistDataComponent = () => {
         profileData.myPsychologistProfile?.likeName || "";
       cityRef.current.value = profileData.myPsychologistProfile?.city || "";
       crpRef.current.value = profileData.myPsychologistProfile?.crp || "";
-      console.log(crpRef.current, profileData.myPsychologistProfile?.crp);
       whatsappRef.current.value =
         profileData.myPsychologistProfile?.whatsapp || "";
       instagramRef.current.value =
