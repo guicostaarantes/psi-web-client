@@ -16,6 +16,7 @@ const mocks = [
       data: {
         myPsychologistProfile: {
           id: "d7118050-c575-4a27-a964-b67700bd0d0d",
+          likeName: "Peyton Manning",
           treatments: [
             {
               id: "a10634a4-690d-44f8-b4ff-875979fee8d0",

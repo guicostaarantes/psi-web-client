@@ -12,7 +12,7 @@ const Appointments = () => {
 
   if (loading) return null;
 
-  const appointments = data?.myPsychologistProfile?.appointments;
+  const appointments = data?.myPsychologistProfile?.appointments || [];
 
   const sortedAppointments = [...appointments]
     .filter((ap) => ap.end > serverTime)

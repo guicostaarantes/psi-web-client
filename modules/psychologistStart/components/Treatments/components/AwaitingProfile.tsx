@@ -15,9 +15,9 @@ const AwaitingProfile = () => {
     <>
       <Card>
         <Paragraph>
-          Para encontrarmos os psicólogos com maior compatibilidade, pedimos que
-          antes você preencha o seu perfil. Esse preenchimento costuma demorar
-          entre 5 e 10 minutos.
+          Para te indicarmos aos pacientes com maior compatibilidade, pedimos
+          que antes você preencha o seu perfil. Esse preenchimento costuma
+          demorar entre 5 e 10 minutos.
         </Paragraph>
         <div className="button-wrapper">
           <Button block color="primary" onClick={handleClick}>

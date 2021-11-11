@@ -1,4 +1,5 @@
 import ActiveTreatment from "@psi/psychologistStart/components/Treatments/components/ActiveTreatment";
+import AwaitingProfile from "@psi/psychologistStart/components/Treatments/components/AwaitingProfile";
 import NewTreatmentButton from "@psi/psychologistStart/components/Treatments/components/NewTreatmentButton";
 import PendingTreatment from "@psi/psychologistStart/components/Treatments/components/PendingTreatment";
 import PriceRangeOffering from "@psi/psychologistStart/components/Treatments/components/PriceRangeOffering";
@@ -8,7 +9,13 @@ import MediumTitle from "@psi/styleguide/components/Typography/MediumTitle";
 import Paragraph from "@psi/styleguide/components/Typography/Paragraph";
 
 const PsychologistTreatments = () => {
-  const { data } = useMyPsychologistTreatmentsQuery();
+  const { loading, data } = useMyPsychologistTreatmentsQuery();
+
+  if (loading) return null;
+
+  const likeName = data?.myPsychologistProfile?.likeName;
+
+  if (!likeName) return <AwaitingProfile />;
 
   const activeTreatments = data?.myPsychologistProfile?.treatments.filter(
     (tr) => tr.status === "ACTIVE",

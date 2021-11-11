@@ -1,6 +1,7 @@
 query MyPsychologistTreatments {
   myPsychologistProfile {
     id
+    likeName
     treatments {
       id
       status

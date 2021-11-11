@@ -1145,6 +1145,7 @@ export type MyPsychologistTreatmentsQuery = {
   myPsychologistProfile?: Maybe<{
     __typename?: "PsychologistProfile";
     id: string;
+    likeName: string;
     treatments: Array<{
       __typename?: "PsychologistTreatment";
       id: string;
@@ -3158,6 +3159,7 @@ export const MyPsychologistTreatmentsDocument = gql`
   query MyPsychologistTreatments {
     myPsychologistProfile {
       id
+      likeName
       treatments {
         id
         status
