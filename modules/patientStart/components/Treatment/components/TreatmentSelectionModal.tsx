@@ -21,7 +21,7 @@ const TreatmentSelectionModal = ({
 }: TreatmentSelectionModalProps) => {
   const router = useRouter();
 
-  const { loading, data } = useMyPatientTopAffinitiesQuery({
+  const { loading, data, error } = useMyPatientTopAffinitiesQuery({
     fetchPolicy: "no-cache",
   });
 
@@ -69,6 +69,13 @@ const TreatmentSelectionModal = ({
           <Paragraph>
             Estes são os psicólogos que possuem maior sinergia com o seu perfil.
             Clique nos botões para ver os seus perfis, horários e valores.
+          </Paragraph>
+        ) : error?.message?.includes(
+            "assign treatment is blocked for this user until",
+          ) ? (
+          <Paragraph>
+            É necessário aguardar 72 horas após a interrupção de um tratamento
+            para iniciar outro. Tente novamente após este período.
           </Paragraph>
         ) : (
           <Paragraph>
