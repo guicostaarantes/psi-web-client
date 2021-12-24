@@ -98,10 +98,7 @@ const Appointment = () => {
       <Card>
         <Paragraph center>Sua próxima consulta com {psyName}</Paragraph>
         <Paragraph center>
-          {format(
-            1000 * futureAppointment.start,
-            "'Dia 'dd/MM/yyyy' às 'HH:mm",
-          )}
+          {format(futureAppointment.start, "'Dia 'dd/MM/yyyy' às 'HH:mm")}
         </Paragraph>
         {statusSentence ? <Paragraph center>{statusSentence}</Paragraph> : null}
         <div className="button-wrapper">

@@ -90,10 +90,7 @@ const PsychologistDataComponent = () => {
         profileData.myPsychologistProfile?.instagram || "";
       bioRef.current.value = profileData.myPsychologistProfile?.bio || "";
 
-      const birthDate = Number(profileData.myPsychologistProfile?.birthDate)
-        ? new Date(1000 * Number(profileData.myPsychologistProfile.birthDate))
-        : undefined;
-
+      const birthDate = profileData.myPsychologistProfile?.birthDate;
       if (birthDate) {
         birthDateInitialValue.set(format(birthDate, BIRTH_DATE_FORMAT));
       }
@@ -195,14 +192,11 @@ const PsychologistDataComponent = () => {
     const profileInput = {
       fullName: fullNameRef.current.value,
       likeName: likeNameRef.current.value,
-      birthDate:
-        Number(
-          parse(
-            birthDateRef.current.value,
-            BIRTH_DATE_FORMAT,
-            new Date(43200000),
-          ),
-        ) / 1000,
+      birthDate: parse(
+        birthDateRef.current.value,
+        BIRTH_DATE_FORMAT,
+        new Date(43200000),
+      ),
       city: cityRef.current.value,
       crp: crpRef.current.value,
       whatsapp: whatsappRef.current.value,
@@ -219,7 +213,6 @@ const PsychologistDataComponent = () => {
       profileInput.crp === "" ||
       profileInput.whatsapp === "" ||
       profileInput.instagram === "" ||
-      isNaN(profileInput.birthDate) ||
       profileInput.bio === ""
     ) {
       addToast({

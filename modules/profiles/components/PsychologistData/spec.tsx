@@ -71,7 +71,6 @@ const mocks = [
             {
               termName: "price",
               termVersion: 1,
-              signedAt: 16123456789,
             },
           ],
         },

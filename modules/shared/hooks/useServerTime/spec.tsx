@@ -31,9 +31,7 @@ const errorMock = [
 const TestComponent = () => {
   const serverTime = useServerTime();
 
-  const serverDate = serverTime ? new Date(1000 * serverTime) : undefined;
-
-  return <div>the current time is {serverDate?.toISOString()}</div>;
+  return <div>the current time is {serverTime?.toISOString()}</div>;
 };
 
 test("should show server time", async () => {

@@ -16,7 +16,7 @@ import useToast from "@psi/styleguide/hooks/useToast";
 interface FutureAppointmentProps {
   id: string;
   patientName: string;
-  start: number;
+  start: Date;
   minimumPrice: number;
   maximumPrice: number;
   status: AppointmentStatus;
@@ -107,7 +107,7 @@ const FutureAppointment = ({
           <div>
             <div className="text">Paciente: {patientName}</div>
             <div className="text">
-              Data: {format(1000 * start, "dd/MM/yyyy' às 'HH:mm")}
+              Data: {format(start, "dd/MM/yyyy' às 'HH:mm")}
             </div>
             <div className="text">
               Valor a ser cobrado:{" "}

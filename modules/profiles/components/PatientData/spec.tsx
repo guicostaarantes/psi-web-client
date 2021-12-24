@@ -67,7 +67,6 @@ const mocks = [
             {
               termName: "emergency",
               termVersion: 1,
-              signedAt: 16123456789,
             },
           ],
         },

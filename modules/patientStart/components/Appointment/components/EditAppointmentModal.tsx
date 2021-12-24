@@ -68,22 +68,22 @@ const EditAppointmentModal = ({
   }, [error, data]);
 
   const handleEditClick = async () => {
-    const dateStart =
-      Number(parse(dateRef.current.value, BIRTH_DATE_FORMAT, new Date(0))) /
-      1000;
+    const dateStart = Number(
+      parse(dateRef.current.value, BIRTH_DATE_FORMAT, new Date(0)),
+    );
 
-    const timeStart =
-      Number(parse(timeRef.current.value, HOUR_24_FORMAT, new Date(43200000))) /
-      1000;
+    const timeStart = Number(
+      parse(timeRef.current.value, HOUR_24_FORMAT, new Date(43200000)),
+    );
 
-    const timezoneCompensation = -new Date().getTimezoneOffset() * 60;
+    const timezoneCompensation = -new Date().getTimezoneOffset() * 60000;
 
     try {
       await editAppointment({
         variables: {
           id: appointmentId,
           input: {
-            start: dateStart + timeStart + timezoneCompensation,
+            start: new Date(dateStart + timeStart + timezoneCompensation),
             reason: reasonRef.current.value,
           },
         },

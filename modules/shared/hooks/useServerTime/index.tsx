@@ -5,7 +5,7 @@ const useServerTime = () => {
     fetchPolicy: "no-cache",
   });
 
-  return data?.time as number | undefined;
+  return data?.time;
 };
 
 export default useServerTime;

@@ -77,10 +77,7 @@ const PatientDataComponent = () => {
       likeNameRef.current.value = profileData.myPatientProfile?.likeName || "";
       cityRef.current.value = profileData.myPatientProfile?.city || "";
 
-      const birthDate = Number(profileData.myPatientProfile?.birthDate)
-        ? new Date(1000 * Number(profileData.myPatientProfile.birthDate))
-        : undefined;
-
+      const birthDate = profileData.myPatientProfile?.birthDate;
       if (birthDate) {
         birthDateInitialValue.set(format(birthDate, BIRTH_DATE_FORMAT));
       }
@@ -172,14 +169,11 @@ const PatientDataComponent = () => {
     const profileInput = {
       fullName: fullNameRef.current.value,
       likeName: likeNameRef.current.value,
-      birthDate:
-        Number(
-          parse(
-            birthDateRef.current.value,
-            BIRTH_DATE_FORMAT,
-            new Date(43200000),
-          ),
-        ) / 1000,
+      birthDate: parse(
+        birthDateRef.current.value,
+        BIRTH_DATE_FORMAT,
+        new Date(43200000),
+      ),
       city: cityRef.current.value,
       avatar: avatarRef.current.files?.[0] || null,
     };
@@ -188,8 +182,7 @@ const PatientDataComponent = () => {
     if (
       profileInput.fullName === "" ||
       profileInput.likeName === "" ||
-      profileInput.city === "" ||
-      isNaN(profileInput.birthDate)
+      profileInput.city === ""
     ) {
       addToast({
         header: "Verifique as informações",

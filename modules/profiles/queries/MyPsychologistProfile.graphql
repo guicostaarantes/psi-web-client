@@ -23,7 +23,6 @@ query MyPsychologistProfile {
     agreements {
       termName
       termVersion
-      signedAt
     }
   }
 }
