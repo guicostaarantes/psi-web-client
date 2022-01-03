@@ -1,0 +1,3 @@
+mutation InvitePsychologistUser($email: String!) {
+  createPsychologistUser(input: { email: $email })
+}
