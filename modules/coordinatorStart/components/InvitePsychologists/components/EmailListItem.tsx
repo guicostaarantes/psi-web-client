@@ -52,6 +52,11 @@ const EmailListItem = ({ emailState }: EmailListItemProps, ref) => {
           <MdClose size="1.5rem" />
         </button>
       )}
+      {error?.message === "invalid email" ? (
+        <i>(endereço de email inválido)</i>
+      ) : error?.message === "user already exists" ? (
+        <i>(endereço de email já utilizado)</i>
+      ) : null}
       <span>{email.value}</span>
       <style jsx>{`
         button {
@@ -63,6 +68,9 @@ const EmailListItem = ({ emailState }: EmailListItemProps, ref) => {
         li {
           align-items: center;
           display: flex;
+        }
+        i {
+          padding-right: 0.5rem;
         }
       `}</style>
     </li>
