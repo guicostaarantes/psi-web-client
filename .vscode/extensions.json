@@ -2,7 +2,7 @@
   "recommendations": [
     "blanu.vscode-styled-jsx",
     "dbaeumer.vscode-eslint",
-    "vtrois.gitmoji-vscode",
+    "seatonjiang.gitmoji-vscode",
     "kumar-harsh.graphql-for-vscode",
     "esbenp.prettier-vscode",
     "orta.vscode-jest"
