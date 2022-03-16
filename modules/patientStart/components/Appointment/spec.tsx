@@ -7,14 +7,13 @@ import {
   MyPatientTreatmentsDocument,
 } from "@psi/shared/graphql";
 
-const now = 1612345678;
-const yesterday = now - 86400;
-const laterYesterday = now - 86400 + 3600;
-const tomorrow = now + 86400;
-const laterTomorrow = now + 86400 + 3600;
+const yesterday = new Date(2021, 1, 2, 4, 47, 58);
+const laterYesterday = new Date(2021, 1, 2, 5, 47, 58);
+const tomorrow = new Date(2021, 1, 4, 4, 47, 58);
+const laterTomorrow = new Date(2021, 1, 4, 5, 47, 58);
 
 jest.mock("@psi/shared/hooks/useServerTime", () => {
-  return jest.fn(() => now);
+  return jest.fn(() => new Date(2021, 1, 3, 4, 47, 58));
 });
 
 // TODO: test which buttons should appear depending on the status

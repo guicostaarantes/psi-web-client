@@ -11,7 +11,7 @@ const timeMock = [
     },
     result: {
       data: {
-        time: 1621456020,
+        time: new Date(2021, 1, 3, 4, 47, 58),
       },
     },
   },
@@ -43,7 +43,7 @@ test("should show server time", async () => {
 
   await waitFor(() => {
     const div = screen.getByText(
-      "the current time is 2021-05-19T20:27:00.000Z",
+      "the current time is 2021-02-03T09:47:58.000Z",
     );
     expect(div).toBeInTheDocument();
   });
