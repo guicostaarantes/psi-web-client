@@ -8,7 +8,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
   { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
   { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions = {};
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -29,23 +29,23 @@ export type Affinity = {
 export type Agreement = {
   __typename?: "Agreement";
   id: Scalars["ID"];
+  profileId: Scalars["String"];
   termName: Scalars["String"];
   termVersion: Scalars["Int"];
-  profileId: Scalars["String"];
 };
 
 export enum AppointmentStatus {
-  Created = "CREATED",
-  ConfirmedByPatient = "CONFIRMED_BY_PATIENT",
-  ConfirmedByPsychologist = "CONFIRMED_BY_PSYCHOLOGIST",
-  ConfirmedByBoth = "CONFIRMED_BY_BOTH",
-  EditedByPatient = "EDITED_BY_PATIENT",
-  EditedByPsychologist = "EDITED_BY_PSYCHOLOGIST",
   CanceledByPatient = "CANCELED_BY_PATIENT",
   CanceledByPsychologist = "CANCELED_BY_PSYCHOLOGIST",
+  ConfirmedByBoth = "CONFIRMED_BY_BOTH",
+  ConfirmedByPatient = "CONFIRMED_BY_PATIENT",
+  ConfirmedByPsychologist = "CONFIRMED_BY_PSYCHOLOGIST",
+  Created = "CREATED",
+  EditedByPatient = "EDITED_BY_PATIENT",
+  EditedByPsychologist = "EDITED_BY_PSYCHOLOGIST",
+  TreatmentFinalized = "TREATMENT_FINALIZED",
   TreatmentInterruptedByPatient = "TREATMENT_INTERRUPTED_BY_PATIENT",
   TreatmentInterruptedByPsychologist = "TREATMENT_INTERRUPTED_BY_PSYCHOLOGIST",
-  TreatmentFinalized = "TREATMENT_FINALIZED",
 }
 
 export type AuthenticateUserInput = {
@@ -56,28 +56,28 @@ export type AuthenticateUserInput = {
 export type Characteristic = {
   __typename?: "Characteristic";
   name: Scalars["String"];
-  type: CharacteristicType;
   possibleValues: Array<Scalars["String"]>;
+  type: CharacteristicType;
 };
 
 export type CharacteristicChoice = {
   __typename?: "CharacteristicChoice";
   name: Scalars["String"];
-  type: CharacteristicType;
-  selectedValues: Array<Scalars["String"]>;
   possibleValues: Array<Scalars["String"]>;
+  selectedValues: Array<Scalars["String"]>;
+  type: CharacteristicType;
 };
 
 export enum CharacteristicType {
   Boolean = "BOOLEAN",
-  Single = "SINGLE",
   Multiple = "MULTIPLE",
+  Single = "SINGLE",
 }
 
 export type CreateTreatmentInput = {
+  duration: Scalars["Int"];
   frequency: Scalars["Int"];
   phase: Scalars["Int"];
-  duration: Scalars["Int"];
   priceRangeName: Scalars["String"];
 };
 
@@ -92,37 +92,23 @@ export type CreateUserWithPasswordInput = {
 };
 
 export type EditAppointmentByPatientInput = {
-  start: Scalars["Time"];
   reason: Scalars["String"];
+  start: Scalars["Time"];
 };
 
 export type EditAppointmentByPsychologistInput = {
-  start: Scalars["Time"];
   end: Scalars["Time"];
   priceRangeName: Scalars["String"];
   reason: Scalars["String"];
+  start: Scalars["Time"];
 };
 
 export type Mutation = {
   __typename?: "Mutation";
   /** The askResetPassword mutation allows a user to start a reset password procedure. */
   askResetPassword?: Maybe<Scalars["Boolean"]>;
-  /** The createPatientUser mutation allows a non-user to create a user with the PATIENT role. */
-  createPatientUser?: Maybe<Scalars["Boolean"]>;
-  /** The createPatientUser mutation allows a user to create a user with the PSYCHOLOGIST role. */
-  createPsychologistUser?: Maybe<Scalars["Boolean"]>;
-  /** The createUserWithPassword mutation allows a user to create a user and set their password manually instead of sending an invitation email. */
-  createUserWithPassword?: Maybe<Scalars["Boolean"]>;
-  /** The resetPassword mutation allows a user to reset their password using a token sent to their email. */
-  resetPassword?: Maybe<Scalars["Boolean"]>;
-  /** The updateUser mutation allows a user to update specific information about another user. */
-  updateUser?: Maybe<Scalars["Boolean"]>;
-  /** The upsertPatientAgreement mutation allows a user to create or update an agreement to a term for patients. */
-  upsertPatientAgreement?: Maybe<Scalars["Boolean"]>;
-  /** The upsertPsychologistAgreement mutation allows a user to create or update an agreement to a term for psychologists. */
-  upsertPsychologistAgreement?: Maybe<Scalars["Boolean"]>;
-  /** The upsertTerm mutation allows a user to create or update a term. */
-  upsertTerm?: Maybe<Scalars["Boolean"]>;
+  /** The assignTreatment mutation allows a user to choose a treatment and assign it to their patient profile. */
+  assignTreatment?: Maybe<Scalars["Boolean"]>;
   /** The cancelAppointmentByPatient mutation allows a user with a patient profile to cancel the confirmation of an appointment. */
   cancelAppointmentByPatient?: Maybe<Scalars["Boolean"]>;
   /** The cancelAppointmentByPsychologist mutation allows a user with a psychologist profile to cancel the confirmation of an appointment. */
@@ -131,18 +117,32 @@ export type Mutation = {
   confirmAppointmentByPatient?: Maybe<Scalars["Boolean"]>;
   /** The confirmAppointmentByPsychologist mutation allows a user with a psychologist profile to confirm an appointment. */
   confirmAppointmentByPsychologist?: Maybe<Scalars["Boolean"]>;
+  /** The createPatientUser mutation allows a non-user to create a user with the PATIENT role. */
+  createPatientUser?: Maybe<Scalars["Boolean"]>;
   /** The createPendingAppointments mutation allows a user to create appointments for all treatments in the system that are missing one in the future. */
   createPendingAppointments?: Maybe<Scalars["Boolean"]>;
+  /** The createPatientUser mutation allows a user to create a user with the PSYCHOLOGIST role. */
+  createPsychologistUser?: Maybe<Scalars["Boolean"]>;
+  /** The createTreatment mutation allows a user to create a pending treatment and assign it to their psychologist profile. */
+  createTreatment?: Maybe<Scalars["Boolean"]>;
+  /** The createUserWithPassword mutation allows a user to create a user and set their password manually instead of sending an invitation email. */
+  createUserWithPassword?: Maybe<Scalars["Boolean"]>;
+  /** The deleteTreatment mutation allows a user to delete a pending treatment if it is owned by their psychologist profile. */
+  deleteTreatment?: Maybe<Scalars["Boolean"]>;
   /** The editAppointmentByPatient mutation allows a user with a patient profile to edit the confirmation of an appointment. */
   editAppointmentByPatient?: Maybe<Scalars["Boolean"]>;
   /** The editAppointmentByPsychologist mutation allows a user with a psychologist profile to edit the confirmation of an appointment. */
   editAppointmentByPsychologist?: Maybe<Scalars["Boolean"]>;
-  /** The setPatientCharacteristics mutation allows a user to change the possible characteristics for all patients. */
-  setPatientCharacteristics?: Maybe<Scalars["Boolean"]>;
-  /** The setPsychologistCharacteristics mutation allows a user to change the possible characteristics for all psychologists. */
-  setPsychologistCharacteristics?: Maybe<Scalars["Boolean"]>;
+  /** The finalizeTreatment mutation allows a user to choose a treatment under their psychologist profile and finalize it. */
+  finalizeTreatment?: Maybe<Scalars["Boolean"]>;
+  /** The interruptTreatmentByPatient mutation allows a user to choose a treatment under their patient profile and interrupt it. */
+  interruptTreatmentByPatient?: Maybe<Scalars["Boolean"]>;
+  /** The interruptTreatmentByPsychologist mutation allows a user to choose a treatment under their psychologist profile and interrupt it. */
+  interruptTreatmentByPsychologist?: Maybe<Scalars["Boolean"]>;
   /** The processPendingMail mutation allows a user to send emails that are waiting in the queue. */
   processPendingMail?: Maybe<Scalars["Boolean"]>;
+  /** The resetPassword mutation allows a user to reset their password using a token sent to their email. */
+  resetPassword?: Maybe<Scalars["Boolean"]>;
   /** The setMyPatientCharacteristicChoices mutation allows a user to set characteristics for their patient profile. */
   setMyPatientCharacteristicChoices?: Maybe<Scalars["Boolean"]>;
   /** The setMyPatientPreferences mutation allows a user to set preferences for their patient profile. */
@@ -151,65 +151,37 @@ export type Mutation = {
   setMyPsychologistCharacteristicChoices?: Maybe<Scalars["Boolean"]>;
   /** The setMyPsychologistPreferences mutation allows a user to set preferences for their psychologist profile. */
   setMyPsychologistPreferences?: Maybe<Scalars["Boolean"]>;
-  /** The upsertMyPatientProfile mutation allows a user to create or make changes to their patient profile. */
-  upsertMyPatientProfile?: Maybe<Scalars["Boolean"]>;
-  /** The upsertMyPsychologistProfile mutation allows a user to create or make changes to their psychologist profile. */
-  upsertMyPsychologistProfile?: Maybe<Scalars["Boolean"]>;
+  /** The setPatientCharacteristics mutation allows a user to change the possible characteristics for all patients. */
+  setPatientCharacteristics?: Maybe<Scalars["Boolean"]>;
+  /** The setPsychologistCharacteristics mutation allows a user to change the possible characteristics for all psychologists. */
+  setPsychologistCharacteristics?: Maybe<Scalars["Boolean"]>;
   /** The setTranslations mutation allows a user to insert or update translated translations. */
   setTranslations?: Maybe<Scalars["Boolean"]>;
-  /** The assignTreatment mutation allows a user to choose a treatment and assign it to their patient profile. */
-  assignTreatment?: Maybe<Scalars["Boolean"]>;
-  /** The createTreatment mutation allows a user to create a pending treatment and assign it to their psychologist profile. */
-  createTreatment?: Maybe<Scalars["Boolean"]>;
-  /** The deleteTreatment mutation allows a user to delete a pending treatment if it is owned by their psychologist profile. */
-  deleteTreatment?: Maybe<Scalars["Boolean"]>;
-  /** The interruptTreatmentByPatient mutation allows a user to choose a treatment under their patient profile and interrupt it. */
-  interruptTreatmentByPatient?: Maybe<Scalars["Boolean"]>;
-  /** The interruptTreatmentByPsychologist mutation allows a user to choose a treatment under their psychologist profile and interrupt it. */
-  interruptTreatmentByPsychologist?: Maybe<Scalars["Boolean"]>;
-  /** The finalizeTreatment mutation allows a user to choose a treatment under their psychologist profile and finalize it. */
-  finalizeTreatment?: Maybe<Scalars["Boolean"]>;
   /** The setTreatmentPriceRanges mutation allows a user to change the possible treatment price ranges. */
   setTreatmentPriceRanges?: Maybe<Scalars["Boolean"]>;
   /** The updateTreatment mutation allows a user to update a treatment if it is owned by their psychologist profile. */
   updateTreatment?: Maybe<Scalars["Boolean"]>;
+  /** The updateUser mutation allows a user to update specific information about another user. */
+  updateUser?: Maybe<Scalars["Boolean"]>;
+  /** The upsertMyPatientProfile mutation allows a user to create or make changes to their patient profile. */
+  upsertMyPatientProfile?: Maybe<Scalars["Boolean"]>;
+  /** The upsertMyPsychologistProfile mutation allows a user to create or make changes to their psychologist profile. */
+  upsertMyPsychologistProfile?: Maybe<Scalars["Boolean"]>;
+  /** The upsertPatientAgreement mutation allows a user to create or update an agreement to a term for patients. */
+  upsertPatientAgreement?: Maybe<Scalars["Boolean"]>;
+  /** The upsertPsychologistAgreement mutation allows a user to create or update an agreement to a term for psychologists. */
+  upsertPsychologistAgreement?: Maybe<Scalars["Boolean"]>;
+  /** The upsertTerm mutation allows a user to create or update a term. */
+  upsertTerm?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MutationAskResetPasswordArgs = {
   email: Scalars["String"];
 };
 
-export type MutationCreatePatientUserArgs = {
-  input: CreateUserInput;
-};
-
-export type MutationCreatePsychologistUserArgs = {
-  input: CreateUserInput;
-};
-
-export type MutationCreateUserWithPasswordArgs = {
-  input: CreateUserWithPasswordInput;
-};
-
-export type MutationResetPasswordArgs = {
-  input: ResetPasswordInput;
-};
-
-export type MutationUpdateUserArgs = {
+export type MutationAssignTreatmentArgs = {
   id: Scalars["ID"];
-  input: UpdateUserInput;
-};
-
-export type MutationUpsertPatientAgreementArgs = {
-  input: UpsertAgreementInput;
-};
-
-export type MutationUpsertPsychologistAgreementArgs = {
-  input: UpsertAgreementInput;
-};
-
-export type MutationUpsertTermArgs = {
-  input: UpsertTermInput;
+  priceRangeName: Scalars["String"];
 };
 
 export type MutationCancelAppointmentByPatientArgs = {
@@ -230,6 +202,27 @@ export type MutationConfirmAppointmentByPsychologistArgs = {
   id: Scalars["ID"];
 };
 
+export type MutationCreatePatientUserArgs = {
+  input: CreateUserInput;
+};
+
+export type MutationCreatePsychologistUserArgs = {
+  input: CreateUserInput;
+};
+
+export type MutationCreateTreatmentArgs = {
+  input: CreateTreatmentInput;
+};
+
+export type MutationCreateUserWithPasswordArgs = {
+  input: CreateUserWithPasswordInput;
+};
+
+export type MutationDeleteTreatmentArgs = {
+  id: Scalars["ID"];
+  priceRangeName: Scalars["String"];
+};
+
 export type MutationEditAppointmentByPatientArgs = {
   id: Scalars["ID"];
   input: EditAppointmentByPatientInput;
@@ -240,12 +233,22 @@ export type MutationEditAppointmentByPsychologistArgs = {
   input: EditAppointmentByPsychologistInput;
 };
 
-export type MutationSetPatientCharacteristicsArgs = {
-  input: Array<SetProfileCharacteristicInput>;
+export type MutationFinalizeTreatmentArgs = {
+  id: Scalars["ID"];
 };
 
-export type MutationSetPsychologistCharacteristicsArgs = {
-  input: Array<SetProfileCharacteristicInput>;
+export type MutationInterruptTreatmentByPatientArgs = {
+  id: Scalars["ID"];
+  reason: Scalars["String"];
+};
+
+export type MutationInterruptTreatmentByPsychologistArgs = {
+  id: Scalars["ID"];
+  reason: Scalars["String"];
+};
+
+export type MutationResetPasswordArgs = {
+  input: ResetPasswordInput;
 };
 
 export type MutationSetMyPatientCharacteristicChoicesArgs = {
@@ -264,45 +267,17 @@ export type MutationSetMyPsychologistPreferencesArgs = {
   input: Array<SetMyProfilePreferenceInput>;
 };
 
-export type MutationUpsertMyPatientProfileArgs = {
-  input: UpsertMyPatientProfileInput;
+export type MutationSetPatientCharacteristicsArgs = {
+  input: Array<SetProfileCharacteristicInput>;
 };
 
-export type MutationUpsertMyPsychologistProfileArgs = {
-  input: UpsertMyPsychologistProfileInput;
+export type MutationSetPsychologistCharacteristicsArgs = {
+  input: Array<SetProfileCharacteristicInput>;
 };
 
 export type MutationSetTranslationsArgs = {
-  lang: Scalars["String"];
   input: Array<TranslationInput>;
-};
-
-export type MutationAssignTreatmentArgs = {
-  id: Scalars["ID"];
-  priceRangeName: Scalars["String"];
-};
-
-export type MutationCreateTreatmentArgs = {
-  input: CreateTreatmentInput;
-};
-
-export type MutationDeleteTreatmentArgs = {
-  id: Scalars["ID"];
-  priceRangeName: Scalars["String"];
-};
-
-export type MutationInterruptTreatmentByPatientArgs = {
-  id: Scalars["ID"];
-  reason: Scalars["String"];
-};
-
-export type MutationInterruptTreatmentByPsychologistArgs = {
-  id: Scalars["ID"];
-  reason: Scalars["String"];
-};
-
-export type MutationFinalizeTreatmentArgs = {
-  id: Scalars["ID"];
+  lang: Scalars["String"];
 };
 
 export type MutationSetTreatmentPriceRangesArgs = {
@@ -314,42 +289,67 @@ export type MutationUpdateTreatmentArgs = {
   input: UpdateTreatmentInput;
 };
 
+export type MutationUpdateUserArgs = {
+  id: Scalars["ID"];
+  input: UpdateUserInput;
+};
+
+export type MutationUpsertMyPatientProfileArgs = {
+  input: UpsertMyPatientProfileInput;
+};
+
+export type MutationUpsertMyPsychologistProfileArgs = {
+  input: UpsertMyPsychologistProfileInput;
+};
+
+export type MutationUpsertPatientAgreementArgs = {
+  input: UpsertAgreementInput;
+};
+
+export type MutationUpsertPsychologistAgreementArgs = {
+  input: UpsertAgreementInput;
+};
+
+export type MutationUpsertTermArgs = {
+  input: UpsertTermInput;
+};
+
 export type PatientAppointment = {
   __typename?: "PatientAppointment";
-  id: Scalars["ID"];
-  start: Scalars["Time"];
   end: Scalars["Time"];
-  priceRange?: Maybe<TreatmentPriceRange>;
-  status: AppointmentStatus;
-  reason: Scalars["String"];
+  id: Scalars["ID"];
   link: Scalars["String"];
+  priceRange?: Maybe<TreatmentPriceRange>;
+  reason: Scalars["String"];
+  start: Scalars["Time"];
+  status: AppointmentStatus;
   treatment: PatientTreatment;
 };
 
 export type PatientProfile = {
   __typename?: "PatientProfile";
-  id: Scalars["ID"];
-  fullName: Scalars["String"];
-  likeName: Scalars["String"];
-  birthDate: Scalars["Time"];
-  city: Scalars["String"];
-  avatar: Scalars["String"];
-  characteristics: Array<CharacteristicChoice>;
-  preferences: Array<Preference>;
   agreements: Array<Agreement>;
-  treatments: Array<PatientTreatment>;
   appointments: Array<PatientAppointment>;
+  avatar: Scalars["String"];
+  birthDate: Scalars["Time"];
+  characteristics: Array<CharacteristicChoice>;
+  city: Scalars["String"];
+  fullName: Scalars["String"];
+  id: Scalars["ID"];
+  likeName: Scalars["String"];
+  preferences: Array<Preference>;
+  treatments: Array<PatientTreatment>;
 };
 
 export type PatientTreatment = {
   __typename?: "PatientTreatment";
-  id: Scalars["ID"];
-  frequency: Scalars["Int"];
-  phase: Scalars["Int"];
   duration: Scalars["Int"];
+  frequency: Scalars["Int"];
+  id: Scalars["ID"];
+  phase: Scalars["Int"];
   priceRange?: Maybe<TreatmentPriceRange>;
-  status: TreatmentStatus;
   psychologist: PublicPsychologistProfile;
+  status: TreatmentStatus;
 };
 
 export type Preference = {
@@ -361,119 +361,111 @@ export type Preference = {
 
 export type PsychologistAppointment = {
   __typename?: "PsychologistAppointment";
-  id: Scalars["ID"];
-  start: Scalars["Time"];
   end: Scalars["Time"];
-  priceRange?: Maybe<TreatmentPriceRange>;
-  status: AppointmentStatus;
-  reason: Scalars["String"];
+  id: Scalars["ID"];
   link: Scalars["String"];
+  priceRange?: Maybe<TreatmentPriceRange>;
+  reason: Scalars["String"];
+  start: Scalars["Time"];
+  status: AppointmentStatus;
   treatment: PsychologistTreatment;
 };
 
 export type PsychologistProfile = {
   __typename?: "PsychologistProfile";
-  id: Scalars["ID"];
-  fullName: Scalars["String"];
-  likeName: Scalars["String"];
+  agreements: Array<Agreement>;
+  appointments: Array<PsychologistAppointment>;
+  avatar: Scalars["String"];
+  bio: Scalars["String"];
   birthDate: Scalars["Time"];
+  characteristics: Array<CharacteristicChoice>;
   city: Scalars["String"];
   crp: Scalars["String"];
-  whatsapp: Scalars["String"];
+  fullName: Scalars["String"];
+  id: Scalars["ID"];
   instagram: Scalars["String"];
-  bio: Scalars["String"];
-  avatar: Scalars["String"];
-  characteristics: Array<CharacteristicChoice>;
+  likeName: Scalars["String"];
   preferences: Array<Preference>;
-  agreements: Array<Agreement>;
-  treatments: Array<PsychologistTreatment>;
   priceRangeOfferings: Array<TreatmentPriceRangeOffering>;
-  appointments: Array<PsychologistAppointment>;
+  treatments: Array<PsychologistTreatment>;
+  whatsapp: Scalars["String"];
 };
 
 export type PsychologistTreatment = {
   __typename?: "PsychologistTreatment";
-  id: Scalars["ID"];
-  frequency: Scalars["Int"];
-  phase: Scalars["Int"];
   duration: Scalars["Int"];
+  frequency: Scalars["Int"];
+  id: Scalars["ID"];
+  patient?: Maybe<PublicPatientProfile>;
+  phase: Scalars["Int"];
   priceRange?: Maybe<TreatmentPriceRange>;
   status: TreatmentStatus;
-  patient?: Maybe<PublicPatientProfile>;
 };
 
 export type PublicPatientProfile = {
   __typename?: "PublicPatientProfile";
-  id: Scalars["ID"];
-  fullName: Scalars["String"];
-  likeName: Scalars["String"];
-  birthDate: Scalars["Time"];
-  city: Scalars["String"];
   avatar: Scalars["String"];
+  birthDate: Scalars["Time"];
   characteristics: Array<CharacteristicChoice>;
+  city: Scalars["String"];
+  fullName: Scalars["String"];
+  id: Scalars["ID"];
+  likeName: Scalars["String"];
 };
 
 export type PublicPsychologistProfile = {
   __typename?: "PublicPsychologistProfile";
-  id: Scalars["ID"];
-  fullName: Scalars["String"];
-  likeName: Scalars["String"];
+  avatar: Scalars["String"];
+  bio: Scalars["String"];
   city: Scalars["String"];
   crp: Scalars["String"];
-  whatsapp: Scalars["String"];
+  fullName: Scalars["String"];
+  id: Scalars["ID"];
   instagram: Scalars["String"];
-  bio: Scalars["String"];
-  avatar: Scalars["String"];
+  likeName: Scalars["String"];
   pendingTreatments: Array<PsychologistTreatment>;
   priceRangeOfferings: Array<TreatmentPriceRangeOffering>;
+  whatsapp: Scalars["String"];
 };
 
 export type Query = {
   __typename?: "Query";
   /** The authenticateUser query allows a user to exchange their email and password for an authentication token. */
   authenticateUser: Token;
-  /** The myUser query allows a user to get information about their own user. */
-  myUser: User;
-  /** The user query allows a user to get information about another user. */
-  user: User;
-  /** The usersByRole query allows a user to get users that have a specified role in the application. */
-  usersByRole: Array<User>;
-  /** The patientProfile query allows a user to get a patient profile from other user. */
-  patientTerms: Array<Term>;
-  /** The psychologistProfile query allows a user to get a psychologist profile from other user. */
-  psychologistTerms: Array<Term>;
-  /** The patientCharacteristics query allows a user to get all possible patient characteristics. */
-  patientCharacteristics: Array<Characteristic>;
-  /** The psychologistCharacteristics query allows a user to get all possible psychologist characteristics. */
-  psychologistCharacteristics: Array<Characteristic>;
-  /** The myPatientTopAffinities query allows a user to get the last calculation of affinities for their patient profile. */
-  myPatientTopAffinities: Array<Affinity>;
   /** The myPatientProfile query allows a user to get their own patient profile. */
   myPatientProfile?: Maybe<PatientProfile>;
+  /** The myPatientTopAffinities query allows a user to get the last calculation of affinities for their patient profile. */
+  myPatientTopAffinities: Array<Affinity>;
   /** The myPsychologistProfile query allows a user to get their own patient profile. */
   myPsychologistProfile?: Maybe<PsychologistProfile>;
+  /** The myUser query allows a user to get information about their own user. */
+  myUser: User;
+  /** The patientCharacteristics query allows a user to get all possible patient characteristics. */
+  patientCharacteristics: Array<Characteristic>;
   /** The patientProfile query allows a user to get a patient profile from other user. */
   patientProfile?: Maybe<PublicPatientProfile>;
+  /** The patientProfile query allows a user to get a patient profile from other user. */
+  patientTerms: Array<Term>;
+  /** The psychologistCharacteristics query allows a user to get all possible psychologist characteristics. */
+  psychologistCharacteristics: Array<Characteristic>;
   /** The psychologistProfile query allows a user to get a psychologist profile from other user. */
   psychologistProfile?: Maybe<PublicPsychologistProfile>;
+  /** The psychologistProfile query allows a user to get a psychologist profile from other user. */
+  psychologistTerms: Array<Term>;
   /** The time query allows the user to know the timestamp of the server. */
   time: Scalars["Time"];
   /** The translations query allows a user to get translated translations by language and keys. */
   translations: Array<Translation>;
   /** The treatmentPriceRanges query allows a user to retrieve the possible treatment price ranges. */
   treatmentPriceRanges: Array<TreatmentPriceRange>;
+  /** The user query allows a user to get information about another user. */
+  user: User;
+  /** The usersByRole query allows a user to get users that have a specified role in the application. */
+  usersByRole: Array<User>;
 };
 
 export type QueryAuthenticateUserArgs = {
   input: AuthenticateUserInput;
-};
-
-export type QueryUserArgs = {
-  id: Scalars["ID"];
-};
-
-export type QueryUsersByRoleArgs = {
-  role: Role;
 };
 
 export type QueryPatientProfileArgs = {
@@ -485,20 +477,28 @@ export type QueryPsychologistProfileArgs = {
 };
 
 export type QueryTranslationsArgs = {
-  lang: Scalars["String"];
   keys: Array<Scalars["String"]>;
+  lang: Scalars["String"];
+};
+
+export type QueryUserArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryUsersByRoleArgs = {
+  role: Role;
 };
 
 export type ResetPasswordInput = {
-  token: Scalars["String"];
   password: Scalars["String"];
+  token: Scalars["String"];
 };
 
 export enum Role {
-  Jobrunner = "JOBRUNNER",
   Coordinator = "COORDINATOR",
-  Psychologist = "PSYCHOLOGIST",
+  Jobrunner = "JOBRUNNER",
   Patient = "PATIENT",
+  Psychologist = "PSYCHOLOGIST",
 }
 
 export type SetMyProfileCharacteristicChoiceInput = {
@@ -514,22 +514,22 @@ export type SetMyProfilePreferenceInput = {
 
 export type SetProfileCharacteristicInput = {
   name: Scalars["String"];
-  type: CharacteristicType;
   possibleValues: Array<Scalars["String"]>;
+  type: CharacteristicType;
 };
 
 export type SetTreatmentPriceRangesInput = {
-  name: Scalars["String"];
-  minimumPrice: Scalars["Int"];
-  maximumPrice: Scalars["Int"];
   eligibleFor: Scalars["String"];
+  maximumPrice: Scalars["Int"];
+  minimumPrice: Scalars["Int"];
+  name: Scalars["String"];
 };
 
 export type Term = {
   __typename?: "Term";
+  active: Scalars["Boolean"];
   name: Scalars["String"];
   version: Scalars["Int"];
-  active: Scalars["Boolean"];
 };
 
 export enum TermProfileType {
@@ -539,14 +539,14 @@ export enum TermProfileType {
 
 export type Token = {
   __typename?: "Token";
-  token: Scalars["String"];
   expiresAt: Scalars["Time"];
+  token: Scalars["String"];
 };
 
 export type Translation = {
   __typename?: "Translation";
-  lang: Scalars["String"];
   key: Scalars["String"];
+  lang: Scalars["String"];
   value: Scalars["String"];
 };
 
@@ -557,10 +557,10 @@ export type TranslationInput = {
 
 export type TreatmentPriceRange = {
   __typename?: "TreatmentPriceRange";
-  name: Scalars["ID"];
-  minimumPrice: Scalars["Int"];
-  maximumPrice: Scalars["Int"];
   eligibleFor: Scalars["String"];
+  maximumPrice: Scalars["Int"];
+  minimumPrice: Scalars["Int"];
+  name: Scalars["ID"];
 };
 
 export type TreatmentPriceRangeOffering = {
@@ -570,17 +570,17 @@ export type TreatmentPriceRangeOffering = {
 };
 
 export enum TreatmentStatus {
-  Pending = "PENDING",
   Active = "ACTIVE",
   Finalized = "FINALIZED",
-  InterruptedByPsychologist = "INTERRUPTED_BY_PSYCHOLOGIST",
   InterruptedByPatient = "INTERRUPTED_BY_PATIENT",
+  InterruptedByPsychologist = "INTERRUPTED_BY_PSYCHOLOGIST",
+  Pending = "PENDING",
 }
 
 export type UpdateTreatmentInput = {
+  duration: Scalars["Int"];
   frequency: Scalars["Int"];
   phase: Scalars["Int"];
-  duration: Scalars["Int"];
   priceRangeName?: Maybe<Scalars["String"]>;
 };
 
@@ -590,42 +590,42 @@ export type UpdateUserInput = {
 };
 
 export type UpsertAgreementInput = {
+  agreed: Scalars["Boolean"];
   termName: Scalars["String"];
   termVersion: Scalars["Int"];
-  agreed: Scalars["Boolean"];
 };
 
 export type UpsertMyPatientProfileInput = {
-  fullName: Scalars["String"];
-  likeName: Scalars["String"];
+  avatar?: Maybe<Scalars["Upload"]>;
   birthDate: Scalars["Time"];
   city: Scalars["String"];
-  avatar?: Maybe<Scalars["Upload"]>;
+  fullName: Scalars["String"];
+  likeName: Scalars["String"];
 };
 
 export type UpsertMyPsychologistProfileInput = {
-  fullName: Scalars["String"];
-  likeName: Scalars["String"];
+  avatar?: Maybe<Scalars["Upload"]>;
+  bio: Scalars["String"];
   birthDate: Scalars["Time"];
   city: Scalars["String"];
   crp: Scalars["String"];
-  whatsapp: Scalars["String"];
+  fullName: Scalars["String"];
   instagram: Scalars["String"];
-  bio: Scalars["String"];
-  avatar?: Maybe<Scalars["Upload"]>;
+  likeName: Scalars["String"];
+  whatsapp: Scalars["String"];
 };
 
 export type UpsertTermInput = {
-  name: Scalars["String"];
-  version: Scalars["Int"];
-  profileType: TermProfileType;
   active: Scalars["Boolean"];
+  name: Scalars["String"];
+  profileType: TermProfileType;
+  version: Scalars["Int"];
 };
 
 export type User = {
   __typename?: "User";
-  id: Scalars["ID"];
   email: Scalars["String"];
+  id: Scalars["ID"];
   role: Role;
 };
 
@@ -645,7 +645,7 @@ export type CreatePatientUserMutationVariables = Exact<{
 
 export type CreatePatientUserMutation = {
   __typename?: "Mutation";
-  createPatientUser?: Maybe<boolean>;
+  createPatientUser?: boolean | null;
 };
 
 export type MyUserQueryVariables = Exact<{ [key: string]: never }>;
@@ -662,7 +662,7 @@ export type ResetPasswordMutationVariables = Exact<{
 
 export type ResetPasswordMutation = {
   __typename?: "Mutation";
-  resetPassword?: Maybe<boolean>;
+  resetPassword?: boolean | null;
 };
 
 export type InvitePsychologistUserMutationVariables = Exact<{
@@ -671,7 +671,7 @@ export type InvitePsychologistUserMutationVariables = Exact<{
 
 export type InvitePsychologistUserMutation = {
   __typename?: "Mutation";
-  createPsychologistUser?: Maybe<boolean>;
+  createPsychologistUser?: boolean | null;
 };
 
 export type AssignTreatmentMutationVariables = Exact<{
@@ -681,7 +681,7 @@ export type AssignTreatmentMutationVariables = Exact<{
 
 export type AssignTreatmentMutation = {
   __typename?: "Mutation";
-  assignTreatment?: Maybe<boolean>;
+  assignTreatment?: boolean | null;
 };
 
 export type CancelAppointmentByPatientMutationVariables = Exact<{
@@ -691,7 +691,7 @@ export type CancelAppointmentByPatientMutationVariables = Exact<{
 
 export type CancelAppointmentByPatientMutation = {
   __typename?: "Mutation";
-  cancelAppointmentByPatient?: Maybe<boolean>;
+  cancelAppointmentByPatient?: boolean | null;
 };
 
 export type ConfirmAppointmentByPatientMutationVariables = Exact<{
@@ -700,7 +700,7 @@ export type ConfirmAppointmentByPatientMutationVariables = Exact<{
 
 export type ConfirmAppointmentByPatientMutation = {
   __typename?: "Mutation";
-  confirmAppointmentByPatient?: Maybe<boolean>;
+  confirmAppointmentByPatient?: boolean | null;
 };
 
 export type EditAppointmentByPatientMutationVariables = Exact<{
@@ -710,7 +710,7 @@ export type EditAppointmentByPatientMutationVariables = Exact<{
 
 export type EditAppointmentByPatientMutation = {
   __typename?: "Mutation";
-  editAppointmentByPatient?: Maybe<boolean>;
+  editAppointmentByPatient?: boolean | null;
 };
 
 export type InterruptTreatmentByPatientMutationVariables = Exact<{
@@ -720,7 +720,7 @@ export type InterruptTreatmentByPatientMutationVariables = Exact<{
 
 export type InterruptTreatmentByPatientMutation = {
   __typename?: "Mutation";
-  interruptTreatmentByPatient?: Maybe<boolean>;
+  interruptTreatmentByPatient?: boolean | null;
 };
 
 export type MyPatientAppointmentsQueryVariables = Exact<{
@@ -729,7 +729,7 @@ export type MyPatientAppointmentsQueryVariables = Exact<{
 
 export type MyPatientAppointmentsQuery = {
   __typename?: "Query";
-  myPatientProfile?: Maybe<{
+  myPatientProfile?: {
     __typename?: "PatientProfile";
     id: string;
     appointments: Array<{
@@ -738,7 +738,7 @@ export type MyPatientAppointmentsQuery = {
       status: AppointmentStatus;
       start: Date;
       end: Date;
-      priceRange?: Maybe<{ __typename?: "TreatmentPriceRange"; name: string }>;
+      priceRange?: { __typename?: "TreatmentPriceRange"; name: string } | null;
       treatment: {
         __typename?: "PatientTreatment";
         psychologist: {
@@ -747,19 +747,19 @@ export type MyPatientAppointmentsQuery = {
         };
       };
     }>;
-  }>;
+  } | null;
 };
 
 export type MyPatientGreetingQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MyPatientGreetingQuery = {
   __typename?: "Query";
-  myPatientProfile?: Maybe<{
+  myPatientProfile?: {
     __typename?: "PatientProfile";
     id: string;
     likeName: string;
     avatar: string;
-  }>;
+  } | null;
 };
 
 export type MyPatientTopAffinitiesQueryVariables = Exact<{
@@ -770,7 +770,7 @@ export type MyPatientTopAffinitiesQuery = {
   __typename?: "Query";
   myPatientTopAffinities: Array<{
     __typename?: "Affinity";
-    psychologist?: Maybe<{
+    psychologist?: {
       __typename?: "PublicPsychologistProfile";
       id: string;
       fullName: string;
@@ -784,15 +784,15 @@ export type MyPatientTopAffinitiesQuery = {
       priceRangeOfferings: Array<{
         __typename?: "TreatmentPriceRangeOffering";
         id: string;
-        priceRange?: Maybe<{
+        priceRange?: {
           __typename?: "TreatmentPriceRange";
           name: string;
           minimumPrice: number;
           maximumPrice: number;
           eligibleFor: string;
-        }>;
+        } | null;
       }>;
-    }>;
+    } | null;
   }>;
 };
 
@@ -800,7 +800,7 @@ export type MyPatientTreatmentsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MyPatientTreatmentsQuery = {
   __typename?: "Query";
-  myPatientProfile?: Maybe<{
+  myPatientProfile?: {
     __typename?: "PatientProfile";
     id: string;
     likeName: string;
@@ -813,7 +813,7 @@ export type MyPatientTreatmentsQuery = {
         likeName: string;
       };
     }>;
-  }>;
+  } | null;
 };
 
 export type GetCharacteristicMessagesQueryVariables = Exact<{
@@ -879,7 +879,7 @@ export type MyPatientProfileQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MyPatientProfileQuery = {
   __typename?: "Query";
-  myPatientProfile?: Maybe<{
+  myPatientProfile?: {
     __typename?: "PatientProfile";
     id: string;
     fullName: string;
@@ -904,7 +904,7 @@ export type MyPatientProfileQuery = {
       termName: string;
       termVersion: number;
     }>;
-  }>;
+  } | null;
 };
 
 export type MyPsychologistProfileQueryVariables = Exact<{
@@ -913,7 +913,7 @@ export type MyPsychologistProfileQueryVariables = Exact<{
 
 export type MyPsychologistProfileQuery = {
   __typename?: "Query";
-  myPsychologistProfile?: Maybe<{
+  myPsychologistProfile?: {
     __typename?: "PsychologistProfile";
     id: string;
     fullName: string;
@@ -942,7 +942,7 @@ export type MyPsychologistProfileQuery = {
       termName: string;
       termVersion: number;
     }>;
-  }>;
+  } | null;
 };
 
 export type PsychologistProfileQueryVariables = Exact<{
@@ -951,7 +951,7 @@ export type PsychologistProfileQueryVariables = Exact<{
 
 export type PsychologistProfileQuery = {
   __typename?: "Query";
-  psychologistProfile?: Maybe<{
+  psychologistProfile?: {
     __typename?: "PublicPsychologistProfile";
     id: string;
     fullName: string;
@@ -962,7 +962,7 @@ export type PsychologistProfileQuery = {
     instagram: string;
     bio: string;
     avatar: string;
-  }>;
+  } | null;
 };
 
 export type SetMyPatientCharacteristicChoicesAndPreferencesMutationVariables = Exact<{
@@ -974,8 +974,8 @@ export type SetMyPatientCharacteristicChoicesAndPreferencesMutationVariables = E
 
 export type SetMyPatientCharacteristicChoicesAndPreferencesMutation = {
   __typename?: "Mutation";
-  setMyPatientCharacteristicChoices?: Maybe<boolean>;
-  setMyPatientPreferences?: Maybe<boolean>;
+  setMyPatientCharacteristicChoices?: boolean | null;
+  setMyPatientPreferences?: boolean | null;
 };
 
 export type SetMyPsychologistCharacteristicChoicesAndPreferencesMutationVariables = Exact<{
@@ -987,8 +987,8 @@ export type SetMyPsychologistCharacteristicChoicesAndPreferencesMutationVariable
 
 export type SetMyPsychologistCharacteristicChoicesAndPreferencesMutation = {
   __typename?: "Mutation";
-  setMyPsychologistCharacteristicChoices?: Maybe<boolean>;
-  setMyPsychologistPreferences?: Maybe<boolean>;
+  setMyPsychologistCharacteristicChoices?: boolean | null;
+  setMyPsychologistPreferences?: boolean | null;
 };
 
 export type UpsertMyPatientProfileMutationVariables = Exact<{
@@ -997,7 +997,7 @@ export type UpsertMyPatientProfileMutationVariables = Exact<{
 
 export type UpsertMyPatientProfileMutation = {
   __typename?: "Mutation";
-  upsertMyPatientProfile?: Maybe<boolean>;
+  upsertMyPatientProfile?: boolean | null;
 };
 
 export type UpsertMyPsychologistProfileMutationVariables = Exact<{
@@ -1006,7 +1006,7 @@ export type UpsertMyPsychologistProfileMutationVariables = Exact<{
 
 export type UpsertMyPsychologistProfileMutation = {
   __typename?: "Mutation";
-  upsertMyPsychologistProfile?: Maybe<boolean>;
+  upsertMyPsychologistProfile?: boolean | null;
 };
 
 export type UpsertPatientAgreementMutationVariables = Exact<{
@@ -1015,7 +1015,7 @@ export type UpsertPatientAgreementMutationVariables = Exact<{
 
 export type UpsertPatientAgreementMutation = {
   __typename?: "Mutation";
-  upsertPatientAgreement?: Maybe<boolean>;
+  upsertPatientAgreement?: boolean | null;
 };
 
 export type UpsertPsychologistAgreementMutationVariables = Exact<{
@@ -1024,7 +1024,7 @@ export type UpsertPsychologistAgreementMutationVariables = Exact<{
 
 export type UpsertPsychologistAgreementMutation = {
   __typename?: "Mutation";
-  upsertPsychologistAgreement?: Maybe<boolean>;
+  upsertPsychologistAgreement?: boolean | null;
 };
 
 export type CancelAppointmentByPsychologistMutationVariables = Exact<{
@@ -1034,7 +1034,7 @@ export type CancelAppointmentByPsychologistMutationVariables = Exact<{
 
 export type CancelAppointmentByPsychologistMutation = {
   __typename?: "Mutation";
-  cancelAppointmentByPsychologist?: Maybe<boolean>;
+  cancelAppointmentByPsychologist?: boolean | null;
 };
 
 export type ConfirmAppointmentByPsychologistMutationVariables = Exact<{
@@ -1043,7 +1043,7 @@ export type ConfirmAppointmentByPsychologistMutationVariables = Exact<{
 
 export type ConfirmAppointmentByPsychologistMutation = {
   __typename?: "Mutation";
-  confirmAppointmentByPsychologist?: Maybe<boolean>;
+  confirmAppointmentByPsychologist?: boolean | null;
 };
 
 export type CreateTreatmentMutationVariables = Exact<{
@@ -1055,7 +1055,7 @@ export type CreateTreatmentMutationVariables = Exact<{
 
 export type CreateTreatmentMutation = {
   __typename?: "Mutation";
-  createTreatment?: Maybe<boolean>;
+  createTreatment?: boolean | null;
 };
 
 export type DeleteTreatmentMutationVariables = Exact<{
@@ -1065,7 +1065,7 @@ export type DeleteTreatmentMutationVariables = Exact<{
 
 export type DeleteTreatmentMutation = {
   __typename?: "Mutation";
-  deleteTreatment?: Maybe<boolean>;
+  deleteTreatment?: boolean | null;
 };
 
 export type EditAppointmentByPsychologistMutationVariables = Exact<{
@@ -1075,7 +1075,7 @@ export type EditAppointmentByPsychologistMutationVariables = Exact<{
 
 export type EditAppointmentByPsychologistMutation = {
   __typename?: "Mutation";
-  editAppointmentByPsychologist?: Maybe<boolean>;
+  editAppointmentByPsychologist?: boolean | null;
 };
 
 export type FinalizeTreatmentMutationVariables = Exact<{
@@ -1084,7 +1084,7 @@ export type FinalizeTreatmentMutationVariables = Exact<{
 
 export type FinalizeTreatmentMutation = {
   __typename?: "Mutation";
-  finalizeTreatment?: Maybe<boolean>;
+  finalizeTreatment?: boolean | null;
 };
 
 export type InterruptTreatmentByPsychologistMutationVariables = Exact<{
@@ -1094,7 +1094,7 @@ export type InterruptTreatmentByPsychologistMutationVariables = Exact<{
 
 export type InterruptTreatmentByPsychologistMutation = {
   __typename?: "Mutation";
-  interruptTreatmentByPsychologist?: Maybe<boolean>;
+  interruptTreatmentByPsychologist?: boolean | null;
 };
 
 export type MyPsychologistAppointmentsQueryVariables = Exact<{
@@ -1103,7 +1103,7 @@ export type MyPsychologistAppointmentsQueryVariables = Exact<{
 
 export type MyPsychologistAppointmentsQuery = {
   __typename?: "Query";
-  myPsychologistProfile?: Maybe<{
+  myPsychologistProfile?: {
     __typename?: "PsychologistProfile";
     id: string;
     appointments: Array<{
@@ -1112,21 +1112,21 @@ export type MyPsychologistAppointmentsQuery = {
       status: AppointmentStatus;
       start: Date;
       end: Date;
-      priceRange?: Maybe<{
+      priceRange?: {
         __typename?: "TreatmentPriceRange";
         name: string;
         minimumPrice: number;
         maximumPrice: number;
-      }>;
+      } | null;
       treatment: {
         __typename?: "PsychologistTreatment";
-        patient?: Maybe<{
+        patient?: {
           __typename?: "PublicPatientProfile";
           fullName: string;
-        }>;
+        } | null;
       };
     }>;
-  }>;
+  } | null;
 };
 
 export type MyPsychologistGreetingQueryVariables = Exact<{
@@ -1135,12 +1135,12 @@ export type MyPsychologistGreetingQueryVariables = Exact<{
 
 export type MyPsychologistGreetingQuery = {
   __typename?: "Query";
-  myPsychologistProfile?: Maybe<{
+  myPsychologistProfile?: {
     __typename?: "PsychologistProfile";
     id: string;
     likeName: string;
     avatar: string;
-  }>;
+  } | null;
 };
 
 export type MyPsychologistTreatmentsQueryVariables = Exact<{
@@ -1149,7 +1149,7 @@ export type MyPsychologistTreatmentsQueryVariables = Exact<{
 
 export type MyPsychologistTreatmentsQuery = {
   __typename?: "Query";
-  myPsychologistProfile?: Maybe<{
+  myPsychologistProfile?: {
     __typename?: "PsychologistProfile";
     id: string;
     likeName: string;
@@ -1160,27 +1160,27 @@ export type MyPsychologistTreatmentsQuery = {
       frequency: number;
       phase: number;
       duration: number;
-      priceRange?: Maybe<{
+      priceRange?: {
         __typename?: "TreatmentPriceRange";
         name: string;
         minimumPrice: number;
         maximumPrice: number;
-      }>;
-      patient?: Maybe<{
+      } | null;
+      patient?: {
         __typename?: "PublicPatientProfile";
         fullName: string;
-      }>;
+      } | null;
     }>;
     priceRangeOfferings: Array<{
       __typename?: "TreatmentPriceRangeOffering";
-      priceRange?: Maybe<{
+      priceRange?: {
         __typename?: "TreatmentPriceRange";
         name: string;
         minimumPrice: number;
         maximumPrice: number;
-      }>;
+      } | null;
     }>;
-  }>;
+  } | null;
 };
 
 export type TreatmentPriceRangesQueryVariables = Exact<{
