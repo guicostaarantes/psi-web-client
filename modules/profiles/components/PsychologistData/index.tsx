@@ -161,7 +161,6 @@ const PsychologistDataComponent = () => {
   useEffect(() => {
     if (!profileLoading && terms) {
       const initialAgreements = {};
-      console.log(profileData);
       for (const term of terms) {
         initialAgreements[
           term.name
