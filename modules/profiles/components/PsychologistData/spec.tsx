@@ -31,7 +31,7 @@ const mocks = [
           id: "7289bb4f-eb82-4f6e-8cde-d02d52eeed1c",
           fullName: "Peyton Williams Manning",
           likeName: "Peyton Manning",
-          birthDate: 196527600,
+          birthDate: new Date(1976, 2, 24, 7),
           city: "Indianapolis - IN",
           crp: "06/123456",
           whatsapp: "(31) 98765-4321",
@@ -71,7 +71,6 @@ const mocks = [
             {
               termName: "price",
               termVersion: 1,
-              signedAt: 16123456789,
             },
           ],
         },

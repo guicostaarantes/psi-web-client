@@ -1,7 +1,11 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { withScalars } from "apollo-link-scalars";
 import { createUploadLink } from "apollo-upload-client";
+import { buildClientSchema, IntrospectionQuery } from "graphql";
+import { DateTimeResolver } from "graphql-scalars";
 
+import introspection from "@psi/shared/introspection.json";
 import ToastContainer from "@psi/styleguide/components/Toast";
 import useTheme from "@psi/styleguide/hooks/useTheme";
 
@@ -19,8 +23,15 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const scalarLink = withScalars({
+  typesMap: {
+    Time: DateTimeResolver,
+  },
+  schema: buildClientSchema((introspection as unknown) as IntrospectionQuery),
+});
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(scalarLink).concat(httpLink),
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {

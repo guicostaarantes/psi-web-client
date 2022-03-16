@@ -19,7 +19,6 @@ query MyPatientProfile {
     agreements {
       termName
       termVersion
-      signedAt
     }
   }
 }

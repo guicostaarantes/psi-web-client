@@ -4,9 +4,13 @@ documents: "modules/**/*.graphql"
 config:
   scalars:
     Upload: "File"
+    Time: "Date"
 generates:
   ./modules/shared/graphql.ts:
     plugins:
       - "typescript"
       - "typescript-operations"
       - "typescript-react-apollo"
+  ./modules/shared/introspection.json:
+    plugins:
+      - "introspection"

@@ -31,7 +31,7 @@ const mocks = [
           id: "a7b3bb32-1919-49e1-93da-57daf96ae6d8",
           fullName: "Thomas Edward Patrick Brady, Jr.",
           likeName: "Tom Brady",
-          birthDate: 239457600,
+          birthDate: new Date(1977, 7, 3, 7),
           city: "Boston - MA",
           avatar: "abcd1234",
           characteristics: [
@@ -67,7 +67,6 @@ const mocks = [
             {
               termName: "emergency",
               termVersion: 1,
-              signedAt: 16123456789,
             },
           ],
         },

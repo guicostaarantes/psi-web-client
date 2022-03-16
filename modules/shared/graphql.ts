@@ -16,12 +16,13 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Time: Date;
   Upload: File;
 };
 
 export type Affinity = {
   __typename?: "Affinity";
-  createdAt: Scalars["Int"];
+  createdAt: Scalars["Time"];
   psychologist?: Maybe<PublicPsychologistProfile>;
 };
 
@@ -31,7 +32,6 @@ export type Agreement = {
   termName: Scalars["String"];
   termVersion: Scalars["Int"];
   profileId: Scalars["String"];
-  signedAt: Scalars["Int"];
 };
 
 export enum AppointmentStatus {
@@ -92,13 +92,13 @@ export type CreateUserWithPasswordInput = {
 };
 
 export type EditAppointmentByPatientInput = {
-  start: Scalars["Int"];
+  start: Scalars["Time"];
   reason: Scalars["String"];
 };
 
 export type EditAppointmentByPsychologistInput = {
-  start: Scalars["Int"];
-  end: Scalars["Int"];
+  start: Scalars["Time"];
+  end: Scalars["Time"];
   priceRangeName: Scalars["String"];
   reason: Scalars["String"];
 };
@@ -317,8 +317,8 @@ export type MutationUpdateTreatmentArgs = {
 export type PatientAppointment = {
   __typename?: "PatientAppointment";
   id: Scalars["ID"];
-  start: Scalars["Int"];
-  end: Scalars["Int"];
+  start: Scalars["Time"];
+  end: Scalars["Time"];
   priceRange?: Maybe<TreatmentPriceRange>;
   status: AppointmentStatus;
   reason: Scalars["String"];
@@ -331,7 +331,7 @@ export type PatientProfile = {
   id: Scalars["ID"];
   fullName: Scalars["String"];
   likeName: Scalars["String"];
-  birthDate: Scalars["Int"];
+  birthDate: Scalars["Time"];
   city: Scalars["String"];
   avatar: Scalars["String"];
   characteristics: Array<CharacteristicChoice>;
@@ -362,8 +362,8 @@ export type Preference = {
 export type PsychologistAppointment = {
   __typename?: "PsychologistAppointment";
   id: Scalars["ID"];
-  start: Scalars["Int"];
-  end: Scalars["Int"];
+  start: Scalars["Time"];
+  end: Scalars["Time"];
   priceRange?: Maybe<TreatmentPriceRange>;
   status: AppointmentStatus;
   reason: Scalars["String"];
@@ -376,7 +376,7 @@ export type PsychologistProfile = {
   id: Scalars["ID"];
   fullName: Scalars["String"];
   likeName: Scalars["String"];
-  birthDate: Scalars["Int"];
+  birthDate: Scalars["Time"];
   city: Scalars["String"];
   crp: Scalars["String"];
   whatsapp: Scalars["String"];
@@ -407,7 +407,7 @@ export type PublicPatientProfile = {
   id: Scalars["ID"];
   fullName: Scalars["String"];
   likeName: Scalars["String"];
-  birthDate: Scalars["Int"];
+  birthDate: Scalars["Time"];
   city: Scalars["String"];
   avatar: Scalars["String"];
   characteristics: Array<CharacteristicChoice>;
@@ -457,7 +457,7 @@ export type Query = {
   /** The psychologistProfile query allows a user to get a psychologist profile from other user. */
   psychologistProfile?: Maybe<PublicPsychologistProfile>;
   /** The time query allows the user to know the timestamp of the server. */
-  time: Scalars["Int"];
+  time: Scalars["Time"];
   /** The translations query allows a user to get translated translations by language and keys. */
   translations: Array<Translation>;
   /** The treatmentPriceRanges query allows a user to retrieve the possible treatment price ranges. */
@@ -540,7 +540,7 @@ export enum TermProfileType {
 export type Token = {
   __typename?: "Token";
   token: Scalars["String"];
-  expiresAt: Scalars["Int"];
+  expiresAt: Scalars["Time"];
 };
 
 export type Translation = {
@@ -598,7 +598,7 @@ export type UpsertAgreementInput = {
 export type UpsertMyPatientProfileInput = {
   fullName: Scalars["String"];
   likeName: Scalars["String"];
-  birthDate: Scalars["Int"];
+  birthDate: Scalars["Time"];
   city: Scalars["String"];
   avatar?: Maybe<Scalars["Upload"]>;
 };
@@ -606,7 +606,7 @@ export type UpsertMyPatientProfileInput = {
 export type UpsertMyPsychologistProfileInput = {
   fullName: Scalars["String"];
   likeName: Scalars["String"];
-  birthDate: Scalars["Int"];
+  birthDate: Scalars["Time"];
   city: Scalars["String"];
   crp: Scalars["String"];
   whatsapp: Scalars["String"];
@@ -636,7 +636,7 @@ export type AuthenticateUserQueryVariables = Exact<{
 
 export type AuthenticateUserQuery = {
   __typename?: "Query";
-  authenticateUser: { __typename?: "Token"; token: string; expiresAt: number };
+  authenticateUser: { __typename?: "Token"; token: string; expiresAt: Date };
 };
 
 export type CreatePatientUserMutationVariables = Exact<{
@@ -663,6 +663,15 @@ export type ResetPasswordMutationVariables = Exact<{
 export type ResetPasswordMutation = {
   __typename?: "Mutation";
   resetPassword?: Maybe<boolean>;
+};
+
+export type InvitePsychologistUserMutationVariables = Exact<{
+  email: Scalars["String"];
+}>;
+
+export type InvitePsychologistUserMutation = {
+  __typename?: "Mutation";
+  createPsychologistUser?: Maybe<boolean>;
 };
 
 export type AssignTreatmentMutationVariables = Exact<{
@@ -727,8 +736,8 @@ export type MyPatientAppointmentsQuery = {
       __typename?: "PatientAppointment";
       id: string;
       status: AppointmentStatus;
-      start: number;
-      end: number;
+      start: Date;
+      end: Date;
       priceRange?: Maybe<{ __typename?: "TreatmentPriceRange"; name: string }>;
       treatment: {
         __typename?: "PatientTreatment";
@@ -875,7 +884,7 @@ export type MyPatientProfileQuery = {
     id: string;
     fullName: string;
     likeName: string;
-    birthDate: number;
+    birthDate: Date;
     city: string;
     avatar: string;
     characteristics: Array<{
@@ -894,7 +903,6 @@ export type MyPatientProfileQuery = {
       __typename?: "Agreement";
       termName: string;
       termVersion: number;
-      signedAt: number;
     }>;
   }>;
 };
@@ -910,7 +918,7 @@ export type MyPsychologistProfileQuery = {
     id: string;
     fullName: string;
     likeName: string;
-    birthDate: number;
+    birthDate: Date;
     city: string;
     crp: string;
     whatsapp: string;
@@ -933,7 +941,6 @@ export type MyPsychologistProfileQuery = {
       __typename?: "Agreement";
       termName: string;
       termVersion: number;
-      signedAt: number;
     }>;
   }>;
 };
@@ -1103,8 +1110,8 @@ export type MyPsychologistAppointmentsQuery = {
       __typename?: "PsychologistAppointment";
       id: string;
       status: AppointmentStatus;
-      start: number;
-      end: number;
+      start: Date;
+      end: Date;
       priceRange?: Maybe<{
         __typename?: "TreatmentPriceRange";
         name: string;
@@ -1193,7 +1200,7 @@ export type TreatmentPriceRangesQuery = {
 
 export type GetServerTimeQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetServerTimeQuery = { __typename?: "Query"; time: number };
+export type GetServerTimeQuery = { __typename?: "Query"; time: Date };
 
 export const AuthenticateUserDocument = gql`
   query AuthenticateUser($email: String!, $password: String!) {
@@ -1398,6 +1405,53 @@ export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMut
 export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<
   ResetPasswordMutation,
   ResetPasswordMutationVariables
+>;
+export const InvitePsychologistUserDocument = gql`
+  mutation InvitePsychologistUser($email: String!) {
+    createPsychologistUser(input: { email: $email })
+  }
+`;
+export type InvitePsychologistUserMutationFn = Apollo.MutationFunction<
+  InvitePsychologistUserMutation,
+  InvitePsychologistUserMutationVariables
+>;
+
+/**
+ * __useInvitePsychologistUserMutation__
+ *
+ * To run a mutation, you first call `useInvitePsychologistUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInvitePsychologistUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [invitePsychologistUserMutation, { data, loading, error }] = useInvitePsychologistUserMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useInvitePsychologistUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    InvitePsychologistUserMutation,
+    InvitePsychologistUserMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    InvitePsychologistUserMutation,
+    InvitePsychologistUserMutationVariables
+  >(InvitePsychologistUserDocument, options);
+}
+export type InvitePsychologistUserMutationHookResult = ReturnType<
+  typeof useInvitePsychologistUserMutation
+>;
+export type InvitePsychologistUserMutationResult = Apollo.MutationResult<InvitePsychologistUserMutation>;
+export type InvitePsychologistUserMutationOptions = Apollo.BaseMutationOptions<
+  InvitePsychologistUserMutation,
+  InvitePsychologistUserMutationVariables
 >;
 export const AssignTreatmentDocument = gql`
   mutation AssignTreatment($id: ID!, $priceRangeName: String!) {
@@ -2176,7 +2230,6 @@ export const MyPatientProfileDocument = gql`
       agreements {
         termName
         termVersion
-        signedAt
       }
     }
   }
@@ -2257,7 +2310,6 @@ export const MyPsychologistProfileDocument = gql`
       agreements {
         termName
         termVersion
-        signedAt
       }
     }
   }
