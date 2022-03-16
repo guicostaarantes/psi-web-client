@@ -161,10 +161,11 @@ const PsychologistDataComponent = () => {
   useEffect(() => {
     if (!profileLoading && terms) {
       const initialAgreements = {};
+      console.log(profileData);
       for (const term of terms) {
         initialAgreements[
           term.name
-        ] = !!profileData?.myPsychologistProfile.agreements.find(
+        ] = !!profileData?.myPsychologistProfile?.agreements.find(
           (agree) =>
             agree.termName === term.name && agree.termVersion === term.version,
         );
