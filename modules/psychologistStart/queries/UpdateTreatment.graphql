@@ -1,0 +1,17 @@
+mutation UpdateTreatment(
+  $id: ID!
+  $frequency: Int!
+  $phase: Int!
+  $duration: Int!
+  $priceRangeName: String
+) {
+  updateTreatment(
+    id: $id
+    input: {
+      frequency: $frequency
+      phase: $phase
+      duration: $duration
+      priceRangeName: $priceRangeName
+    }
+  )
+}
