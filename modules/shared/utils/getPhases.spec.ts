@@ -28,8 +28,8 @@ test("getPhases util", () => {
   expect(getPhases(FOURTEEN_DAYS_A, "6", "23:00", HOUR_FORMAT)).toEqual([
     { frequency: 2, phase: 619200 },
   ]);
-  expect(getPhases(FOURTEEN_DAYS_B, "6", "23:00", HOUR_FORMAT)).toEqual([
-    { frequency: 2, phase: 14400 },
+  expect(getPhases(FOURTEEN_DAYS_B, "0", "00:00", HOUR_FORMAT)).toEqual([
+    { frequency: 2, phase: 18000 },
   ]);
 
   // invalid hour values should return NaN to enforce correct use

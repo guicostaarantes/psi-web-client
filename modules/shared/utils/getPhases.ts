@@ -42,7 +42,7 @@ const getPhases = (
         (1000 * secondsInOneDay)) /
       1000;
 
-    if (phaseContribution) {
+    if (!isNaN(phaseContribution)) {
       result.push({
         frequency: param.frequency,
         phase:
