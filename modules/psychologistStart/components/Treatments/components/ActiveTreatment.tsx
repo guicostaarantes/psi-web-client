@@ -1,5 +1,6 @@
 import { useState } from "@hookstate/core";
 
+import EditTreatmentModal from "@psi/psychologistStart/components/Treatments/components/EditTreatmentModal";
 import FinalizeTreatmentModal from "@psi/psychologistStart/components/Treatments/components/FinalizeTreatmentModal";
 import InterruptTreatmentModal from "@psi/psychologistStart/components/Treatments/components/InterruptTreatmentModal";
 import { TreatmentPriceRange } from "@psi/shared/graphql";
@@ -27,6 +28,8 @@ const ActiveTreatment = ({
   priceRange,
   patient,
 }: ActiveTreatmentProps) => {
+  const editModalOpen = useState(false);
+
   const finalizeModalOpen = useState(false);
 
   const interruptModalOpen = useState(false);
@@ -55,7 +58,13 @@ const ActiveTreatment = ({
             </div>
           </div>
           <div className="buttons">
-            <Button color="primary" onClick={() => finalizeModalOpen.set(true)}>
+            <Button color="primary" onClick={() => editModalOpen.set(true)}>
+              Modificar
+            </Button>
+            <Button
+              color="secondary"
+              onClick={() => finalizeModalOpen.set(true)}
+            >
               Finalizar
             </Button>
             <Button
@@ -67,6 +76,11 @@ const ActiveTreatment = ({
           </div>
         </div>
       </Card>
+      <EditTreatmentModal
+        onClose={() => editModalOpen.set(false)}
+        open={editModalOpen.value}
+        treatmentId={id}
+      />
       <FinalizeTreatmentModal
         onClose={() => finalizeModalOpen.set(false)}
         open={finalizeModalOpen.value}

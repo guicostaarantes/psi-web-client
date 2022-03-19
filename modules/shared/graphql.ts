@@ -1198,6 +1198,19 @@ export type TreatmentPriceRangesQuery = {
   }>;
 };
 
+export type UpdateTreatmentMutationVariables = Exact<{
+  id: Scalars["ID"];
+  frequency: Scalars["Int"];
+  phase: Scalars["Int"];
+  duration: Scalars["Int"];
+  priceRangeName?: Maybe<Scalars["String"]>;
+}>;
+
+export type UpdateTreatmentMutation = {
+  __typename?: "Mutation";
+  updateTreatment?: boolean | null;
+};
+
 export type GetServerTimeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetServerTimeQuery = { __typename?: "Query"; time: Date };
@@ -3346,6 +3359,71 @@ export type TreatmentPriceRangesLazyQueryHookResult = ReturnType<
 export type TreatmentPriceRangesQueryResult = Apollo.QueryResult<
   TreatmentPriceRangesQuery,
   TreatmentPriceRangesQueryVariables
+>;
+export const UpdateTreatmentDocument = gql`
+  mutation UpdateTreatment(
+    $id: ID!
+    $frequency: Int!
+    $phase: Int!
+    $duration: Int!
+    $priceRangeName: String
+  ) {
+    updateTreatment(
+      id: $id
+      input: {
+        frequency: $frequency
+        phase: $phase
+        duration: $duration
+        priceRangeName: $priceRangeName
+      }
+    )
+  }
+`;
+export type UpdateTreatmentMutationFn = Apollo.MutationFunction<
+  UpdateTreatmentMutation,
+  UpdateTreatmentMutationVariables
+>;
+
+/**
+ * __useUpdateTreatmentMutation__
+ *
+ * To run a mutation, you first call `useUpdateTreatmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTreatmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTreatmentMutation, { data, loading, error }] = useUpdateTreatmentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      frequency: // value for 'frequency'
+ *      phase: // value for 'phase'
+ *      duration: // value for 'duration'
+ *      priceRangeName: // value for 'priceRangeName'
+ *   },
+ * });
+ */
+export function useUpdateTreatmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateTreatmentMutation,
+    UpdateTreatmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateTreatmentMutation,
+    UpdateTreatmentMutationVariables
+  >(UpdateTreatmentDocument, options);
+}
+export type UpdateTreatmentMutationHookResult = ReturnType<
+  typeof useUpdateTreatmentMutation
+>;
+export type UpdateTreatmentMutationResult = Apollo.MutationResult<UpdateTreatmentMutation>;
+export type UpdateTreatmentMutationOptions = Apollo.BaseMutationOptions<
+  UpdateTreatmentMutation,
+  UpdateTreatmentMutationVariables
 >;
 export const GetServerTimeDocument = gql`
   query GetServerTime {
