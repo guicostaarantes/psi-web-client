@@ -78,6 +78,13 @@ const LoginComponent = () => {
       <Button
         block
         color="secondary"
+        onClick={() => router.push("/redefinir-senha")}
+      >
+        Esqueci minha senha
+      </Button>
+      <Button
+        block
+        color="secondary"
         onClick={() => router.push("/nova-conta")}
       >
         Criar minha conta
