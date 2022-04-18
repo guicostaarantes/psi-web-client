@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -581,7 +582,7 @@ export type UpdateTreatmentInput = {
   duration: Scalars["Int"];
   frequency: Scalars["Int"];
   phase: Scalars["Int"];
-  priceRangeName?: Maybe<Scalars["String"]>;
+  priceRangeName?: InputMaybe<Scalars["String"]>;
 };
 
 export type UpdateUserInput = {
@@ -596,7 +597,7 @@ export type UpsertAgreementInput = {
 };
 
 export type UpsertMyPatientProfileInput = {
-  avatar?: Maybe<Scalars["Upload"]>;
+  avatar?: InputMaybe<Scalars["Upload"]>;
   birthDate: Scalars["Time"];
   city: Scalars["String"];
   fullName: Scalars["String"];
@@ -604,7 +605,7 @@ export type UpsertMyPatientProfileInput = {
 };
 
 export type UpsertMyPsychologistProfileInput = {
-  avatar?: Maybe<Scalars["Upload"]>;
+  avatar?: InputMaybe<Scalars["Upload"]>;
   bio: Scalars["String"];
   birthDate: Scalars["Time"];
   city: Scalars["String"];

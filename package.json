@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",
-    "@graphql-codegen/introspection": "^2.1.0",
     "@hookstate/core": "^3.0.6",
     "apollo-link-scalars": "^3.0.0",
     "apollo-upload-client": "^16.0.0",
@@ -34,11 +33,12 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^2.1.1",
-    "@graphql-codegen/typescript": "^2.1.0",
-    "@graphql-codegen/typescript-operations": "^2.1.0",
-    "@graphql-codegen/typescript-react-apollo": "^3.1.0",
-    "@graphql-codegen/visitor-plugin-common": "^2.1.0",
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/introspection": "^2.1.1",
+    "@graphql-codegen/typescript": "^2.4.8",
+    "@graphql-codegen/typescript-operations": "^2.3.5",
+    "@graphql-codegen/typescript-react-apollo": "^3.2.11",
+    "@graphql-codegen/visitor-plugin-common": "^2.7.4",
     "@testing-library/dom": "^7.29.4",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
